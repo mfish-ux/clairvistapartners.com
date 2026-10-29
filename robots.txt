@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.clairvistapartners.com/sitemap.xml

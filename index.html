@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clairvista Partners</title>
+<meta name="description" content="Warehouses get lonely too. Prism by Clairvista is a dating app for warehouses: we find the company that will need space before it starts looking and introduce it to the warehouse company that can say yes.">
+<meta property="og:title" content="Clairvista Partners">
+<meta property="og:description" content="Warehouses get lonely too. We built the place where they meet someone who will actually end up moving in.">
+<meta property="og:image" content="assets/adu-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0A0B10;--ink2:#15171F;--blue:#0047FF;--blue-on-dark:#4E7AFF;--muted:#B9BDC7;--line:#2A2E3A;--o:#FF8A3D;--g:#4FC37A;--b:#4E7AFF;--paper:#F3F1EA}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--ink);color:#fff;font:400 18px/1.5 Outfit,system-ui,sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.kicker{font:700 12px/1 "Space Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-on-dark)}
+h2{font:800 clamp(30px,4.4vw,46px)/1.08 Outfit;letter-spacing:-.015em;margin:12px 0 0}
+h2 b{color:#fff}
+p{margin:0}
+.btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;font:700 17px/1 Outfit;padding:16px 22px;border-radius:4px}
+.btn:hover{background:#0038cc}
+.btn.ghost{background:transparent;border:2px solid #fff;padding:14px 20px}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+
+/* top bar */
+.bar{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:22px 24px}
+.bar img{width:150px;height:auto}
+.bar a.mail{font:700 13px "Space Mono",monospace;letter-spacing:.06em;text-decoration:none;color:#fff;opacity:.9}
+
+/* hero */
+.hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden;background:#1d1f27}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 45%}
+.hero .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,11,16,.96) 0%,rgba(10,11,16,.8) 28%,rgba(10,11,16,.25) 58%,rgba(10,11,16,.05) 100%)}
+.hero .text{position:relative;padding:160px 24px 64px;max-width:760px}
+h1{font:900 clamp(42px,7.2vw,84px)/.98 Outfit;letter-spacing:-.025em;margin:0}
+h1 .o{color:var(--o)}
+.lede{margin:22px 0 0;max-width:640px;font:500 clamp(19px,2.4vw,25px)/1.35 Outfit;color:#fff}
+.lede .g{color:var(--g)}.lede .b{color:var(--b)}
+.hook{margin:18px 0 0;font:400 clamp(16px,1.8vw,19px)/1.45 Outfit;color:var(--muted);max-width:560px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+
+/* sections */
+section{padding:88px 0}
+section.light{background:var(--paper);color:var(--ink)}
+section.light .kicker{color:var(--blue)}
+section.light h2 b{color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.frame{background:var(--ink2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+section.light .frame{background:#fff;border-color:#E2E0D8}
+.frame img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.frame .cap{padding:18px 20px 22px}
+.frame .cap b{display:block;font:800 21px/1.25 Outfit}
+.frame .cap p{margin-top:8px;font-size:16px;color:var(--muted)}
+section.light .frame .cap p{color:#4A4F5C}
+.band{margin-top:44px;border-left:6px solid var(--blue);padding:18px 24px;font:400 clamp(20px,2.6vw,27px)/1.3 Outfit;color:var(--muted)}
+.band b{color:#fff;font-weight:800}
+section.light .band{color:#4A4F5C;background:#fff}
+section.light .band b{color:var(--ink)}
+
+/* the app */
+.app{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;align-items:center;margin-top:40px}
+.app .pic{border:2px solid #fff;box-shadow:8px 8px 0 var(--blue);overflow:hidden;background:#1d1f27}
+.app .pic img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.card{background:#fff;color:var(--ink);border-radius:16px;padding:18px 22px 20px;box-shadow:8px 8px 0 var(--blue)}
+.card .who{display:flex;justify-content:space-between;font:700 10px "Space Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+.card .who span+span{color:var(--blue)}
+.card .title{font:800 24px/1.1 Outfit;margin:14px 0 10px}
+.row{display:flex;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid #E6E8EE}
+.row i{flex:0 0 22px;height:9px;border-radius:5px;position:relative;top:-1px}
+.row b{flex:0 0 100px;font:700 15px Outfit}
+.row span{font-size:14.5px;color:#3A3F4B}
+.card .more{margin-top:10px;font:400 13.5px Outfit;color:#8A8F9C}
+.card .go{margin-top:14px;background:var(--blue);color:#fff;text-align:center;font:700 15px/42px Outfit;border-radius:8px}
+
+/* doors */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.door{background:var(--ink2);border:1px solid var(--line);border-radius:6px;padding:28px 28px 30px}
+.door .kicker{color:var(--o)}
+.door.need .kicker{color:var(--b)}
+.door h3{font:800 clamp(24px,3vw,30px)/1.15 Outfit;margin:10px 0 14px}
+.door p{color:var(--muted);font-size:17px}
+.door .btn{margin-top:22px}
+
+/* who */
+.who2{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:start;margin-top:40px}
+.who2 img{width:200px;height:200px;object-fit:cover;border-radius:50%;border:3px solid var(--blue)}
+.beats{display:grid;gap:14px}
+.beats p{font-size:18px;color:var(--muted)}
+.beats p b{color:#fff;font-weight:800}
+section.light .beats p{color:#4A4F5C}
+section.light .beats p b{color:var(--ink)}
+
+/* close */
+.close{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden;background:#1d1f27}
+.close img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:55% 40%}
+.close .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,11,16,.94) 0%,rgba(10,11,16,.6) 30%,rgba(10,11,16,0) 62%)}
+.close .text{position:relative;padding:200px 24px 72px;max-width:760px}
+.close h2{font-size:clamp(34px,5.4vw,60px)}
+.close .ctas{margin-top:26px}
+
+footer{background:var(--ink);color:var(--muted);padding:34px 24px;font:400 13px/1.6 "Space Mono",monospace;border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding:0}
+footer a{color:#fff;text-decoration:none}
+
+@media (max-width:820px){
+  .two,.doors,.app{grid-template-columns:1fr}
+  .who2{grid-template-columns:1fr}
+  .who2 img{width:140px;height:140px}
+  section{padding:64px 0}
+  .hero .text{padding:150px 24px 48px}
+  .close .text{padding:160px 24px 56px}
+  .bar img{width:120px}
+  .bar a.mail{display:none}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <img src="assets/logo-on-dark.png" alt="Clairvista Partners">
+  <a class="mail" href="mailto:mfish@clairvistapartners.com?subject=Clairvista">mfish@clairvistapartners.com</a>
+</div>
+
+<header class="hero">
+  <img class="bg" src="assets/adu-cover.jpg" alt="A corner diner at night: a warehouse manager at one end of the counter and the head of a growing company at the other, both on their phones; a small glass lamp between them throws orange, green and blue light across the counter; a lighthouse through the back window">
+  <div class="scrim"></div>
+  <div class="text">
+    <h1><span class="o">Warehouses</span> get lonely too.</h1>
+    <p class="lede">We built the place where they meet <b class="g">someone who will actually end up moving in.</b></p>
+    <p class="hook">Prism by Clairvista is a dating app for warehouses. We find the company that will need space before it starts looking, and introduce it to the warehouse company that can say yes. Launching at Manifest, February 2027.</p>
+    <div class="ctas">
+      <a class="btn" href="#run">I run warehouses</a>
+      <a class="btn ghost" href="#need">I need space</a>
+    </div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="kicker">The problem</div>
+    <h2>She is looking. He is waiting. <b>Neither can see the other.</b></h2>
+    <div class="two">
+      <div class="frame">
+        <img src="assets/adu-desknight.jpg" loading="lazy" alt="Late at night, the head of operations at her desk with the order on the screen and the cases already stacked to the ceiling behind her">
+        <div class="cap"><b>The order she wanted. The space she doesn't have.</b><p>Great news. Where are we putting it? She needs space by December 1, and every listing she calls falls through.</p></div>
+      </div>
+      <div class="frame">
+        <img src="assets/adu-inside.jpg" loading="lazy" alt="Inside a warehouse, the manager beside half-empty racks with a silent phone">
+        <div class="cap"><b>Half the racks empty. The phone silent.</b><p>The landlord rents the building. The warehouse company runs it, stores and ships for other businesses, and has to find its own customers.</p></div>
+      </div>
+    </div>
+    <div class="band">Landlords have agents. Buildings have listings. <b>Warehouse companies have themselves.</b></div>
+  </div>
+</section>
+
+<section class="light" id="app">
+  <div class="wrap">
+    <div class="kicker">The app</div>
+    <h2>She's out of space. He's out of customers. <b>They met on the app.</b></h2>
+    <div class="app">
+      <div class="pic">
+        <img src="assets/adu-diner-light.jpg" loading="lazy" alt="The diner at night: the cook slides one phone down the counter between the two of them, and the small lighthouse lamp by the napkins throws orange, green and blue light onto it">
+      </div>
+      <div class="card" aria-label="What she sees in the app">
+        <div class="who"><span>Prism</span><span>What she sees</span></div>
+        <div class="title">Dry warehouse, 6 miles</div>
+        <div class="row"><i style="background:var(--o)"></i><b>Space</b><span>dry, ships to the chain's warehouses</span></div>
+        <div class="row"><i style="background:var(--b)"></i><b>Time</b><span>from December 1</span></div>
+        <div class="row"><i style="background:var(--g)"></i><b>Availability</b><span>empty since Friday</span></div>
+        <div class="row"><i style="background:#C9CDD6"></i><b>Cost</b><span>a working figure, before anyone picks up the phone</span></div>
+        <div class="more">And more to come.</div>
+        <div class="go">Say hello</div>
+      </div>
+    </div>
+    <div class="band">Space, time, availability, cost. <b>One screen, one hello.</b></div>
+  </div>
+</section>
+
+<section id="run">
+  <div class="wrap">
+    <div class="kicker">Who it is for</div>
+    <h2>The building already has its industry. <b>We are building the one for everything inside the four walls.</b></h2>
+    <div class="doors">
+      <div class="door">
+        <div class="kicker">I run warehouses</div>
+        <h3>We bring you the customer, with the fit already checked.</h3>
+        <p>Space, date, product and lanes, matched before the first call. You pay only when the customer moves in, and only for as long as it stays. Nothing up front.</p>
+        <a class="btn" href="mailto:mfish@clairvistapartners.com?subject=I%20run%20warehouses">Talk to Mel</a>
+      </div>
+      <div class="door need" id="need">
+        <div class="kicker">I need space</div>
+        <h3>Tell us your date. We find the warehouse that can say yes.</h3>
+        <p>Dry, cold, close to your customers, by the day you need it. The introduction costs you nothing; the warehouse company pays us when you move in.</p>
+        <a class="btn" href="mailto:mfish@clairvistapartners.com?subject=I%20need%20space">Tell us your date</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="who">
+  <div class="wrap">
+    <div class="kicker">Who we are</div>
+    <h2>Two years of building, <b>on both sides of the dock door.</b></h2>
+    <div class="who2">
+      <img src="assets/prof-founder.jpg" loading="lazy" alt="Mel Fish, founder of Clairvista Partners">
+      <div class="beats">
+        <p><b>Inside.</b> Mel built a pooled-consolidation program at a 3PL for a national grocer's suppliers.</p>
+        <p><b>Outside.</b> He invested in warehouses.</p>
+        <p><b>Now.</b> He finds the demand and routes it by hand while Prism is built, with two business advisors beside him.</p>
+        <p><a class="btn" href="mailto:mfish@clairvistapartners.com?subject=Clairvista">Talk to Mel</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="close" id="close">
+  <img class="bg" src="assets/adu-end-cartoon.jpg" loading="lazy" alt="The same diner at sunrise: the two of them side by side at the counter, the lighthouse beam coming through the window onto their coffee mug, and Mel beside them in a cook's cap and apron, pouring their coffee">
+  <div class="scrim"></div>
+  <div class="text">
+    <div class="kicker">The close</div>
+    <h2>The light was on the counter <b>the whole time.</b></h2>
+    <div class="ctas">
+      <a class="btn" href="mailto:mfish@clairvistapartners.com?subject=Clairvista">Talk to Mel</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Clairvista Partners &middot; Needham, Massachusetts</span><a href="mailto:mfish@clairvistapartners.com">mfish@clairvistapartners.com</a><span>2026</span></div></footer>
+</body>
+</html>
