@@ -154,9 +154,9 @@
       + '.cvp-note button:focus-visible{outline:2px solid #0047FF;outline-offset:2px}'
       + '@media (max-width:520px){.cvp-note{left:16px;right:16px;max-width:none}}';
     document.head.appendChild(css);
-    var box = document.createElement('div'); box.className = 'cvp-note'; box.setAttribute('role', 'region'); box.setAttribute('aria-label', 'How this site counts visits');
-    box.innerHTML = '<p><b>We count visits</b> and note the city they come from, so we can make this site better. No ads, nothing sold, and we never keep your internet address.</p>'
-      + '<div class="row"><button type="button" class="ok">OK</button><button type="button" class="no">No thanks</button></div>';
+    var box = document.createElement('div'); box.className = 'cvp-note'; box.setAttribute('role', 'region'); box.setAttribute('aria-label', 'Data notice');
+    box.innerHTML = '<p>This site collects anonymous usage data to understand how it is used and improve your experience.</p>'
+      + '<div class="row"><button type="button" class="ok">Accept</button><button type="button" class="no">Decline</button></div>';
     document.body.appendChild(box);
     box.querySelector('.ok').onclick = function(){ put(localStorage, 'cvp-consent', 'yes'); box.remove() };
     box.querySelector('.no').onclick = function(){ put(localStorage, 'cvp-consent', 'no');
