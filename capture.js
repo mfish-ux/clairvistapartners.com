@@ -13,6 +13,7 @@
   var live = !!(SUPABASE_URL && SUPABASE_KEY) && !preview;
   window.CVP_DB = live ? {url:SUPABASE_URL, key:SUPABASE_KEY} : {url:'', key:''};
   var page = (location.pathname.split('/').pop() || 'index.html').replace('.html','') || 'index';
+  if(page === 'admin') return;   // the dashboard itself is never counted and never touches the visit flags
   var q = new URLSearchParams(location.search), from = q.get('from') || '';
   var ref = '', inRef = ''; try{ var r = document.referrer && new URL(document.referrer); if(r){ if(r.host !== location.host) ref = r.host.replace(/^www\./,''); else inRef = r.pathname } }catch(e){}
   var FREE = /^(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|mac|aol|proton|protonmail|msn|comcast|verizon|att)\./i;
@@ -86,7 +87,6 @@
     if(!window.__cvpNoNav) location.href = url;
   };
 
-  if(page === 'admin') return;
 
   // ---- the view: once per page load, never for a reload or a back-button return from the cache
   var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {};
