@@ -80,7 +80,6 @@ tr.body pre{margin:0;white-space:pre-wrap;font:400 13px/1.5 "Space Mono",monospa
   <div class="range" role="group" aria-label="Time range">
     <button type="button" data-d="7">7 days</button><button type="button" data-d="30" aria-pressed="true">30 days</button><button type="button" data-d="90">90 days</button><button type="button" data-d="3650">All</button>
   </div>
-  <a class="btn ghost" href="https://clairvista.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>
   <button class="btn ghost" type="button" id="team" aria-pressed="false">Don't count this device</button>
   <button class="btn ghost" type="button" id="out" hidden>Sign out</button>
 </header>
@@ -312,7 +311,7 @@ function render(){
     <div class="card"><h3>Where visitors came from</h3>${bars(src, null, 8, 'visit')}</div>
     <div class="card"><h3>Buttons pressed</h3>${bars(count(clicks, 'name'), k => k.replace(/-/g, ' '), 8, 'press')}</div>
   </div></section>
-  <p class="muted" style="margin-top:28px;font-size:12.5px">Visits are counted from 30 October, 6:55 PM Eastern, when clean counting began; earlier visits are in GoatCounter. No cookies and no internet addresses are stored. Location is looked up once per visit and kept only as city, state and country. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
+  <p class="muted" style="margin-top:28px;font-size:12.5px">Visits are counted from 30 October, 6:55 PM Eastern, when clean counting began; No cookies and no internet addresses are stored. Location is looked up once per visit and kept only as city, state and country. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
   $('upd').textContent = 'Updated ' + new Date().toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) + ', refreshes every minute';
   table();
   $('q').oninput = e => { query = e.target.value; table() };
