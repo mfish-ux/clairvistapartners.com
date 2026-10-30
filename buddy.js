@@ -26,7 +26,7 @@
       fine: 'The finding, the introductions and the walkthrough are on us. Signing the lease is still all you.',
       upload: true,
       ph: "What · How much · Where · When&#10;e.g. 900 pallets of hot sauce, Chicago, by March", phPaste: "Paste the email here...",
-      starts: ["Cold storage near Chicago by spring", "Room for 900 pallets for the holidays", "We just landed a big retailer"],
+      starts: ["Cold storage near Chicago by spring", "Space for 900 pallets for the holidays", "We just landed a big retailer"],
       who: "her"
     };
 
