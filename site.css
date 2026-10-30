@@ -1255,3 +1255,11 @@ main.hero .words h1 .scribble.divider{position:static;display:block;width:clamp(
 
 /* Mel, 30 Oct: the light is paint everywhere: the three sampled colors, stacked with a hairline of paper between, softened */
 .guide .light{height:12px;margin-top:-6px;background:linear-gradient(var(--m-o) 0 31%,#fff 31% 35%,var(--m-g) 35% 65%,#fff 65% 69%,var(--m-b) 69% 100%);filter:blur(.3px);mix-blend-mode:multiply}
+
+/* Mel, 30 Oct: "we arent changing the logo. just make it fit with the nav bar a bit better" -- the mark at the design
+   file's top-bar size, 150 px, and the nav and the black tag centred on CLAIRVISTA instead of on the whole lockup, so
+   the text reads on one line with the name and PARTNERS hangs under the blue rule like a tagline. The nav and the tag
+   are lifted 12 px, the distance from the lockup's middle to the word's middle, without changing the bar's height. */
+.bar .brand img{width:150px;height:auto;display:block}
+.bar .nav,.bar .talk{position:relative;top:-12px}
+@media (max-width:960px){.bar .nav,.bar .talk{top:0}}
