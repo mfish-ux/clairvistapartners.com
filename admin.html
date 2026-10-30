@@ -259,6 +259,10 @@ function insights(views, visits, people, src){
 function render(){
   const views = EVTS.filter(e => e.type === 'view'), clicks = EVTS.filter(e => e.type === 'click');
   const visits = views.filter(v => v.visit_start !== false), people = views.filter(v => v.new_today !== false);
+  // each device once over the whole range: its first day here in the range is the one whose previous visit came before the range
+  const rangeStart = new Date(Date.now() - days * 864e5).toISOString().slice(0, 10);
+  const unique = people.filter(v => !v.prev_day || v.prev_day < rangeStart), backAgain = people.length - unique.length;
+  const returners = unique.filter(v => v.repeat_visit || v.prev_day).length;
   const companies = new Map();
   SUBS.forEach(s => { const k = s.company || s.from_tag; if(!k) return; const c = companies.get(k) || {views:0, msgs:0, last:''}; c.msgs++; if(s.created_at > c.last) c.last = s.created_at; companies.set(k, c) });
   views.forEach(e => { if(!e.from_tag) return; const c = companies.get(e.from_tag) || {views:0, msgs:0, last:''}; c.views++; if(e.created_at > c.last) c.last = e.created_at; companies.set(e.from_tag, c) });
@@ -267,7 +271,7 @@ function render(){
   const note = LIVE ? '' : `<p class="note"><b>Not connected yet.</b> This shows only what was done in this browser on the preview. Once the database keys are added to <code>capture.js</code>, it shows the live site and asks you to sign in.</p>`;
   $('app').innerHTML = note + `
   <div class="kpis">
-    <div class="kpi"><span>Visitors</span><b>${people.length}</b><i>Each device counted once a day</i></div>
+    <div class="kpi"><span>Visitors</span><b>${unique.length}</b><i>${returners} had been here before, ${backAgain} return day${backAgain === 1 ? '' : 's'} in range</i></div>
     <div class="kpi"><span>Visits</span><b>${visits.length}</b><i>${views.length} page views, ${visits.length ? (views.length / visits.length).toFixed(1) : 0} per visit</i></div>
     <div class="kpi"><span>Messages sent</span><b>${SUBS.length}</b><i>${visits.length ? Math.round(SUBS.length / visits.length * 100) + '% of visits' : 'none yet'}</i></div>
     <div class="kpi"><span>Top source</span><b style="font-size:22px;line-height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src[0] ? esc(src[0][0]) : 'None yet'}</b><i>${src[0] ? src[0][1] + ' visits' : 'tag links with ?from=name'}</i></div>
@@ -292,7 +296,7 @@ function render(){
   <section><h2>Making a profile <small>How far people get through the questions on the home page</small></h2><div class="grid3">
     <div class="card"><h3>I have stuff</h3>${funnel('company')}</div>
     <div class="card"><h3>I have space</h3>${funnel('warehouse')}</div>
-    <div class="card"><h3>New or back again</h3>${bars(count(people, v => v.repeat_visit == null ? '' : (v.repeat_visit ? 'Been here before' : 'First visit')))}<p class="muted" style="font-size:12.5px;margin:8px 0 0">Counted per device. No ID is kept.</p></div>
+    <div class="card"><h3>New or back again</h3>${bars(count(unique, v => v.repeat_visit == null ? '' : (v.repeat_visit ? 'Been here before' : 'First visit')))}<p class="muted" style="font-size:12.5px;margin:8px 0 0">Each device counted once in this range. ${backAgain} extra visit day${backAgain === 1 ? '' : 's'} from people coming back. No ID is kept.</p></div>
   </div></section>
   <section><h2>Attention <small>Time with the page in view, and how far down it was scrolled</small></h2>
     <div class="tablewrap"><table><thead><tr><th>Page</th><th>Visits measured</th><th>Average time</th><th>Average scroll</th></tr></thead><tbody>${attention()}</tbody></table></div></section>
@@ -300,7 +304,7 @@ function render(){
     <div class="tablewrap"><table><thead><tr><th>What</th><th>Where</th><th>Detail</th><th>Times</th><th>Last</th></tr></thead><tbody>${health()}</tbody></table></div>
     <div class="grid3" style="margin-top:14px"><div class="card"><h3>Load speed by page</h3>${speed()}</div>
       <div class="card"><h3>Phone or desktop</h3>${bars(count(visits, v => v.wide == null ? '' : (v.wide ? 'Desktop or laptop' : 'Phone or small tablet')))}</div>
-      <div class="card"><h3>Not counted</h3><p style="margin:0;font-size:13.5px">Reloads, bots and link previews, the local preview, and devices you mark with <b>Don't count this device</b> at the top. Visitors are counted once a day per device, visits once per 30 minutes of activity.</p></div></div></section>
+      <div class="card"><h3>Not counted</h3><p style="margin:0;font-size:13.5px">Reloads, bots and link previews, the local preview, and devices you mark with <b>Don't count this device</b> at the top. Each visitor's device is counted once in the range shown, however many days they come back; visits count once per 30 minutes of activity.</p></div></div></section>
   <section><div class="grid3">
     <div class="card"><h3>Pages</h3>${bars(count(views, 'page'), k => PAGE[k] || k)}</div>
     <div class="card"><h3>Where visitors came from</h3>${bars(src)}</div>

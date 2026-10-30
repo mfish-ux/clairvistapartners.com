@@ -51,9 +51,11 @@
 
   // once a day per device, once per visit (30 minutes without activity starts a new one), and been here before
   var today = new Date().toISOString().slice(0, 10), now = Date.now();
-  var newToday = true, visitStart = true, returning = false;
+  var newToday = true, visitStart = true, returning = false, prevDay = null;
   if(full){
     var seen = get(localStorage, 'cvp-seen'); returning = !!seen && seen !== today; newToday = seen !== today; put(localStorage, 'cvp-seen', today);
+    // the date this device last visited, so the dashboard can count each device once over any range and spot repeat visitors
+    if(newToday && /^\d{4}-\d{2}-\d{2}$/.test(seen || '')) prevDay = seen;
     var last = +get(localStorage, 'cvp-last') || 0; visitStart = now - last > 30 * 60000; put(localStorage, 'cvp-last', String(now));
   }
   function base(type, name){
@@ -93,7 +95,7 @@
   var reload = nav.type === 'reload';
   geoReady.then(function(){
     if(reload) return;
-    var row = base('view', page); row.visit_start = visitStart; row.new_today = newToday;
+    var row = base('view', page); row.visit_start = visitStart; row.new_today = newToday; if(newToday && prevDay) row.prev_day = prevDay;
     if(page === '404') row.detail = cut(location.pathname + (inRef ? ' from ' + inRef : ref ? ' from ' + ref : ''), 300);
     save('events', row);
   });
