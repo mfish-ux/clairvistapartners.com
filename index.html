@@ -258,9 +258,13 @@ button{font:inherit;color:inherit}
 .hero[data-scene="match"] .cast .who:before,.hero[data-scene="match"] .cast .who:after{transform:scaleX(1)}
 .glow{height:14px;margin-top:-7px;background:linear-gradient(var(--m-o) 0 31%,#fff 31% 35%,var(--m-g) 35% 65%,#fff 65% 69%,var(--m-b) 69% 100%);filter:url(#paint);mix-blend-mode:multiply}
 
-/* Mel, 30 Oct: "has the new prism graphic been run through figma? It looks bad" -- it had not; it was CSS. The light is off
-   until the illustrator's painted beam, being drawn now, replaces it as an image. */
-.cast .who:before,.cast .who:after,.glow{visibility:hidden}
+/* Mel, 30 Oct: "has the new prism graphic been run through figma? It looks bad" -- it had not; it was CSS. Now the beam is
+   the illustrator's (Figma 240:2): one painted beam on white, narrow at the phone and fanning toward the card, laid on the
+   paper with multiply so the white disappears. Her side uses the mirrored copy. The bloom is the same picture, blurred. */
+.cast .who:before,.cast .who:after{background:url(assets/light-beam.jpg) no-repeat center/100% 100%;clip-path:none;filter:none;mix-blend-mode:multiply;height:26px;top:46px}
+.cast .her:before,.cast .her:after{background-image:url(assets/light-beam-left.jpg)}
+.cast .who:before{filter:blur(7px);opacity:.5;height:40px;top:39px}
+.glow{background:url(assets/light-beam.jpg) no-repeat center/100% 100%;filter:none;mix-blend-mode:multiply;height:16px;margin-top:-8px}
 
 /* Mel, 30 Oct: "the user should just have a much better UI experience navigating his or her profiles" -- whose eyes you
    look through is two pills in the app bar; the photos get visible arrows, swipe and arrow keys; pass goes to the next
