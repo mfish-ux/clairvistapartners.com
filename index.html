@@ -289,7 +289,6 @@ button{font:inherit;color:inherit}
 /* the 'Your turn' hint takes the early-look line's place under the phone instead of landing on top of it */
 .turn.on+.early-look{visibility:hidden}
 </style>
-<script data-goatcounter="https://clairvista.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script src="capture.js"></script>
 </head>
 <body>
@@ -398,7 +397,7 @@ const tag=(new URLSearchParams(location.search).get('from')||'').toLowerCase().r
 const subj=s=>tag?`${s} (${tag})`:s;
 const mailto=(s,body)=>`mailto:${MAIL}?subject=${encodeURIComponent(subj(s))}`+(body?`&body=${encodeURIComponent(body)}`:'');
 document.querySelectorAll('[data-subject]').forEach(a=>a.href=mailto(a.dataset.subject));
-const count=(path,title)=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title:title||path,event:true})};
+const count=(path,title)=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title:title||path,event:true});if(window.cvpStep&&/^(quiz-|profile-sent-|pass-)/.test(path))cvpStep(path)};
 const $=id=>document.getElementById(id);
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MARK=['var(--blue)','var(--blue)','var(--blue)','var(--blue)'];
