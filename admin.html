@@ -23,6 +23,7 @@ html,body{margin:0;background:var(--white);color:var(--ink);font:400 15px/1.45 O
 .range button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(10,11,16,.14)}
 .btn{background:var(--ink);color:#fff;padding:9px 14px}
 .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+#team[aria-pressed="true"]{background:#E8F7EE;color:#00753A;border-color:#BFE6CD}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 main{padding:24px clamp(16px,4vw,48px) 64px;max-width:1360px;margin:0 auto}
 .note{margin:0 0 20px;padding:12px 14px;border-left:4px solid var(--blue);background:var(--sunk);border-radius:0 10px 10px 0;font-size:14px}
@@ -80,6 +81,7 @@ tr.body pre{margin:0;white-space:pre-wrap;font:400 13px/1.5 "Space Mono",monospa
     <button type="button" data-d="7">7 days</button><button type="button" data-d="30" aria-pressed="true">30 days</button><button type="button" data-d="90">90 days</button><button type="button" data-d="3650">All</button>
   </div>
   <a class="btn ghost" href="https://clairvista.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>
+  <button class="btn ghost" type="button" id="team" aria-pressed="false">Don't count this device</button>
   <button class="btn ghost" type="button" id="out" hidden>Sign out</button>
 </header>
 
@@ -91,6 +93,10 @@ const LIVE = !!(DB.url && DB.key);
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let days = 30, SUBS = [], EVTS = [], openRow = null, query = '';
+// your own devices: once marked here, this browser's visits to the site are not counted
+const teamBtn = $('team'), isTeam = () => { try { return localStorage.getItem('cvp-team') === '1' } catch(e) { return false } };
+const showTeam = () => { const on = isTeam(); teamBtn.setAttribute('aria-pressed', on); teamBtn.textContent = on ? 'This device is not counted' : "Don't count this device" };
+teamBtn.onclick = () => { try { isTeam() ? localStorage.removeItem('cvp-team') : localStorage.setItem('cvp-team', '1') } catch(e) {} showTeam() }; showTeam();
 $('mode').textContent = LIVE ? 'Live database' : 'This browser only';
 $('mode').classList.toggle('live', LIVE);
 
@@ -204,22 +210,69 @@ function attention(){
   return [...by].sort((a, b) => b[1].n - a[1].n).map(([p, a]) => `<tr><td><b>${esc(PAGE[p] || p)}</b></td><td>${a.n}</td><td>${t(Math.round(a.secs / a.n))}</td><td>${Math.round(a.depth / a.n)}%</td></tr>`).join('');
 }
 
+function health(){
+  const rows = new Map();
+  EVTS.filter(e => e.type === 'error' || e.type === 'rage' || (e.type === 'view' && e.page === '404')).forEach(e => {
+    const what = e.type === 'rage' ? 'Repeated clicks' : e.type === 'view' ? 'Page not found' : /^Broken file/.test(e.detail || '') ? 'Broken file' : 'Script error';
+    const detail = e.type === 'view' ? (e.detail || '') : (e.detail || '').replace(/^(Broken file|Script error): /, '');
+    const k = what + '|' + e.page + '|' + detail, r = rows.get(k) || {what, page:e.page, detail, n:0, last:''};
+    r.n++; if(e.created_at > r.last) r.last = e.created_at; rows.set(k, r);
+  });
+  if(!rows.size) return '<tr><td colspan="5" class="empty">No problems recorded in this range.</td></tr>';
+  return [...rows.values()].sort((a, b) => b.n - a.n).slice(0, 40).map(r => `<tr><td><span class="k">${esc(r.what)}</span></td><td>${esc(PAGE[r.page] || r.page)}</td><td style="max-width:460px;word-break:break-word">${esc(r.detail)}</td><td>${r.n}</td><td class="when">${when(r.last)}</td></tr>`).join('');
+}
+function median(a){ if(!a.length) return 0; a = a.slice().sort((x, y) => x - y); return a[Math.floor(a.length / 2)] }
+function speed(){
+  const by = new Map(); EVTS.filter(e => e.type === 'engage' && e.ms).forEach(e => { const a = by.get(e.page) || []; a.push(e.ms); by.set(e.page, a) });
+  if(!by.size) return '<p class="empty">Nothing yet.</p>';
+  const col = m => m > 4000 ? '#FC5700' : m > 2500 ? '#F59E0B' : '#00A849';
+  return '<ul class="bars">' + [...by].map(([p, a]) => [p, median(a)]).sort((x, y) => y[1] - x[1]).map(([p, m]) => `<li><span class="t">${esc(PAGE[p] || p)}</span><span class="n">${(m / 1000).toFixed(1)} s</span><span class="b"><i style="width:${Math.min(100, m / 60)}%;background:${col(m)}"></i></span></li>`).join('') + '</ul><p class="muted" style="font-size:12.5px;margin:8px 0 0">Time until the main picture or words showed. Under 2.5 s is good.</p>';
+}
+function insights(views, visits, people, src){
+  const out = [];
+  if(!visits.length) return 'Nothing to read yet. Lines appear here once visits come in.';
+  const stepN = n => EVTS.filter(e => e.type === 'step' && e.name === n).length;
+  const labels = ['starting', 'the second question', 'the third question', 'the fourth question', 'the fifth question', 'the last question', 'finishing', 'sending'];
+  ['company', 'warehouse'].forEach(side => {
+    const names = [`quiz-${side}-start`, ...[2, 3, 4, 5, 6].map(i => `quiz-${side}-step-${i}`), `quiz-${side}-done`, `profile-sent-${side}`];
+    const n = names.map(stepN); if(n[0] < 3) return;
+    let worst = -1, drop = 0; for(let i = 1; i < n.length; i++){ const d = n[i - 1] - n[i]; if(d > drop){ drop = d; worst = i } }
+    const who = side === 'company' ? 'I have stuff' : 'I have space';
+    out.push(worst > 0 ? `<b>${who} profiles lose the most people before ${labels[worst]}</b>: ${drop} of ${n[worst - 1]} stop there. That is the step to make easier.` : `<b>${who} profiles keep everyone who starts.</b>`);
+  });
+  const a = stepN('quiz-company-start'), b = stepN('quiz-warehouse-start');
+  if(a + b >= 3) out.push(`<b>${a >= b ? 'Companies with stuff' : 'Warehouse companies'} start more profiles</b>, ${Math.max(a, b)} to ${Math.min(a, b)}.`);
+  const eg = EVTS.filter(e => e.type === 'engage'), by = new Map(); eg.forEach(e => { const x = by.get(e.page) || []; x.push(e.depth || 0); by.set(e.page, x) });
+  const shallow = [...by].filter(([p, d]) => d.length >= 3).map(([p, d]) => [p, median(d)]).sort((x, y) => x[1] - y[1])[0];
+  if(shallow && shallow[1] < 50) out.push(`<b>${esc(PAGE[shallow[0]] || shallow[0])} is mostly read only at the top</b>: half of visitors scroll less than ${shallow[1]}% down. Put the important part higher.`);
+  const sp = new Map(); eg.filter(e => e.ms).forEach(e => { const x = sp.get(e.page) || []; x.push(e.ms); sp.set(e.page, x) });
+  const slow = [...sp].map(([p, m]) => [p, median(m)]).filter(x => x[1] > 2500).sort((x, y) => y[1] - x[1])[0];
+  if(slow) out.push(`<b>${esc(PAGE[slow[0]] || slow[0])} loads slowly</b>, ${(slow[1] / 1000).toFixed(1)} s. Smaller pictures would help.`);
+  const probs = EVTS.filter(e => e.type === 'error' || e.type === 'rage').length;
+  if(probs) out.push(`<b>${probs} problem${probs === 1 ? '' : 's'} recorded.</b> See Site health below.`);
+  if(src[0] && visits.length >= 5) out.push(`<b>${esc(src[0][0])} brings the most visits</b>, ${src[0][1]} of ${visits.length}.`);
+  if(visits.length >= 5){ const ph = visits.filter(v => v.wide === false).length; out.push(`<b>${Math.round(ph / visits.length * 100)}% of visits are on a phone.</b>`) }
+  return out.length ? out.map(l => `<p style="margin:4px 0">${l}</p>`).join('') : 'Not enough visits yet to say anything useful. Lines appear here as patterns show up.';
+}
+
 // ----- the page -----
 function render(){
   const views = EVTS.filter(e => e.type === 'view'), clicks = EVTS.filter(e => e.type === 'click');
+  const visits = views.filter(v => v.visit_start !== false), people = views.filter(v => v.new_today !== false);
   const companies = new Map();
   SUBS.forEach(s => { const k = s.company || s.from_tag; if(!k) return; const c = companies.get(k) || {views:0, msgs:0, last:''}; c.msgs++; if(s.created_at > c.last) c.last = s.created_at; companies.set(k, c) });
   views.forEach(e => { if(!e.from_tag) return; const c = companies.get(e.from_tag) || {views:0, msgs:0, last:''}; c.views++; if(e.created_at > c.last) c.last = e.created_at; companies.set(e.from_tag, c) });
   const comp = [...companies].sort((a,b) => (b[1].msgs - a[1].msgs) || (b[1].views - a[1].views));
-  const src = count(views, source);
+  const src = count(visits, source);
   const note = LIVE ? '' : `<p class="note"><b>Not connected yet.</b> This shows only what was done in this browser on the preview. Once the database keys are added to <code>capture.js</code>, it shows the live site and asks you to sign in.</p>`;
   $('app').innerHTML = note + `
   <div class="kpis">
-    <div class="kpi"><span>Page views</span><b>${views.length}</b><i>${(n => n + (n === 1 ? ' day' : ' days') + ' with visits')(new Set(views.map(v => day(v.created_at))).size)}</i></div>
-    <div class="kpi"><span>Messages sent</span><b>${SUBS.length}</b><i>${count(SUBS, 'kind')[0] ? 'Most: ' + esc(count(SUBS, 'kind')[0][0]) : 'none yet'}</i></div>
-    <div class="kpi"><span>Companies</span><b>${comp.length}</b><i>${comp[0] ? esc(comp[0][0]) + ' most active' : 'from messages and link tags'}</i></div>
-    <div class="kpi"><span>Top source</span><b style="font-size:22px;line-height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src[0] ? esc(src[0][0]) : 'None yet'}</b><i>${src[0] ? src[0][1] + ' views' : 'tag links with ?from=name'}</i></div>
+    <div class="kpi"><span>Visitors</span><b>${people.length}</b><i>Each device counted once a day</i></div>
+    <div class="kpi"><span>Visits</span><b>${visits.length}</b><i>${views.length} page views, ${visits.length ? (views.length / visits.length).toFixed(1) : 0} per visit</i></div>
+    <div class="kpi"><span>Messages sent</span><b>${SUBS.length}</b><i>${visits.length ? Math.round(SUBS.length / visits.length * 100) + '% of visits' : 'none yet'}</i></div>
+    <div class="kpi"><span>Top source</span><b style="font-size:22px;line-height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src[0] ? esc(src[0][0]) : 'None yet'}</b><i>${src[0] ? src[0][1] + ' visits' : 'tag links with ?from=name'}</i></div>
   </div>
+  <section><h2>What the numbers say</h2><div class="note" style="margin:0">${insights(views, visits, people, src)}</div></section>
   <section><h2>Last 24 hours, by the hour <small id="upd"></small></h2><div class="chart"><div class="legend"><span><i style="background:#0047FF"></i>Page views</span><span><i style="background:#FC5700;border-radius:50%"></i>Messages sent</span></div>${hourly()}</div></section>
   <section><h2>Every day</h2><div class="chart"><div class="legend"><span><i style="background:#0047FF"></i>Page views</span><span><i style="background:#FC5700;border-radius:50%"></i>Messages sent</span></div>${chart()}</div></section>
   <section>
@@ -231,18 +284,23 @@ function render(){
     <div class="tablewrap"><table><thead><tr><th>Company or tag</th><th>Messages</th><th>Page views</th><th>Last seen</th></tr></thead><tbody>
     ${comp.length ? comp.slice(0, 50).map(([k, c]) => `<tr><td><b>${esc(k)}</b></td><td>${c.msgs}</td><td>${c.views}</td><td class="when">${c.last ? when(c.last) : ''}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Nothing yet.</td></tr>'}
     </tbody></table></div></section>
-  <section><h2>Where they are <small>City, state and country from each visit. The visitor's internet address is never stored.</small></h2><div class="grid3">
-    <div class="card"><h3>Cities</h3>${bars(count(views, v => v.city ? v.city + (v.region ? ', ' + v.region : '') : ''), null, 10)}</div>
-    <div class="card"><h3>States and regions</h3>${bars(count(views, v => v.region ? v.region + (v.country && v.country !== 'US' ? ' (' + v.country + ')' : '') : ''), null, 10)}</div>
-    <div class="card"><h3>Countries</h3>${bars(count(views, 'country'), null, 10)}</div>
+  <section><h2>Where they are <small>City, state and country, counted per visit. The visitor's internet address is never stored.</small></h2><div class="grid3">
+    <div class="card"><h3>Cities</h3>${bars(count(visits, v => v.city ? v.city + (v.region ? ', ' + v.region : '') : ''), null, 10)}</div>
+    <div class="card"><h3>States and regions</h3>${bars(count(visits, v => v.region ? v.region + (v.country && v.country !== 'US' ? ' (' + v.country + ')' : '') : ''), null, 10)}</div>
+    <div class="card"><h3>Countries</h3>${bars(count(visits, 'country'), null, 10)}</div>
   </div></section>
   <section><h2>Making a profile <small>How far people get through the questions on the home page</small></h2><div class="grid3">
     <div class="card"><h3>I have stuff</h3>${funnel('company')}</div>
     <div class="card"><h3>I have space</h3>${funnel('warehouse')}</div>
-    <div class="card"><h3>New or back again</h3>${bars(count(views, v => v.repeat_visit == null ? '' : (v.repeat_visit ? 'Been here before' : 'First visit')))}<p class="muted" style="font-size:12.5px;margin:8px 0 0">Counted per device. No ID is kept.</p></div>
+    <div class="card"><h3>New or back again</h3>${bars(count(people, v => v.repeat_visit == null ? '' : (v.repeat_visit ? 'Been here before' : 'First visit')))}<p class="muted" style="font-size:12.5px;margin:8px 0 0">Counted per device. No ID is kept.</p></div>
   </div></section>
   <section><h2>Attention <small>Time with the page in view, and how far down it was scrolled</small></h2>
     <div class="tablewrap"><table><thead><tr><th>Page</th><th>Visits measured</th><th>Average time</th><th>Average scroll</th></tr></thead><tbody>${attention()}</tbody></table></div></section>
+  <section><h2>Site health <small>Problems visitors ran into. An empty list is good news.</small></h2>
+    <div class="tablewrap"><table><thead><tr><th>What</th><th>Where</th><th>Detail</th><th>Times</th><th>Last</th></tr></thead><tbody>${health()}</tbody></table></div>
+    <div class="grid3" style="margin-top:14px"><div class="card"><h3>Load speed by page</h3>${speed()}</div>
+      <div class="card"><h3>Phone or desktop</h3>${bars(count(visits, v => v.wide == null ? '' : (v.wide ? 'Desktop or laptop' : 'Phone or small tablet')))}</div>
+      <div class="card"><h3>Not counted</h3><p style="margin:0;font-size:13.5px">Reloads, bots and link previews, the local preview, and devices you mark with <b>Don't count this device</b> at the top. Visitors are counted once a day per device, visits once per 30 minutes of activity.</p></div></div></section>
   <section><div class="grid3">
     <div class="card"><h3>Pages</h3>${bars(count(views, 'page'), k => PAGE[k] || k)}</div>
     <div class="card"><h3>Where visitors came from</h3>${bars(src)}</div>
