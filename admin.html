@@ -134,8 +134,8 @@ async function fetchAll(table, since){
 async function load(){
   if(LIVE){ const t = tok(); if(!t || t.exp < Date.now()) return loginView(); $('out').hidden = false }
   $('app').innerHTML = '<p class="muted">Loading…</p>';
-  const since = new Date(Date.now() - days * 864e5).toISOString();
-  try { [SUBS, EVTS] = await Promise.all([fetchAll('submissions', since), fetchAll('events', since)]) }
+  const since = new Date(Date.now() - Math.max(days, 2) * 864e5).toISOString();
+  try { [SUBS, EVTS] = await Promise.all([fetchAll('submissions', since), fetchAll('events', since)]); EVTS = EVTS.filter(e => e.page !== 'setup-test'); SUBS = SUBS.filter(x => x.page !== 'setup-test') }
   catch(e){ return loginView(e.message === 'signin' ? 'Your sign-in expired. Sign in again.' : 'Could not reach the database.') }
   render();
 }
@@ -168,6 +168,42 @@ function chart(){
   return `<svg viewBox="0 0 ${W} ${H + 22}" preserveAspectRatio="none" role="img" aria-label="Page views and messages per day">${g}${lab}</svg>`;
 }
 
+function hourly(){
+  const now = new Date(); now.setMinutes(0,0,0);
+  const keys = [...Array(24)].map((_, i) => new Date(now - (23 - i) * 36e5));
+  const k = d => d.toISOString().slice(0, 13);
+  const v = new Map(keys.map(d => [k(d), 0])), m = new Map(keys.map(d => [k(d), 0]));
+  EVTS.forEach(e => { const h = e.created_at.slice(0, 13); if(e.type === 'view' && v.has(h)) v.set(h, v.get(h) + 1) });
+  SUBS.forEach(s => { const h = s.created_at.slice(0, 13); if(m.has(h)) m.set(h, m.get(h) + 1) });
+  const W = 1000, H = 140, top = Math.max(4, ...v.values(), ...m.values()), bw = W / 24;
+  const lbl = d => d.toLocaleTimeString(undefined, {hour:'numeric'});
+  let g = '';
+  keys.forEach((d, i) => {
+    const n = v.get(k(d)), h = n / top * (H - 22), x = i * bw;
+    g += `<rect x="${x + bw * .14}" y="${H - h}" width="${bw * .72}" height="${h}" rx="2" fill="#0047FF" opacity="${i === 23 ? 1 : .8}"><title>${lbl(d)}: ${n} views, ${m.get(k(d))} messages</title></rect>`;
+    if(n) g += `<text x="${x + bw / 2}" y="${H - h - 4}" text-anchor="middle" font-size="11" fill="#0A0B10" font-family="Outfit">${n}</text>`;
+    if(m.get(k(d))){ const y = H - m.get(k(d)) / top * (H - 22); g += `<circle cx="${x + bw / 2}" cy="${y}" r="5" fill="#FC5700" stroke="#fff" stroke-width="2"/>` }
+  });
+  const lab = [0, 6, 12, 18, 23].map(i => `<text x="${i * bw + bw / 2}" y="${H + 16}" text-anchor="middle" font-size="12" fill="#5B5F66" font-family="Outfit">${i === 23 ? 'This hour' : lbl(keys[i])}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H + 22}" preserveAspectRatio="none" role="img" aria-label="Page views per hour, last 24 hours">${g}${lab}</svg>`;
+}
+
+function funnel(side){
+  const ev = EVTS.filter(e => e.type === 'step'), c = n => ev.filter(e => e.name === n).length;
+  const qs = side === 'company' ? ['Type of space','Where','How soon','How much','Looking for','Who is asking'] : ['Type of space','Where','When free','How much is open','Looking for','Who is asking'];
+  const rows = [['Started', c(`quiz-${side}-start`)]].concat(qs.slice(1).map((q, i) => [q, c(`quiz-${side}-step-${i + 2}`)]), [['Finished', c(`quiz-${side}-done`)], ['Sent', c(`profile-sent-${side}`)]]);
+  const top = Math.max(1, rows[0][1]);
+  if(!rows[0][1]) return '<p class="empty">Nobody has started one yet.</p>';
+  return '<ul class="bars">' + rows.map(([k, n]) => `<li><span class="t">${esc(k)}</span><span class="n">${n} <span class="muted" style="font-weight:400">${Math.round(n / top * 100)}%</span></span><span class="b"><i style="width:${Math.max(2, n / top * 100)}%"></i></span></li>`).join('') + '</ul>';
+}
+function attention(){
+  const eg = EVTS.filter(e => e.type === 'engage' && e.secs != null), by = new Map();
+  eg.forEach(e => { const a = by.get(e.page) || {n:0, secs:0, depth:0}; a.n++; a.secs += e.secs; a.depth += e.depth || 0; by.set(e.page, a) });
+  if(!by.size) return '<tr><td colspan="4" class="empty">Nothing yet.</td></tr>';
+  const t = s => s >= 60 ? Math.floor(s / 60) + ' min ' + (s % 60) + ' s' : s + ' s';
+  return [...by].sort((a, b) => b[1].n - a[1].n).map(([p, a]) => `<tr><td><b>${esc(PAGE[p] || p)}</b></td><td>${a.n}</td><td>${t(Math.round(a.secs / a.n))}</td><td>${Math.round(a.depth / a.n)}%</td></tr>`).join('');
+}
+
 // ----- the page -----
 function render(){
   const views = EVTS.filter(e => e.type === 'view'), clicks = EVTS.filter(e => e.type === 'click');
@@ -184,6 +220,7 @@ function render(){
     <div class="kpi"><span>Companies</span><b>${comp.length}</b><i>${comp[0] ? esc(comp[0][0]) + ' most active' : 'from messages and link tags'}</i></div>
     <div class="kpi"><span>Top source</span><b style="font-size:22px;line-height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src[0] ? esc(src[0][0]) : 'None yet'}</b><i>${src[0] ? src[0][1] + ' views' : 'tag links with ?from=name'}</i></div>
   </div>
+  <section><h2>Last 24 hours, by the hour <small id="upd"></small></h2><div class="chart"><div class="legend"><span><i style="background:#0047FF"></i>Page views</span><span><i style="background:#FC5700;border-radius:50%"></i>Messages sent</span></div>${hourly()}</div></section>
   <section><h2>Every day</h2><div class="chart"><div class="legend"><span><i style="background:#0047FF"></i>Page views</span><span><i style="background:#FC5700;border-radius:50%"></i>Messages sent</span></div>${chart()}</div></section>
   <section>
     <h2>Messages <small>${SUBS.length} in this range. Click a row to read it.</small><span class="sp"></span>
@@ -194,12 +231,25 @@ function render(){
     <div class="tablewrap"><table><thead><tr><th>Company or tag</th><th>Messages</th><th>Page views</th><th>Last seen</th></tr></thead><tbody>
     ${comp.length ? comp.slice(0, 50).map(([k, c]) => `<tr><td><b>${esc(k)}</b></td><td>${c.msgs}</td><td>${c.views}</td><td class="when">${c.last ? when(c.last) : ''}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Nothing yet.</td></tr>'}
     </tbody></table></div></section>
+  <section><h2>Where they are <small>City, state and country from each visit. The visitor's internet address is never stored.</small></h2><div class="grid3">
+    <div class="card"><h3>Cities</h3>${bars(count(views, v => v.city ? v.city + (v.region ? ', ' + v.region : '') : ''), null, 10)}</div>
+    <div class="card"><h3>States and regions</h3>${bars(count(views, v => v.region ? v.region + (v.country && v.country !== 'US' ? ' (' + v.country + ')' : '') : ''), null, 10)}</div>
+    <div class="card"><h3>Countries</h3>${bars(count(views, 'country'), null, 10)}</div>
+  </div></section>
+  <section><h2>Making a profile <small>How far people get through the questions on the home page</small></h2><div class="grid3">
+    <div class="card"><h3>I have stuff</h3>${funnel('company')}</div>
+    <div class="card"><h3>I have space</h3>${funnel('warehouse')}</div>
+    <div class="card"><h3>New or back again</h3>${bars(count(views, v => v.repeat_visit == null ? '' : (v.repeat_visit ? 'Been here before' : 'First visit')))}<p class="muted" style="font-size:12.5px;margin:8px 0 0">Counted per device. No ID is kept.</p></div>
+  </div></section>
+  <section><h2>Attention <small>Time with the page in view, and how far down it was scrolled</small></h2>
+    <div class="tablewrap"><table><thead><tr><th>Page</th><th>Visits measured</th><th>Average time</th><th>Average scroll</th></tr></thead><tbody>${attention()}</tbody></table></div></section>
   <section><div class="grid3">
     <div class="card"><h3>Pages</h3>${bars(count(views, 'page'), k => PAGE[k] || k)}</div>
     <div class="card"><h3>Where visitors came from</h3>${bars(src)}</div>
     <div class="card"><h3>Buttons pressed</h3>${bars(count(clicks, 'name'), k => k.replace(/-/g, ' '))}</div>
   </div></section>
-  <p class="muted" style="margin-top:28px;font-size:12.5px">No cookies and no IP addresses are stored. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
+  <p class="muted" style="margin-top:28px;font-size:12.5px">No cookies and no internet addresses are stored. Location is looked up once per visit and kept only as city, state and country. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
+  $('upd').textContent = 'Updated ' + new Date().toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) + ', refreshes every minute';
   table();
   $('q').oninput = e => { query = e.target.value; table() };
   $('csv').onclick = csv;
@@ -227,6 +277,7 @@ document.querySelectorAll('.range button').forEach(b => b.onclick = () => {
   document.querySelectorAll('.range button').forEach(x => x.setAttribute('aria-pressed', x === b)); days = +b.dataset.d; load();
 });
 load();
+setInterval(() => { if(!document.hidden && !openRow && !query && (!LIVE || tok())) load() }, 60000);
 </script>
 </body>
 </html>

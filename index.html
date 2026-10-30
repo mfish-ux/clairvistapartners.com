@@ -398,7 +398,7 @@ const tag=(new URLSearchParams(location.search).get('from')||'').toLowerCase().r
 const subj=s=>tag?`${s} (${tag})`:s;
 const mailto=(s,body)=>`mailto:${MAIL}?subject=${encodeURIComponent(subj(s))}`+(body?`&body=${encodeURIComponent(body)}`:'');
 document.querySelectorAll('[data-subject]').forEach(a=>a.href=mailto(a.dataset.subject));
-const count=(path,title)=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title:title||path,event:true})};
+const count=(path,title)=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title:title||path,event:true});if(window.cvpStep&&/^(quiz-|profile-sent-|pass-)/.test(path))cvpStep(path)};
 const $=id=>document.getElementById(id);
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MARK=['var(--blue)','var(--blue)','var(--blue)','var(--blue)'];
