@@ -3,234 +3,707 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clairvista Partners</title>
-<meta name="description" content="Warehouses get lonely too. Prism by Clairvista is a dating app for warehouses: we find the company that will need space before it starts looking and introduce it to the warehouse company that can say yes.">
-<meta property="og:title" content="Clairvista Partners">
-<meta property="og:description" content="Warehouses get lonely too. We built the place where they meet someone who will actually end up moving in.">
-<meta property="og:image" content="assets/adu-cover.jpg">
+<title>Clairvista Partners: Warehouses get lonely too</title>
+<meta name="description" content="We find the companies that will need space before they start looking, and introduce them to the warehouse companies that will welcome them with open arms.">
+<link rel="canonical" href="https://clairvistapartners.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Clairvista Partners">
+<meta property="og:title" content="Clairvista Partners: Warehouses get lonely too">
+<meta property="og:description" content="We find the companies that will need space before they start looking, and introduce them to the warehouse companies that will welcome them with open arms.">
+<meta property="og:url" content="https://clairvistapartners.com/">
+<meta property="og:image" content="https://clairvistapartners.com/assets/diner-night.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 <style>
-:root{--ink:#0A0B10;--ink2:#15171F;--blue:#0047FF;--blue-on-dark:#4E7AFF;--muted:#B9BDC7;--line:#2A2E3A;--o:#FF8A3D;--g:#4FC37A;--b:#4E7AFF;--paper:#F3F1EA}
+/* The deck's system (concept deck V8, 30 October 2026), carried to the web:
+   white pages, Kinetic Blue the one accent, cartoons as framed ink panels with the blue offset shadow,
+   captions split regular and bold, the deck's word colors (warehouses orange, companies blue, we green),
+   labels in Space Mono. The app sits on a real phone, the one real object on the page, and she is using it. */
+:root{--obsidian:#0A0B10;--white:#FFFFFF;--sunk:#F3F4F6;--blue:#0047FF;--line:#E5E7EB;--line2:#E6E8EE;--muted:#5B5F66;--green:#00815E;--red:#C22626;
+  --m-o:#FC5700;--m-b:#0041BB;--m-g:#00A849;--m-x:#C9CDD6}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-html,body{margin:0;background:var(--ink);color:#fff;font:400 18px/1.5 Outfit,system-ui,sans-serif}
-img{max-width:100%;display:block}
+html,body{margin:0;background:var(--white);color:var(--obsidian);font:400 18px/1.5 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+p,h1,h2,h3,h4{margin:0}
 a{color:inherit}
-.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
-.kicker{font:700 12px/1 "Space Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-on-dark)}
-h2{font:800 clamp(30px,4.4vw,46px)/1.08 Outfit;letter-spacing:-.015em;margin:12px 0 0}
-h2 b{color:#fff}
-p{margin:0}
-.btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;font:700 17px/1 Outfit;padding:16px 22px;border-radius:4px}
-.btn:hover{background:#0038cc}
-.btn.ghost{background:transparent;border:2px solid #fff;padding:14px 20px}
-.btn.ghost:hover{background:rgba(255,255,255,.1)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.kicker{font:700 13px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.rule{width:60px;height:3px;background:var(--blue)}
 
-/* top bar */
-.bar{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:22px 24px}
-.bar img{width:150px;height:auto}
-.bar a.mail{font:700 13px "Space Mono",monospace;letter-spacing:.06em;text-decoration:none;color:#fff;opacity:.9}
 
-/* hero */
-.hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden;background:#1d1f27}
-.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 45%}
-.hero .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,11,16,.96) 0%,rgba(10,11,16,.8) 28%,rgba(10,11,16,.25) 58%,rgba(10,11,16,.05) 100%)}
-.hero .text{position:relative;padding:160px 24px 64px;max-width:760px}
-h1{font:900 clamp(42px,7.2vw,84px)/.98 Outfit;letter-spacing:-.025em;margin:0}
-h1 .o{color:var(--o)}
-.lede{margin:22px 0 0;max-width:640px;font:500 clamp(19px,2.4vw,25px)/1.35 Outfit;color:#fff}
-.lede .g{color:var(--g)}.lede .b{color:var(--b)}
-.hook{margin:18px 0 0;font:400 clamp(16px,1.8vw,19px)/1.45 Outfit;color:var(--muted);max-width:560px}
-.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+/* the first screen: a website hero. The words and the two ways in on the left; her, the live phone and him on the right. */
+.hero{--ph:min(720px,calc(100svh - 206px));--gap:clamp(22px,2.8vw,52px);max-width:1440px;margin:0 auto;padding:clamp(8px,2.4vh,28px) clamp(16px,5vw,80px) 44px;
+  display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;column-gap:var(--gap);align-items:center}
+.words{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,2.6vh,26px);max-width:640px}
+.words h1{font:400 clamp(32px,min(3.5vw,6.2vh),60px)/1.04 Outfit;letter-spacing:-.035em}
+.words h1 span,.words h1 b{display:block;text-wrap:balance}
+.words h1 b{font-weight:800}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,71,255,.45)}60%{box-shadow:0 0 0 7px rgba(0,71,255,0)}}
+.phonecol{grid-column:3;grid-row:1;position:relative;align-self:center;scroll-margin-top:12px}
+/* the visitor's line, under the phone, only once the phone is theirs */
+.turn{position:absolute;left:0;right:0;top:100%;margin-top:10px;text-align:center;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);opacity:0;transition:opacity .3s ease}
+.turn.on{opacity:1}
+.turn b{display:block;margin-top:4px;font:400 14px/1.3 Outfit;letter-spacing:0;text-transform:none;color:var(--obsidian)}
+/* the two of them stand on either side of the phone: who they are, their face, their name, what they are doing right now */
+.cast{display:contents}
+.cast .glow{display:none}
+.cast .who{position:relative;z-index:1;grid-row:1;align-self:center;display:flex;flex-direction:column;align-items:flex-start;gap:9px;width:clamp(150px,11vw,172px);padding:13px 14px 15px;border-radius:18px;border:1px solid var(--line2);background:#fff;box-shadow:0 1px 2px rgba(10,11,16,.05),0 10px 24px -14px rgba(10,11,16,.35);cursor:pointer;text-align:left;opacity:.55;transition:opacity .4s ease,transform .25s ease}
+.cast .her{grid-column:2;margin-left:clamp(6px,1.6vw,34px)}
+.cast .him{grid-column:4}
+.cast .who:hover{opacity:1;transform:translateY(-2px)}
+.cast .who .kick{display:block;white-space:nowrap;font:700 10px/1 "Space Mono",monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+.cast .who img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--line);transition:border-color .4s ease}
+.cast .who b{display:block;font:700 14px/1.2 Outfit;white-space:normal}
+.cast .who i{display:block;margin-top:3px;font:400 13px/1.3 Outfit;font-style:normal;color:var(--muted);white-space:normal;transition:color .3s ease}
+.cast .who .st{display:flex;align-items:flex-start;gap:6px}
+.cast .who .st:before{margin-top:4px}
+.hero[data-scene="her"] .cast .her,.hero[data-scene="his"] .cast .him,.hero[data-scene="talk"] .cast .who,.hero[data-scene="match"] .cast .who{opacity:1}
+.hero[data-scene="her"] .cast .her img,.hero[data-scene="his"] .cast .him img,.hero[data-scene="talk"] .cast .who img,.hero[data-scene="match"] .cast .who img{border-color:var(--blue)}
+.hero[data-scene="her"] .cast .her img,.hero[data-scene="his"] .cast .him img{animation:pulse 2s ease-in-out infinite}
+.hero[data-scene="her"] .cast .her i,.hero[data-scene="his"] .cast .him i,.hero[data-scene="match"] .cast .who i{color:var(--obsidian)}
+/* at the match, thin bands of light run from each of them to the phone, the one place orange, green and blue appear */
+.cast .who:after{content:"";position:absolute;top:57px;width:calc(var(--gap) + 6px);height:6px;z-index:-1;background:linear-gradient(var(--m-o) 0 2px,var(--m-g) 2px 4px,var(--m-b) 4px 6px);transform:scaleX(0);transition:transform 1.6s cubic-bezier(.3,0,.2,1)}
+.cast .her:after{left:calc(100% - 2px);transform-origin:left}
+.cast .him:after{right:calc(100% - 2px);transform-origin:right}
+.hero[data-scene="match"] .cast .who:after{transform:scaleX(1)}
+.glow{position:absolute;left:8%;right:8%;top:50%;margin-top:-3px;height:6px;background:linear-gradient(var(--m-o) 0 2px,var(--m-g) 2px 4px,var(--m-b) 4px 6px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent);mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent);transform:scaleX(0);transition:transform 1.6s cubic-bezier(.3,0,.2,1)}
+.hero[data-scene="match"] .glow{transform:scaleX(1)}
 
-/* sections */
-section{padding:88px 0}
-section.light{background:var(--paper);color:var(--ink)}
-section.light .kicker{color:var(--blue)}
-section.light h2 b{color:var(--ink)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
-.frame{background:var(--ink2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
-section.light .frame{background:#fff;border-color:#E2E0D8}
-.frame img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.frame .cap{padding:18px 20px 22px}
-.frame .cap b{display:block;font:800 21px/1.25 Outfit}
-.frame .cap p{margin-top:8px;font-size:16px;color:var(--muted)}
-section.light .frame .cap p{color:#4A4F5C}
-.band{margin-top:44px;border-left:6px solid var(--blue);padding:18px 24px;font:400 clamp(20px,2.6vw,27px)/1.3 Outfit;color:var(--muted)}
-.band b{color:#fff;font-weight:800}
-section.light .band{color:#4A4F5C;background:#fff}
-section.light .band b{color:var(--ink)}
+/* ===== her phone: a real device, the deck's blue shadow under it ===== */
+.device{position:relative;height:var(--ph);aspect-ratio:.487;border-radius:calc(var(--ph) * .078);padding:calc(var(--ph) * .015);
+  background:linear-gradient(150deg,#4a4d56 0%,#1b1c22 18%,#0e0f13 50%,#24262d 82%,#55585f 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),inset 0 0 0 3px #08090c,8px 8px 0 var(--blue),0 34px 60px -26px rgba(10,11,16,.55),0 10px 22px -12px rgba(10,11,16,.4)}
+.device:before,.device:after{content:"";position:absolute;width:3px;border-radius:2px;background:linear-gradient(90deg,#1a1b20,#5a5d65)}
+.device:before{left:-3px;top:20%;height:7%;box-shadow:0 calc(var(--ph) * .085) 0 #2a2c33,0 calc(var(--ph) * -.07) 0 0 #2a2c33}
+.device:after{right:-3px;top:27%;height:11%;background:linear-gradient(270deg,#1a1b20,#5a5d65)}
+.screen{position:relative;height:100%;border-radius:calc(var(--ph) * .064);background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.screen:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(118deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 32%);pointer-events:none;z-index:9}
+.island{position:absolute;top:calc(var(--ph) * .016);left:50%;transform:translateX(-50%);width:31%;height:calc(var(--ph) * .039);background:#000;border-radius:999px;z-index:8}
+.status{flex:none;height:calc(var(--ph) * .068);display:flex;align-items:center;justify-content:space-between;padding:calc(var(--ph) * .012) 9% 0 11%;font:600 14px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;color:#000}
+.status svg{height:11px;width:auto;display:block}
+.status .icons{display:flex;gap:5px;align-items:center}
+.home{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:34%;height:5px;border-radius:3px;background:#0A0B10;z-index:8}
+.appview{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 14px;scrollbar-width:none;position:relative}
+.appview::-webkit-scrollbar{display:none}
+.appbar{position:sticky;top:0;z-index:3;display:flex;align-items:baseline;justify-content:space-between;padding:4px 16px 10px;margin:0 -14px;background:#fff}
+.appbar .name{font:900 21px/1 Outfit;letter-spacing:-.02em}
+.appbar .who{display:none;font:700 9px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
 
-/* the app */
-.app{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;align-items:center;margin-top:40px}
-.app .pic{border:2px solid #fff;box-shadow:8px 8px 0 var(--blue);overflow:hidden;background:#1d1f27}
-.app .pic img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.card{background:#fff;color:var(--ink);border-radius:16px;padding:18px 22px 20px;box-shadow:8px 8px 0 var(--blue)}
-.card .who{display:flex;justify-content:space-between;font:700 10px "Space Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
-.card .who span+span{color:var(--blue)}
-.card .title{font:800 24px/1.1 Outfit;margin:14px 0 10px}
-.row{display:flex;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid #E6E8EE}
-.row i{flex:0 0 22px;height:9px;border-radius:5px;position:relative;top:-1px}
-.row b{flex:0 0 100px;font:700 15px Outfit}
-.row span{font-size:14.5px;color:#3A3F4B}
-.card .more{margin-top:10px;font:400 13.5px Outfit;color:#8A8F9C}
-.card .go{margin-top:14px;background:var(--blue);color:#fff;text-align:center;font:700 15px/42px Outfit;border-radius:8px}
+/* the profile: tap through his photos, then his details and prompts */
+.gallery{position:relative;border-radius:16px;overflow:hidden;background:var(--sunk);border:1px solid var(--line2)}
+.gallery img{width:100%;aspect-ratio:4/4.6;object-fit:cover;object-position:50% 40%}
+.gallery .pager{position:absolute;top:8px;left:10px;right:10px;display:flex;gap:3px;z-index:2}
+.gallery .pager i{flex:1;height:3px;border-radius:2px;background:rgba(10,11,16,.18)}
+.gallery .pager i.on{background:rgba(10,11,16,.78)}
+.gallery .zone{position:absolute;top:0;bottom:0;width:50%;border:0;background:transparent;cursor:pointer;z-index:2;padding:0}
+.gallery .zone.l{left:0}.gallery .zone.r{right:0}
+.gallery .tagline{position:absolute;left:0;right:0;bottom:0;padding:38px 12px 10px;background:linear-gradient(0deg,rgba(255,255,255,.97) 34%,rgba(255,255,255,0));z-index:1}
+.nm{display:flex;align-items:center;gap:6px;font:800 19px/1.1 Outfit}
+.nm svg{width:16px;height:16px;flex:none}
+.line{margin-top:4px;font:600 12.5px/1.25 Outfit;color:var(--muted);display:flex;align-items:center;gap:6px}
+.line i{width:7px;height:7px;border-radius:50%;background:var(--blue);flex:none}
+.rows{list-style:none;margin:10px 0 0;padding:0}
+.rows li{display:flex;align-items:baseline;gap:9px;padding:6px 0;border-top:1px solid var(--line2)}
+.rows li:first-child{border-top:0}
+.rows li i{flex:0 0 18px;height:7px;border-radius:4px;position:relative;top:-1px}
+.rows li span{flex:0 0 52px;font:700 13px Outfit}
+.rows li em{font:400 13px/1.3 Outfit;font-style:normal;color:#3A3F4B}
+.quiz .rows li{animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.prompts{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.prompt{position:relative;background:var(--sunk);border-radius:14px;padding:12px 46px 13px 13px}
+.prompt span{display:block;font:700 9px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.prompt b{display:block;margin-top:4px;font:800 18px/1.2 Outfit}
+.prompt em{display:block;font:400 14px/1.35 Outfit;font-style:normal;margin-top:5px;padding-left:16px;position:relative}
+.prompt em:before{content:"";position:absolute;left:2px;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--obsidian)}
+.heart{position:absolute;right:8px;bottom:8px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:transform .15s ease}
+.heart svg{width:15px;height:15px}
+.heart.on{background:var(--blue);border-color:var(--blue)}
+.heart.on path{fill:#fff;stroke:#fff}
+.heart.pop{transform:scale(1.35)}
+.choose{position:sticky;bottom:0;z-index:2;display:flex;align-items:center;gap:10px;margin:12px -14px 0;padding:14px 14px 22px;background:linear-gradient(0deg,#fff 72%,rgba(255,255,255,0))}
+.pass{flex:none;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .1s ease}
+.pass svg{width:16px;height:16px}
+.pass:active{transform:scale(.92)}
+.btn{min-height:46px;border-radius:999px;border:0;background:var(--blue);color:#fff;font:700 15px/1 Outfit;cursor:pointer;padding:0 18px;white-space:nowrap;transition:transform .1s ease,background .15s ease}
+.btn:hover{background:#0039CC}
+.btn:active{transform:scale(.97)}
+.choose .btn{flex:1}
+.btn.quiet{background:#fff;color:var(--muted);border:1px solid var(--line)}
+.reply{display:none;margin-top:10px;border-left:4px solid var(--blue);background:var(--sunk);padding:9px 11px;font:400 13.5px/1.4 Outfit;border-radius:0 10px 10px 0}
+.reply b{display:block;font:700 9px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:3px}
+.example.said .reply{display:block}
+.example.said .choose{display:none}
+.example{transition:transform .25s ease,opacity .25s ease}
+.example.away{transform:translateX(-30px) rotate(-4deg);opacity:0}
 
-/* doors */
-.doors{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
-.door{background:var(--ink2);border:1px solid var(--line);border-radius:6px;padding:28px 28px 30px}
-.door .kicker{color:var(--o)}
-.door.need .kicker{color:var(--b)}
-.door h3{font:800 clamp(24px,3vw,30px)/1.15 Outfit;margin:10px 0 14px}
-.door p{color:var(--muted);font-size:17px}
-.door .btn{margin-top:22px}
+/* the like sheet and the match, over the screen */
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -10px 30px rgba(10,11,16,.18);padding:16px 16px 26px;transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.sheet.open{transform:none}
+.dim{position:absolute;inset:0;z-index:5;background:rgba(10,11,16,.28);opacity:0;pointer-events:none;transition:opacity .3s ease}
+.dim.open{opacity:1;pointer-events:auto}
+.sheet .quote{background:var(--sunk);border-radius:12px;padding:10px 12px}
+.sheet .quote span{display:block;font:700 9px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.sheet .quote b{display:block;margin-top:3px;font:800 15px/1.2 Outfit}
+.sheet input{margin-top:10px;width:100%;font:400 15px/1.3 Outfit;color:var(--obsidian);border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff}
+.sheet input:focus{outline:none;border-color:var(--blue)}
+.sheet .btn{width:100%;margin-top:10px}
+.match{position:absolute;inset:0;z-index:7;background:var(--obsidian);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.match.open{opacity:1;pointer-events:auto}
+.match .k{font:700 10px "Space Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:#4E7AFF}
+.match h3{margin-top:8px;font:900 34px/1 Outfit;letter-spacing:-.02em}
+.match .pair{display:flex;align-items:center;margin-top:22px}
+.match .pair img{width:86px;height:86px;border-radius:50%;object-fit:cover;border:3px solid #fff;background:#fff}
+.match .pair img+img{margin-left:-14px}
+.match p{margin-top:16px;font:400 15px/1.4 Outfit;color:#C9CDD6}
+.match p b{color:#fff}
+.match .yours{margin-top:22px;display:flex;flex-direction:column;gap:8px;width:100%}
+.match .yours .btn{width:100%}
+.match .yours .btn.ghost{background:transparent;border:1px solid #3A3D47;color:#fff}
 
-/* who */
-.who2{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:start;margin-top:40px}
-.who2 img{width:200px;height:200px;object-fit:cover;border-radius:50%;border:3px solid var(--blue)}
-.beats{display:grid;gap:14px}
-.beats p{font-size:18px;color:var(--muted)}
-.beats p b{color:#fff;font-weight:800}
-section.light .beats p{color:#4A4F5C}
-section.light .beats p b{color:var(--ink)}
+/* his phone: the notification and the chat */
+.device{transition:transform .3s ease}
+.notif{position:absolute;top:calc(var(--ph) * .058);left:8px;right:8px;z-index:7;display:flex;gap:10px;align-items:center;background:rgba(246,247,249,.97);border-radius:18px;padding:10px 12px;box-shadow:0 12px 30px rgba(10,11,16,.25);transform:translateY(-150%);transition:transform .45s cubic-bezier(.2,.8,.2,1);cursor:pointer}
+.notif.open{transform:none}
+.notif img{width:38px;height:38px;border-radius:10px;object-fit:cover;flex:none}
+.notif b{display:block;font:700 10px/1.2 "Space Mono",monospace;letter-spacing:.12em;color:var(--blue)}
+.notif span{display:block;margin-top:2px;font:600 13.5px/1.3 Outfit}
+.notif em{margin-left:auto;align-self:flex-start;font:500 11px Outfit;font-style:normal;color:#8A8F99}
+.chat{position:absolute;left:0;right:0;bottom:0;top:calc(var(--ph) * .068);z-index:6;background:#fff;display:flex;flex-direction:column;transform:translateX(102%);transition:transform .38s cubic-bezier(.2,.8,.2,1)}
+.chat.open{transform:none}
+.chead{display:flex;align-items:center;gap:10px;padding:6px 14px 10px;border-bottom:1px solid var(--line2)}
+.cback{border:0;background:none;font:400 30px/1 Outfit;color:var(--blue);cursor:pointer;padding:0 6px 0 0}
+.chead img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--blue)}
+.chead b{display:block;font:800 15px/1.1 Outfit}
+.chead span{font:600 11px Outfit;color:var(--muted)}
+.msgs{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:14px 12px}
+.msg{max-width:80%;padding:9px 13px;border-radius:18px;font:500 15px/1.32 Outfit;animation:in .3s ease both}
+.msg.them{align-self:flex-start;background:var(--sunk);border-bottom-left-radius:6px}
+.msg.me{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:6px}
+.msg.book{align-self:center;max-width:92%;text-align:center;background:#fff;border:1px solid #C7D4FF;border-radius:14px}
+.msg.book i{display:block;margin-bottom:3px;font:700 9px "Space Mono",monospace;letter-spacing:.12em;font-style:normal;color:var(--blue)}
+.liked{align-self:flex-start;max-width:85%;font:600 11.5px/1.3 Outfit;color:var(--muted);padding:0 4px;animation:in .3s ease both}
+.liked b{color:var(--obsidian)}
+.msg.dots{display:inline-flex;gap:4px;padding:13px 14px}
+.msg.dots i{width:7px;height:7px;border-radius:50%;background:#9AA0AE;animation:blink 1s infinite}
+.msg.me.dots i{background:#C9D6FF}
+.msg.dots i:nth-child(2){animation-delay:.15s}.msg.dots i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.cbar{padding:8px 12px 24px;border-top:1px solid var(--line2)}
+.cin{border:1px solid var(--line);border-radius:999px;padding:9px 14px;font:400 14px Outfit;color:#9AA0AE}
 
-/* close */
-.close{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden;background:#1d1f27}
-.close img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:55% 40%}
-.close .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,11,16,.94) 0%,rgba(10,11,16,.6) 30%,rgba(10,11,16,0) 62%)}
-.close .text{position:relative;padding:200px 24px 72px;max-width:760px}
-.close h2{font-size:clamp(34px,5.4vw,60px)}
-.close .ctas{margin-top:26px}
+/* her fingertip, the way app demos show a touch */
+.finger{position:absolute;z-index:10;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:rgba(10,11,16,.16);border:2px solid rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(10,11,16,.25);pointer-events:none;opacity:0;transition:opacity .2s ease,transform .15s ease}
+.finger.on{opacity:1}
+.finger.press{transform:scale(.78)}
 
-footer{background:var(--ink);color:var(--muted);padding:34px 24px;font:400 13px/1.6 "Space Mono",monospace;border-top:1px solid var(--line)}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding:0}
-footer a{color:#fff;text-decoration:none}
+/* the questionnaire, on the same screen */
+.quiz{display:none;padding-bottom:28px}
+.phonecol.asking .example{display:none}
+.phonecol.asking .quiz{display:block}
+.qtop{display:flex;align-items:center;gap:10px;padding:2px 0 8px}
+.qtop .back{border:0;background:none;padding:4px 0;font:700 13px Outfit;color:var(--muted);cursor:pointer}
+.prog{flex:1;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--blue);transition:width .35s ease}
+.qtop .count{font:700 9px "Space Mono",monospace;letter-spacing:.1em;color:var(--muted)}
+.mine{border:1px solid var(--line2);border-radius:14px;padding:10px 12px}
+.mine .k{font:700 9px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.mine b{display:block;margin-top:3px;font:800 17px/1.15 Outfit}
+.ask{margin-top:12px}
+.ask .who2{font:700 9px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.ask h4{margin-top:4px;font:800 21px/1.15 Outfit;outline:none}
+.ask .sub{margin-top:3px;font:400 13.5px/1.35 Outfit;color:var(--muted)}
+.answers{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-height:40px;padding:0 14px;border:1px solid var(--obsidian);border-radius:999px;background:#fff;font:700 14px/1 Outfit;color:var(--obsidian);cursor:pointer;transition:background .12s ease,color .12s ease}
+.chip:hover,.chip[aria-pressed=true]{background:var(--obsidian);color:#fff}
+.typed{display:grid;gap:8px;width:100%}
+.typed input{font:400 16px/1.3 Outfit;color:var(--obsidian);background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:44px;width:100%}
+.typed input:focus{outline:none;border-color:var(--blue)}
+.typed input.bad{border-color:var(--red)}
+.err{font:700 12.5px/1.3 Outfit;color:var(--red)}
+.typed .btn{justify-self:start}
+.acts2{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-top:12px}
+.fine{margin-top:10px;font:400 12px/1.45 Outfit;color:var(--muted)}
 
-@media (max-width:820px){
-  .two,.doors,.app{grid-template-columns:1fr}
-  .who2{grid-template-columns:1fr}
-  .who2 img{width:140px;height:140px}
-  section{padding:64px 0}
-  .hero .text{padding:150px 24px 48px}
-  .close .text{padding:160px 24px 56px}
-  .bar img{width:120px}
-  .bar a.mail{display:none}
+
+@media (max-width:960px){
+  .hero{--ph:min(600px,calc(100svh - 150px));grid-template-columns:minmax(0,1fr);row-gap:26px;padding-top:4px;padding-bottom:40px}
+  .words{grid-column:auto;grid-row:auto;order:1;max-width:none}
+  .cast{display:flex;position:relative;justify-content:space-between;gap:12px;order:2}
+  .cast .glow{display:block}
+  .cast .who{grid-column:auto;grid-row:auto;margin:0;flex-direction:row;align-items:center;gap:10px;width:auto;max-width:49%;padding:7px 16px 7px 7px;border-radius:999px}
+  .cast .who .kick,.cast .who:after{display:none}
+  .cast .who img{width:42px;height:42px}
+  .cast .who b{font-size:13.5px;white-space:nowrap}
+  .cast .who i{margin-top:2px;font-size:12px;white-space:nowrap}
+  .cast .who .st:before{margin-top:1px}
+  .phonecol{grid-column:auto;grid-row:auto;order:3;justify-self:center}
 }
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+@media (max-width:540px){.cast{flex-direction:column;align-items:flex-start;gap:10px}.cast .who{max-width:none}.cast .him{align-self:flex-end}.cast .glow{display:none}}
+@media (max-width:380px){.hero{--ph:540px}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* Mel, 30 Oct: "its too close to a pride flag and it lacks our personality. where is the watercolor neon?" -- the light is
+   paint: the deck's three colors sampled from the drawing, laid as a fan that grows out of the phone toward each card,
+   with a painted edge (#paint) and a faint bloom under it. Bands stacked orange, green, blue, the way the drawing has them. */
+.cast .who:before,.cast .who:after{content:"";position:absolute;top:47px;z-index:-1;height:24px;width:calc(var(--gap) + 10px);background:linear-gradient(var(--m-o) 0 31%,#fff 31% 35%,var(--m-g) 35% 65%,#fff 65% 69%,var(--m-b) 69% 100%);transform:scaleX(0);transition:transform 1.6s cubic-bezier(.3,0,.2,1)}
+.cast .her:before,.cast .her:after{left:calc(100% - 6px);transform-origin:right;clip-path:polygon(0 0,100% 30%,100% 70%,0 100%)}
+.cast .him:before,.cast .him:after{right:calc(100% - 6px);transform-origin:left;clip-path:polygon(0 30%,100% 0,100% 100%,0 70%)}
+.cast .who:after{filter:url(#paint);mix-blend-mode:multiply}
+.cast .who:before{clip-path:none;filter:blur(6px);opacity:.42;top:41px;height:36px}
+.hero[data-scene="match"] .cast .who:before,.hero[data-scene="match"] .cast .who:after{transform:scaleX(1)}
+.glow{height:14px;margin-top:-7px;background:linear-gradient(var(--m-o) 0 31%,#fff 31% 35%,var(--m-g) 35% 65%,#fff 65% 69%,var(--m-b) 69% 100%);filter:url(#paint);mix-blend-mode:multiply}
+
+/* Mel, 30 Oct: "has the new prism graphic been run through figma? It looks bad" -- it had not; it was CSS. The light is off
+   until the illustrator's painted beam, being drawn now, replaces it as an image. */
+.cast .who:before,.cast .who:after,.glow{visibility:hidden}
+
+/* Mel, 30 Oct: "the user should just have a much better UI experience navigating his or her profiles" -- whose eyes you
+   look through is two pills in the app bar; the photos get visible arrows, swipe and arrow keys; pass goes to the next
+   warehouse profile, so the three markets can be browsed; the pills step aside while the visitor makes their own profile */
+.appbar{align-items:center}
+.eyes{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--sunk)}
+.eye{border:0;background:transparent;border-radius:999px;padding:7px 10px;font:700 11px/1 Outfit;color:var(--muted);cursor:pointer;white-space:nowrap;transition:background .15s ease,color .15s ease}
+.eye.on{background:#fff;color:var(--obsidian);box-shadow:0 1px 2px rgba(10,11,16,.14)}
+.eye:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.phonecol.asking .eyes{display:none}
+.phonecol.asking .appbar .who{display:block}
+.gallery .pager{top:10px;gap:4px}
+.gallery .pager i{height:4px}
+.gallery .arrow{position:absolute;top:50%;z-index:1;width:30px;height:30px;margin-top:-15px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--line2);color:var(--obsidian);font:400 24px/26px Outfit;text-align:center;pointer-events:none;box-shadow:0 1px 3px rgba(10,11,16,.18)}
+.gallery .arrow.l{left:8px}.gallery .arrow.r{right:8px}
+.gallery{touch-action:pan-y}
+.pass{width:46px;height:46px}
+/* the 'Your turn' hint takes the early-look line's place under the phone instead of landing on top of it */
+.turn.on+.early-look{visibility:hidden}
 </style>
+<script data-goatcounter="https://clairvista.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="paint" x="-10%" y="-40%" width="120%" height="180%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/><feGaussianBlur stdDeviation=".3"/></filter></svg>
 
-<div class="bar">
-  <img src="assets/logo-on-dark.png" alt="Clairvista Partners">
-  <a class="mail" href="mailto:mfish@clairvistapartners.com?subject=Clairvista">mfish@clairvistapartners.com</a>
-</div>
 
-<header class="hero">
-  <img class="bg" src="assets/adu-cover.jpg" alt="A corner diner at night: a warehouse manager at one end of the counter and the head of a growing company at the other, both on their phones; a small glass lamp between them throws orange, green and blue light across the counter; a lighthouse through the back window">
-  <div class="scrim"></div>
-  <div class="text">
-    <h1><span class="o">Warehouses</span> get lonely too.</h1>
-    <p class="lede">We built the place where they meet <b class="g">someone who will actually end up moving in.</b></p>
-    <p class="hook">Prism by Clairvista is a dating app for warehouses. We find the company that will need space before it starts looking, and introduce it to the warehouse company that can say yes. Launching at Manifest, February 2027.</p>
-    <div class="ctas">
-      <a class="btn" href="#run">I run warehouses</a>
-      <a class="btn ghost" href="#need">I need space</a>
+<header class="bar"><a class="brand" href="./"><img src="assets/logo.png" alt="Clairvista Partners" width="132" height="38"></a><nav class="nav" aria-label="Site"><a href="companies.html" data-goatcounter-click="nav-i-have-stuff">I have stuff</a><a href="warehouses.html" data-goatcounter-click="nav-i-have-space">I have space</a><a href="how-it-works.html" data-goatcounter-click="nav-how">How it works</a><a href="about.html" data-goatcounter-click="nav-about">About</a><a href="partners.html" data-goatcounter-click="nav-partners">Partnerships</a></nav><button class="talk" type="button" data-leaflet data-goatcounter-click="open-easy-call-top" title="There are plenty of fish in the sea.">Let&#39;s talk</button></header>
+
+<main class="hero" id="hero" data-scene="her">
+  <div class="words">
+    <h1><span>Warehouses get lonely too.</span><svg class="scribble divider" viewBox="0 0 220 22" preserveAspectRatio="none" aria-hidden="true"><path class="s1" d="M4 13 C 46 7, 92 15, 138 10 S 196 7, 216 11"/><path class="s2" d="M18 17 C 70 13, 128 18, 186 14"/></svg> <b>So we built a dating app for warehouses.</b></h1>
+    <p class="cap">We find the <b>companies that will need space</b> before they start looking, and introduce them to the <b>warehouse companies</b> that will welcome them with open arms.</p>
+    <div class="ways">
+      <a class="way primary" href="warehouses.html" data-goatcounter-click="way-i-have-space">I have space</a>
+      <a class="way" href="companies.html" data-goatcounter-click="way-i-have-stuff">I have stuff</a>
     </div>
+    <p class="slow"><span>Prefer to take it slow?</span> <button type="button" data-goatcounter-click="open-easy-call-home">Let's chat and see if there's chemistry.</button></p>
   </div>
-</header>
 
-<section id="problem">
-  <div class="wrap">
-    <div class="kicker">The problem</div>
-    <h2>She is looking. He is waiting. <b>Neither can see the other.</b></h2>
-    <div class="two">
-      <div class="frame">
-        <img src="assets/adu-desknight.jpg" loading="lazy" alt="Late at night, the head of operations at her desk with the order on the screen and the cases already stacked to the ceiling behind her">
-        <div class="cap"><b>The order she wanted. The space she doesn't have.</b><p>Great news. Where are we putting it? She needs space by December 1, and every listing she calls falls through.</p></div>
-      </div>
-      <div class="frame">
-        <img src="assets/adu-inside.jpg" loading="lazy" alt="Inside a warehouse, the manager beside half-empty racks with a silent phone">
-        <div class="cap"><b>Half the racks empty. The phone silent.</b><p>The landlord rents the building. The warehouse company runs it, stores and ships for other businesses, and has to find its own customers.</p></div>
-      </div>
-    </div>
-    <div class="band">Landlords have agents. Buildings have listings. <b>Warehouse companies have themselves.</b></div>
-  </div>
-</section>
+  <div class="s-figs home-figs"><figure class="s-fig her" data-go="companies.html" data-say="I have stuff"><img src="assets/fig-her-a.jpg" alt="Ink drawing of the head of operations on a diner stool, searching her phone"></figure><figure class="s-fig him" data-go="warehouses.html" data-say="I have space"><img src="assets/fig-him-b.jpg" alt="Ink drawing of the warehouse manager on a diner stool, phone in hand, scratching his head"></figure></div>
 
-<section class="light" id="app">
-  <div class="wrap">
-    <div class="kicker">The app</div>
-    <h2>She's out of space. He's out of customers. <b>They met on the app.</b></h2>
-    <div class="app">
-      <div class="pic">
-        <img src="assets/adu-diner-light.jpg" loading="lazy" alt="The diner at night: the cook slides one phone down the counter between the two of them, and the small lighthouse lamp by the napkins throws orange, green and blue light onto it">
-      </div>
-      <div class="card" aria-label="What she sees in the app">
-        <div class="who"><span>Prism</span><span>What she sees</span></div>
-        <div class="title">Dry warehouse, 6 miles</div>
-        <div class="row"><i style="background:var(--o)"></i><b>Space</b><span>dry, ships to the chain's warehouses</span></div>
-        <div class="row"><i style="background:var(--b)"></i><b>Time</b><span>from December 1</span></div>
-        <div class="row"><i style="background:var(--g)"></i><b>Availability</b><span>empty since Friday</span></div>
-        <div class="row"><i style="background:#C9CDD6"></i><b>Cost</b><span>a working figure, before anyone picks up the phone</span></div>
-        <div class="more">And more to come.</div>
-        <div class="go">Say hello</div>
-      </div>
-    </div>
-    <div class="band">Space, time, availability, cost. <b>One screen, one hello.</b></div>
-  </div>
-</section>
+  <aside class="phonecol" id="side" aria-label="Her phone, on the Prism app">
+    <div class="device">
+      <div class="screen" id="screen">
+        <div class="island"></div>
+        <div class="status" aria-hidden="true"><span id="clock">9:41</span><span class="icons">
+          <svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+          <svg viewBox="0 0 16 11"><path d="M8 2.2c2.4 0 4.6.9 6.2 2.4l1.2-1.3A10.6 10.6 0 0 0 8 .4 10.6 10.6 0 0 0 .6 3.3l1.2 1.3A8.8 8.8 0 0 1 8 2.2zm0 3.4c1.5 0 2.8.6 3.8 1.5L13 5.8A7.2 7.2 0 0 0 8 3.8a7.2 7.2 0 0 0-5 2l1.2 1.3c1-.9 2.3-1.5 3.8-1.5zM8 9l2-2.1a2.9 2.9 0 0 0-4 0z"/></svg>
+          <svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#000" opacity=".4"/><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="24.5" y="4" width="1.6" height="4" rx=".8" opacity=".4"/></svg>
+        </span></div>
+        <div class="appview" id="appview">
+          <div class="appbar"><span class="name">Prism</span><span class="who" id="c-who">What she sees</span><div class="eyes" role="tablist" aria-label="Whose phone"><button class="eye on" type="button" role="tab" aria-selected="true" data-side="have" data-goatcounter-click="eyes-what-she-sees">What she sees</button><button class="eye" type="button" role="tab" aria-selected="false" data-side="need" data-goatcounter-click="eyes-what-he-sees">What he sees</button></div></div>
 
-<section id="run">
-  <div class="wrap">
-    <div class="kicker">Who it is for</div>
-    <h2>The building already has its industry. <b>We are building the one for everything inside the four walls.</b></h2>
-    <div class="doors">
-      <div class="door">
-        <div class="kicker">I run warehouses</div>
-        <h3>We bring you the customer, with the fit already checked.</h3>
-        <p>Space, date, product and lanes, matched before the first call. You pay only when the customer moves in, and only for as long as it stays. Nothing up front.</p>
-        <a class="btn" href="mailto:mfish@clairvistapartners.com?subject=I%20run%20warehouses">Talk to Mel</a>
-      </div>
-      <div class="door need" id="need">
-        <div class="kicker">I need space</div>
-        <h3>Tell us your date. We find the warehouse that can say yes.</h3>
-        <p>Dry, cold, close to your customers, by the day you need it. The introduction costs you nothing; the warehouse company pays us when you move in.</p>
-        <a class="btn" href="mailto:mfish@clairvistapartners.com?subject=I%20need%20space">Tell us your date</a>
+          <div class="example" id="example">
+            <div class="gallery" id="gallery">
+              <img id="g-img" src="assets/lehigh-dc.jpg" alt="">
+              <div class="pager" id="g-pager" aria-hidden="true"></div>
+              <button class="zone l" type="button" aria-label="Previous photo" data-goatcounter-click="photo-back"></button>
+              <button class="zone r" type="button" aria-label="Next photo" data-goatcounter-click="photo-next"></button><span class="arrow l" aria-hidden="true">&lsaquo;</span><span class="arrow r" aria-hidden="true">&rsaquo;</span>
+              <div class="tagline">
+                <div class="nm"><span id="c-name"></span><svg viewBox="0 0 16 16" aria-label="Verified"><circle cx="8" cy="8" r="8" fill="#0047FF"/><path d="M4.6 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="line" id="g-line"></div>
+              </div>
+            </div>
+            <ul class="rows" id="c-rows"></ul>
+            <div class="prompts" id="c-prompts"></div>
+            <div class="choose"><button class="pass" type="button" aria-label="Pass" data-goatcounter-click="hero-card-pass"><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13" stroke="#5B5F66" stroke-width="2.2" stroke-linecap="round"/></svg></button><button class="btn hello" type="button" data-goatcounter-click="hero-card-say-hello">Say hello</button></div>
+            <p class="reply"><b>Prism</b>Your turn. <a href="#side" data-start data-goatcounter-click="hero-reply-make-profile">Make its profile</a> and we'll look for its match.</p>
+          </div>
+
+          <div class="quiz" id="quiz">
+            <div class="qtop"><button class="back" type="button" id="q-back">Back</button><div class="prog" aria-hidden="true"><i id="q-prog"></i></div><span class="count" id="q-count"></span></div>
+            <div class="mine"><span class="k" id="m-kind"></span><b id="m-title"></b><ul class="rows" id="m-rows"></ul></div>
+            <div class="ask" id="ask" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="dim" id="dim"></div>
+        <div class="sheet" id="sheet" aria-hidden="true">
+          <div class="quote"><span id="s-q"></span><b id="s-a"></b></div>
+          <input id="s-in" placeholder="Add a comment" aria-label="Add a comment">
+          <button class="btn" type="button" id="s-send" data-goatcounter-click="like-sent">Send like</button>
+        </div>
+        <div class="match" id="match" aria-live="polite">
+          <span class="k">Prism</span>
+          <h3>It's a match.</h3>
+          <div class="pair"><img id="mt-a" src="assets/card-company.jpg" alt=""><img id="mt-b" src="assets/his/1-dock-doors.jpg" alt=""></div>
+          <p id="mt-line">He liked you back in <b>0.4 seconds</b>.</p>
+          <div class="yours"><button class="btn" type="button" data-start="need" data-goatcounter-click="match-i-need-space">I have stuff. Make my profile.</button><button class="btn ghost" type="button" data-start="have" data-goatcounter-click="match-i-run-warehouses">I have space. Make its profile.</button></div>
+        </div>
+        <div class="notif" id="notif" aria-live="polite"><img src="assets/card-company.jpg" alt=""><div><b>PRISM</b><span id="nt-text"></span></div><em>now</em></div>
+        <div class="chat" id="chat" aria-label="Chat">
+          <div class="chead"><button class="cback" type="button" id="c-back" aria-label="Back to the profile">&lsaquo;</button><img id="ch-img" src="assets/card-company.jpg" alt=""><div><b id="ch-name">Mild Panic Hot Sauce</b><span>Matched on Prism</span></div></div>
+          <div class="msgs" id="msgs"></div>
+          <div class="cbar"><div class="cin">Message</div></div>
+        </div>
+        <div class="finger" id="finger"></div>
+        <div class="home"></div>
       </div>
     </div>
+    <p class="turn" id="turn" role="status" aria-live="polite"></p><p class="early-look">An early look. Prism will change as we build it.</p>
+  </aside>
+  <div class="cast" aria-label="The two of them">
+    <div class="glow"></div>
+    <button class="who her" type="button" data-start="need" data-goatcounter-click="cast-her-i-need-space" title="I have stuff"><img src="assets/cast-her.jpg" alt=""><span class="kick">Has stuff</span><span><b>Mild Panic Hot Sauce</b><span class="st"><i id="cast-her-s">Reading his profile</i><em class="dots"><span></span><span></span><span></span></em></span></span></button>
+    <button class="who him" type="button" data-start="have" data-goatcounter-click="cast-him-i-run-warehouses" title="I have space"><img src="assets/cast-him.jpg" alt=""><span class="kick">Has space</span><span><b id="cast-him-n">Class A, Lehigh Valley</b><span class="st"><i id="cast-him-s">Online</i><em class="dots"><span></span><span></span><span></span></em></span></span></button>
   </div>
-</section>
+</main>
 
-<section class="light" id="who">
-  <div class="wrap">
-    <div class="kicker">Who we are</div>
-    <h2>Two years of building, <b>on both sides of the dock door.</b></h2>
-    <div class="who2">
-      <img src="assets/prof-founder.jpg" loading="lazy" alt="Mel Fish, founder of Clairvista Partners">
-      <div class="beats">
-        <p><b>Inside.</b> Mel built a pooled-consolidation program at a 3PL for a national grocer's suppliers.</p>
-        <p><b>Outside.</b> He invested in warehouses.</p>
-        <p><b>Now.</b> He finds the demand and routes it by hand while Prism is built, with two business advisors beside him.</p>
-        <p><a class="btn" href="mailto:mfish@clairvistapartners.com?subject=Clairvista">Talk to Mel</a></p>
-      </div>
-    </div>
+<footer class="foot">
+  <div class="f-top">
+    <div class="f-brand"><a class="brand" href="./"><img src="assets/logo.png" alt="Clairvista Partners" width="132" height="38"></a><p class="f-line">Warehouses get lonely too.</p></div>
+    <nav class="f-cols" aria-label="Site, footer">
+      <div><span class="f-k">Find</span><a href="companies.html">I have stuff</a><a href="warehouses.html">I have space</a><a href="how-it-works.html">How it works</a></div>
+      <div><span class="f-k">Clairvista</span><a href="about.html">About</a><a href="partners.html">Partnerships</a></div>
+      <div><span class="f-k">Talk</span><a data-goatcounter-click="email-footer" data-subject="Talk to Clairvista, footer" href="mailto:prism@clairvistapartners.com">prism@clairvistapartners.com</a><button type="button" class="f-chat" data-leaflet data-goatcounter-click="open-easy-call-footer">Let&#39;s chat <i>&rarr;</i></button></div>
+    </nav>
   </div>
-</section>
+  <div class="f-base"><span>&copy; 2026 Clairvista Partners &middot; Needham, Massachusetts</span><span>Prism is coming soon. An early look, and it will change as we build it.</span></div>
+</footer>
 
-<section class="close" id="close">
-  <img class="bg" src="assets/adu-end-cartoon.jpg" loading="lazy" alt="The same diner at sunrise: the two of them side by side at the counter, the lighthouse beam coming through the window onto their coffee mug, and Mel beside them in a cook's cap and apron, pouring their coffee">
-  <div class="scrim"></div>
-  <div class="text">
-    <div class="kicker">The close</div>
-    <h2>The light was on the counter <b>the whole time.</b></h2>
-    <div class="ctas">
-      <a class="btn" href="mailto:mfish@clairvistapartners.com?subject=Clairvista">Talk to Mel</a>
-    </div>
-  </div>
-</section>
+<script>
+const MAIL='prism@clairvistapartners.com';
+// Where the visitor came from (?from=venturelane) rides along in every subject.
+const tag=(new URLSearchParams(location.search).get('from')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,40);
+const subj=s=>tag?`${s} (${tag})`:s;
+const mailto=(s,body)=>`mailto:${MAIL}?subject=${encodeURIComponent(subj(s))}`+(body?`&body=${encodeURIComponent(body)}`:'');
+document.querySelectorAll('[data-subject]').forEach(a=>a.href=mailto(a.dataset.subject));
+const count=(path,title)=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title:title||path,event:true})};
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MARK=['var(--blue)','var(--blue)','var(--blue)','var(--blue)'];
+const rowsHTML=rows=>rows.map((r,i)=>`<li><i style="background:${MARK[i%4]}"></i><span>${r[0]}</span><em>${esc(r[1])}</em></li>`).join('');
+const HEART='<svg viewBox="0 0 16 16"><path d="M8 14s-5.5-3.4-5.5-7.4A3 3 0 0 1 8 4.7a3 3 0 0 1 5.5 1.9C13.5 10.6 8 14 8 14z" fill="none" stroke="#0A0B10" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 
-<footer><div class="wrap"><span>Clairvista Partners &middot; Needham, Massachusetts</span><a href="mailto:mfish@clairvistapartners.com">mfish@clairvistapartners.com</a><span>2026</span></div></footer>
+// The warehouses she looks at, one market at a time. Lehigh Valley's rows are Mel's (30 October).
+// His photos show what shippers ask about, posed for the app; in each market he dresses for the place.
+// Space, Time and Cost are Mel's Lehigh Valley lines, used for all three markets (Mel, 30 October: "just use the same cost range").
+const SPACE="100-500,000 square feet Modern Class A Distribution Center",TIME="1 month to 10 years",COST="$10-30 per square foot per year";
+const MARKETS=[
+  {name:"Class A, Lehigh Valley",building:["assets/lehigh-dc.jpg","A modern distribution center in the Lehigh Valley, drawn in ink"],
+    his:[["assets/his/1-dock-doors.jpg","The warehouse manager flexing in front of a long row of dock doors","Dock doors. Lots of them."],
+      ["assets/his/2-truck-court.jpg","He leans on a semi in sunglasses in the truck court","A truck court with space to turn."],
+      ["assets/his/3-pallet-fish.jpg","He holds up a pallet like a prize fish","Catch of the day: one pallet."],
+      ["assets/his/4-clear-height.jpg","He points up from the top of a tall ladder, a tape measure dangling to the floor","Tall ceilings. He's tall too."],
+      ["assets/his/5-lights.jpg","Arms wide under the bright warehouse lights","Bright lights. Sprinklers overhead."],
+      ["assets/his/6-office.jpg","A mirror selfie in the office, a tie over his safety vest","There's an office. He dressed up."],
+      ["assets/his/7-highway.jpg","On the roof at sunset, pointing at the highway interchange","Close to the highway. Golden hour."],
+      ["assets/his/8-security.jpg","Kneeling at the security gate with the guard dog","Gated. Guarded. Good boy."]],
+    turns:[[0,2,1],[3,5,7],[2,6,4]],
+    rows:[["Place","Lehigh Valley, PA"],["Space",SPACE],["Time",TIME],["Cost",COST]],
+    prompts:[["My ideal first date","Admire a warehouse in person together."],["I'm looking for","Something serious. Or a fling. 1 month to 10 years."],
+      ["Two truths and a lie",["I have space to grow.","I'm in the Lehigh Valley.","I'm never lonely."]],["My love language","Long-term commitments."],["Green flag","You know your pallet count."]],
+    comment:"Thursday? I'll bring the hot sauce.",match:"He liked you back in <b>0.4 seconds</b>.",handoff:"He saw it in 0.4 seconds.",
+    chat:["Thursday works. I'll have a dock door open for you.","I need space by December 1.","Then let's not waste a minute."],book:"Walkthrough booked for Thursday."},
+  {name:"Class A, Greater Dallas",building:["assets/dallas/0-building.jpg","A modern distribution center outside Dallas under a huge sky, drawn in ink"],
+    his:[["assets/dallas/1-cowboy.jpg","In a cowboy hat, one boot on the truck court fence","A truck court as big as Texas."],
+      ["assets/dallas/2-brisket.jpg","Holding up a smoked brisket beside the dock doors","Brisket Fridays. Dock doors daily."],
+      ["assets/dallas/3-rodeo.jpg","Waving his hat from a forklift like a bull rider","Rides forklifts. Not bulls."]],
+    turns:[[0,1,2]],
+    rows:[["Place","Greater Dallas, TX"],["Space",SPACE],["Time",TIME],["Cost",COST]],
+    prompts:[["My ideal first date","Brisket, then a walkthrough."],["I'm looking for","A long-term partner off I-35."],
+      ["Two truths and a lie",["Everything's bigger here.","I'm close to the highway.","I've never owned a cowboy hat."]],["Green flag","You say y'all."]],
+    comment:"Save me a seat by the smoker.",match:"He liked you back <b>before you finished typing</b>.",handoff:"He saw it before she finished typing.",
+    chat:["Already saved. Brisket's on at six.","Can you hold space for the holiday rush?","Everything's bigger here. Including my yes."],book:"Walkthrough booked for Friday, after the brisket."},
+  {name:"Class A, Phoenix",building:["assets/phoenix/0-building.jpg","A modern distribution center among saguaros outside Phoenix, drawn in ink"],
+    his:[["assets/phoenix/1-summit.jpg","On a desert summit in a sun hat, fist raised, the distribution center below","Views of the valley. And the dock doors."],
+      ["assets/phoenix/2-golf.jpg","Mid golf swing on a desert course in front of the building","Plays golf. Loads trucks."],
+      ["assets/phoenix/3-shade.jpg","Lounging with an iced drink in the shade of the dock canopy","Dry heat. Dry storage."]],
+    turns:[[0,1,2]],
+    rows:[["Place","Phoenix, AZ"],["Space",SPACE],["Time",TIME],["Cost",COST]],
+    prompts:[["My ideal first date","A sunrise walkthrough, before the heat."],["I'm looking for","Something that lasts longer than monsoon season."],
+      ["Two truths and a lie",["It's a dry heat.","I see the sun most days.","I don't own a sun hat."]],["Green flag","You hydrate."]],
+    comment:"Sunrise works. I'll bring the water.",match:"He liked you back. <b>He was already up for sunrise.</b>",handoff:"He was already up for sunrise.",
+    chat:["I'll bring the shade.","Can you take our overflow by spring?","Dry heat. Dry storage. Open doors."],book:"Walkthrough booked for 6am, before the heat."}
+];
+let market=0,turn=[0,0,0];
+// this turn's profile: the building and three of his photos, a different three each time a market comes around
+function warehouse(m){
+  const M=MARKETS[m],pick=M.turns[turn[m]%M.turns.length];
+  return {who:"What she sees",name:M.name,photos:[[...M.building,"Active now"],...pick.map(i=>M.his[i])],rows:M.rows,prompts:M.prompts,comment:M.comment,match:M.match,him:M.his[pick[0]][0],handoff:M.handoff,chat:M.chat,book:M.book};
+}
+const cards={
+  have:warehouse(0),
+  need:{who:"What he sees",name:"Mild Panic Hot Sauce",
+    photos:[["assets/card-company.jpg","The head of operations at a hot sauce company, holding up a bottle","Active now"]],
+    rows:[["Space","dry, ships to the chain's warehouses"],["Time","by December 1"],["Stays","for years, if it fits"],["Brings","steady cases, every week"]],
+    prompts:[["My ideal first date","You, by December 1."],["I'm looking for","Someone who can handle the heat."],
+      ["Two truths and a lie",["We just landed a grocery chain.","We're out of space.","We're calm about it."]],["Green flag","You pick up the phone."]],
+    match:"She liked you back. <b>She needs it by December 1.</b>"}
+};
+const example=$('example'),side_=$('side'),view=$('appview');
+let shown='have',ph=0;
+
+function photo(i){
+  const d=cards[shown];ph=(i+d.photos.length)%d.photos.length;const p=d.photos[ph];
+  $('g-img').src=p[0];$('g-img').alt=p[1];
+  $('g-line').innerHTML=(ph===0?'<i></i>':'')+esc(p[2]);
+  $('g-pager').innerHTML=d.photos.map((_,k)=>`<i class="${k===ph?'on':''}"></i>`).join('');
+}
+function showSide(w,instant){
+  if(side_.classList.contains('asking'))return;
+  shown=w;const d=cards[w];example.classList.remove('said');
+  const fill=()=>{$('c-who').textContent=d.who;document.querySelectorAll('.eye').forEach(b=>{const on=b.dataset.side===w;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$('c-name').textContent=d.name;photo(0);$('c-rows').innerHTML=rowsHTML(d.rows);
+    $('c-prompts').innerHTML=d.prompts.map((p,k)=>`<div class="prompt" data-k="${k}"><span>${p[0]}</span>${Array.isArray(p[1])?p[1].map(x=>`<em>${esc(x)}</em>`).join(''):`<b>${esc(p[1])}</b>`}<button class="heart" type="button" aria-label="Like this" data-goatcounter-click="prompt-like">${HEART}</button></div>`).join('');
+    view.scrollTop=0};
+  if(instant){fill();return}
+  example.classList.add('away');
+  setTimeout(()=>{fill();example.classList.remove('away')},230);
+}
+showSide('have',true);
+// preload every photo so taps are instant
+MARKETS.forEach(M=>[M.building,...M.his].forEach(p=>{const i=new Image();i.src=p[0]}));
+
+// The screen's contents are laid out for a phone about 640px tall; they scale with the phone.
+const fitScreen=()=>{const h=document.querySelector('.device').getBoundingClientRect().height;view.style.zoom=Math.max(.78,Math.min(1.18,h/640)).toFixed(3)};
+fitScreen();addEventListener('resize',fitScreen);
+
+// Liking a prompt, the sheet, and the match
+function openSheet(k){
+  const p=cards[shown].prompts[k];
+  $('s-q').textContent=p[0];$('s-a').textContent=Array.isArray(p[1])?p[1].join(' '):p[1];$('s-in').value='';
+  $('dim').classList.add('open');$('sheet').classList.add('open');$('sheet').setAttribute('aria-hidden','false');
+}
+function closeSheet(){$('dim').classList.remove('open');$('sheet').classList.remove('open');$('sheet').setAttribute('aria-hidden','true')}
+function showMatch(){
+  const d=cards[shown];
+  $('mt-a').src=shown==='have'?'assets/card-company.jpg':d.photos[0][0];
+  $('mt-b').src=shown==='have'?d.him:'assets/card-company.jpg';
+  $('mt-line').innerHTML=d.match;
+  $('match').classList.add('open');
+}
+function closeMatch(){$('match').classList.remove('open')}
+$('c-prompts').addEventListener('click',e=>{const h=e.target.closest('.heart');if(!h)return;h.classList.add('on');openSheet(+h.parentNode.dataset.k)});
+$('dim').addEventListener('click',closeSheet);
+$('s-send').addEventListener('click',()=>{closeSheet();setTimeout(showMatch,500)});
+document.querySelector('.zone.r').addEventListener('click',()=>photo(ph+1));
+document.querySelector('.zone.l').addEventListener('click',()=>photo(ph-1));
+example.querySelector('.pass').addEventListener('click',()=>{if(shown==='have'){market=(market+1)%MARKETS.length;cards.have=warehouse(market);$('cast-him-n').textContent=cards.have.name;count('pass-next-warehouse')}showSide('have')});
+document.querySelectorAll('.eye').forEach(b=>b.addEventListener('click',()=>showSide(b.dataset.side)));
+// swipe the photos, and arrow keys when the phone has focus
+(()=>{const g=$('gallery');let x0=null,swiped=false;
+  g.addEventListener('pointerdown',e=>{x0=e.clientX});
+  g.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>28){swiped=true;photo(ph+(dx<0?1:-1));setTimeout(()=>swiped=false,0)}});
+  g.addEventListener('click',e=>{if(swiped){e.stopPropagation();e.preventDefault()}},true);
+  example.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){photo(ph+1);e.preventDefault()}else if(e.key==='ArrowLeft'){photo(ph-1);e.preventDefault()}});
+})();
+example.querySelector('.hello').addEventListener('click',()=>example.classList.add('said'));
+
+// His phone: the notification, the chat, and the turn of the phone between them
+const device=document.querySelector('.device');
+function flip(swap){return new Promise(r=>{device.style.transform='perspective(1600px) rotateY(86deg) scale(.97)';setTimeout(()=>{swap();device.style.transform='';setTimeout(r,320)},300)})}
+function clock(t){$('clock').textContent=t}
+function notify(t){$('nt-text').textContent=t;$('notif').classList.add('open')}
+function unnotify(){$('notif').classList.remove('open')}
+function openChat(){$('msgs').innerHTML='';$('chat').classList.add('open')}
+function closeChat(){$('chat').classList.remove('open')}
+function bubble(cls,html){const m=document.createElement('div');m.className=cls;m.innerHTML=html;const box=$('msgs');box.appendChild(m);while(box.scrollHeight>box.clientHeight&&box.children.length>1)box.removeChild(box.firstChild);return m}
+$('c-back').addEventListener('click',()=>{closeChat();unnotify();clock('9:41');scene('her');showSide('have',true)});
+$('notif').addEventListener('click',()=>{unnotify();openChat()});
+
+// The two of them follow the phone: her turn, his turn, talking, the match.
+const CAST={her:['Reading his profile','Online','',''],his:['Sent him a comment','Liked by Mild Panic','','liked'],talk:['Typing','Typing','typing','typing'],match:['Walkthrough booked','Walkthrough booked','booked','booked']};
+function scene(n){$('hero').dataset.scene=n;const c=CAST[n];if(c){$('cast-her-s').textContent=c[0];$('cast-him-s').textContent=c[1];const H=document.querySelector('.cast .her'),M=document.querySelector('.cast .him');H.className='who her '+c[2];M.className='who him '+c[3]}}
+
+// Each line lands on the person it is about: her line on her card, his on his.
+// "They're talking" and the match show in the cards' own state (scene). "Your turn" sits under the phone.
+let lastSaid='';
+function say(t){if(t===lastSaid)return;lastSaid=t;
+  const m=t.match(/^<b>(.*?)<\/b>\s*(.*)$/s);const who=m?m[1].replace(/\.$/,''):'';const rest=m?m[2]:t;
+  const turn=$('turn');
+  if(/^Her/.test(who)){$('cast-her-s').innerHTML=rest}
+  else if(/^His/.test(who)){$('cast-him-s').innerHTML=rest}
+  else if(/^Your turn/.test(who)){turn.innerHTML=`Your turn<b>${rest}</b>`;turn.classList.add('on');return}
+  turn.classList.remove('on')}
+
+// ===== Her session: someone really interested, taking her time, one market after another (about half a minute each).
+// It plays on its own; the first real touch anywhere on the phone hands it to the visitor.
+const her=(()=>{
+  const scr=$('screen'),fg=$('finger');let live=true,run=0,first=true;
+  const sleep=ms=>new Promise((r,j)=>{const id=run;setTimeout(()=>id===run&&live?r():j('stop'),ms)});
+  const at=(el,fx=.5,fy=.5)=>{const s=scr.getBoundingClientRect(),b=el.getBoundingClientRect();return[b.left-s.left+b.width*fx,b.top-s.top+b.height*fy]};
+  const place=(x,y)=>{fg.style.left=x+'px';fg.style.top=y+'px'};
+  async function tap(el,fx,fy,act){const[x,y]=at(el,fx,fy);place(x,y);fg.classList.add('on');await sleep(320);fg.classList.add('press');act&&act();await sleep(160);fg.classList.remove('press');await sleep(200);fg.classList.remove('on')}
+  async function drag(to,ms){
+    const s=scr.getBoundingClientRect(),x=s.width*.62,from=view.scrollTop,y0=s.height*.72,y1=s.height*.3;
+    place(x,y0);fg.classList.add('on');fg.classList.add('press');await sleep(160);
+    const t0=performance.now();
+    await new Promise((r,j)=>{const id=run;const step=t=>{if(id!==run||!live)return j('stop');const k=Math.min(1,(t-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      view.scrollTop=from+(to-from)*e;place(x,y0+(y1-y0)*e);k<1?setTimeout(()=>step(performance.now()),16):r()};step(performance.now())});
+    fg.classList.remove('press');await sleep(160);fg.classList.remove('on');
+  }
+  const zoneR=()=>document.querySelector('.zone.r');
+  const top=el=>el.offsetTop-54;
+  async function session(){
+    closeSheet();closeMatch();closeChat();unnotify();clock('9:41');
+    cards.have=warehouse(market);showSide('have',first);first=false;
+    const W=cards.have;$('cast-him-n').textContent=W.name;
+    // her phone: his photos, his details, his first-date answer
+    scene('her');say(`<b>Her phone.</b> She's browsing ${W.name}.`);
+    await sleep(2400);
+    for(const ms of [2600,2600,3000]){await tap(zoneR(),.62,.45,()=>photo(ph+1));await sleep(ms)}
+    say(`<b>Her phone.</b> She's read his whole profile. Twice.`);
+    await drag(top($('c-rows')),1300);await sleep(2600);
+    const p0=document.querySelector('.prompt[data-k="0"]');
+    await drag(top(p0)-40,1100);await sleep(1900);
+    const h=p0.querySelector('.heart');
+    await tap(h,.5,.5,()=>{h.classList.add('on','pop');setTimeout(()=>h.classList.remove('pop'),180)});
+    say(`<b>Her phone.</b> She liked his first-date answer.`);
+    await sleep(400);openSheet(0);await sleep(800);
+    for(const ch of W.comment){$('s-in').value+=ch;await sleep(ch===' '?100:62)}
+    await sleep(650);
+    await tap($('s-send'),.5,.5,closeSheet);await sleep(700);
+    // the phone turns: now it is his
+    await flip(()=>{clock('9:42');showSide('need',true);view.scrollTop=0});
+    scene('his');say(`<b>His phone.</b> ${W.handoff}`);
+    await sleep(500);notify('Mild Panic Hot Sauce liked your first-date answer.');await sleep(2300);
+    await tap($('notif'),.5,.5,()=>{unnotify();openChat()});await sleep(500);
+    bubble('liked',`Liked your answer: <b>${esc(W.prompts[0][1])}</b>`);
+    bubble('msg them',esc(W.comment));await sleep(1500);
+    scene('talk');say(`<b>They're talking.</b>`);
+    // the back and forth
+    for(const [who,line] of [['me',W.chat[0]],['them',W.chat[1]],['me',W.chat[2]]]){
+      const d=bubble(`msg ${who} dots`,'<i></i><i></i><i></i>');await sleep(1300);d.remove();
+      bubble(`msg ${who}`,esc(line));await sleep(1700);
+    }
+    // the match: Prism books the walkthrough, and they look up from their phones
+    await sleep(400);bubble('msg book',`<i>PRISM</i>${esc(W.book)}`);
+    scene('match');say(`<b>It's a match.</b> ${esc(W.book)}`);await sleep(6200);
+    // back to her phone, and the next market
+    await flip(()=>{closeChat();unnotify();clock('9:41');scene('her')});
+    turn[market]++;market=(market+1)%MARKETS.length;
+  }
+  async function loop(){while(live){try{await session()}catch(e){return}}}
+  function stop(){if(!live)return;live=false;run++;fg.classList.remove('on','press');device.style.transform='';say(`<b>Your turn.</b> Tap through his photos, or pass to the next warehouse.`)}
+  // Mel, 30 Oct: a click anywhere outside the phone, and the story picks up again five seconds later (never while a profile is being made)
+  function resume(){if(live||side_.classList.contains('asking'))return;live=true;run++;loop()}
+  let resumeT=null;const dev=document.querySelector('.device');
+  document.addEventListener('pointerdown',e=>{if(!e.isTrusted)return;clearTimeout(resumeT);if(dev.contains(e.target)||live)return;resumeT=setTimeout(resume,5000)},{capture:true,passive:true});
+  // the first real touch, wheel or key on the phone is the visitor's
+  ['pointerdown','wheel','keydown','touchstart'].forEach(ev=>scr.addEventListener(ev,e=>{if(e.isTrusted)stop()},{capture:true,passive:true}));
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches)loop();else say(`<b>Your turn.</b> Tap through his photos, or pass to the next warehouse.`);
+  return {stop,resume};
+})();
+
+// The visitor's own profile, one question at a time
+const SIDES={
+  have:{kind:"Your warehouse",subject:"Prism profile, I have space",head:"PRISM PROFILE: I RUN WAREHOUSES",
+    title:a=>a.kind?`${a.kind==='A bit of everything'?'Mixed':a.kind} warehouse${a.where?' in '+a.where:''}`:"Your warehouse's profile",
+    steps:[
+      {k:'kind',row:'Space',q:"What's your type?",sub:"The kind of space you have.",opts:['Dry','Cold','Frozen','A bit of everything']},
+      {k:'where',row:'Place',q:"Where are you based?",sub:"A city or a region is plenty.",input:'City or region'},
+      {k:'when',row:'Free',q:"When are you free?",opts:['Right now','Next month','In a few months']},
+      {k:'size',row:'Open',q:"How much of you is available?",sub:"Roughly is fine.",opts:['A few racks','A whole wing','The whole building']},
+      {k:'seek',row:'Seeking',q:"What are you looking for?",opts:['Something long term','A seasonal thing','Open to anything']},
+      {k:'who',q:"Last one. Who's asking?",sub:"So the right person gets the hello."}
+    ]},
+  need:{kind:"Your company",subject:"Prism profile, I have stuff",head:"PRISM PROFILE: I NEED SPACE",
+    title:a=>a.kind?`Needs ${a.kind==='Not sure yet'?'':a.kind.toLowerCase()+' '}space${a.where?' in '+a.where:''}`:"Your company's profile",
+    steps:[
+      {k:'kind',row:'Space',q:"What's your type?",sub:"The kind of space you need.",opts:['Dry','Cold','Frozen','Not sure yet']},
+      {k:'where',row:'Place',q:"Where do you need to be?",sub:"A city or a region is plenty.",input:'City or region'},
+      {k:'when',row:'Time',q:"How soon?",opts:['This month','In the next three months','Later this year','Just looking']},
+      {k:'size',row:'Size',q:"How much space?",sub:"Roughly is fine.",opts:['A few pallets','A whole wing','A whole building']},
+      {k:'seek',row:'Seeking',q:"What are you looking for?",opts:['Something long term','A seasonal thing','Open to anything']},
+      {k:'who',q:"Last one. Who's asking?",sub:"So the right person gets the hello."}
+    ]}
+};
+const low=s=>s.charAt(0).toLowerCase()+s.slice(1);
+let side='have',step=0,ans={};
+const tag2=()=>side==='have'?'warehouse':'company';
+
+function start(s){
+  her.stop();closeSheet();closeMatch();closeChat();unnotify();clock('9:41');if(shown!=='have')showSide('have',true);say(`<b>Your turn.</b> A few questions first.`);
+  side=s;step=0;ans={};
+  side_.classList.add('asking');
+  $('c-who').textContent='Your profile';
+  render();
+  count('quiz-'+tag2()+'-start');
+  if(matchMedia('(max-width:960px)').matches||side_.getBoundingClientRect().top<0)side_.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+}
+const q0=new URLSearchParams(location.search).get('start');if(q0==='have'||q0==='need')setTimeout(()=>start(q0),300);
+document.querySelectorAll('[data-start]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();start(el.dataset.start||shown)}));
+
+function render(){
+  const S=SIDES[side],n=S.steps.length,done=step>=n;
+  $('q-prog').style.width=(Math.min(step,n)/n*100)+'%';
+  $('q-count').textContent=done?'DONE':`${step+1} OF ${n}`;
+  $('m-kind').textContent=S.kind;
+  $('m-title').textContent=done&&ans.company?ans.company:S.title(ans);
+  const rows=S.steps.filter(x=>x.row&&ans[x.k]).map(x=>[x.row,x.k==='where'?ans[x.k]:low(ans[x.k])]);
+  if(done&&ans.name)rows.push(['Ask for',ans.name]);
+  $('m-rows').innerHTML=rowsHTML(rows);
+  const ask=$('ask');
+  if(done){
+    ask.innerHTML=`<p class="who2">Prism · opens soon</p><h4 tabindex="-1">You're early. Good.</h4><p class="sub">Prism isn't matching yet. Say hello and this profile goes in first; we'll tell you the day it opens. Your email opens with the profile written out, and nothing is sent until you press send.</p>
+      <div class="done"><div class="acts2"><button class="btn quiet" type="button" id="q-redo">Start over</button><button class="btn" type="button" id="q-send">Say hello</button></div></div>`;
+    $('q-redo').onclick=()=>start(side);
+    $('q-send').onclick=send;
+  }else{
+    const x=S.steps[step];
+    let h=`<p class="who2">Prism asks</p><h4 tabindex="-1">${x.q}</h4>${x.sub?`<p class="sub">${x.sub}</p>`:''}`;
+    if(x.opts)h+=`<div class="answers">${x.opts.map(o=>`<button class="chip" type="button" aria-pressed="${ans[x.k]===o}">${o}</button>`).join('')}</div>`;
+    else if(x.input)h+=`<form class="answers typed" novalidate><input name="v" aria-label="${x.q}" placeholder="${x.input}" autocomplete="address-level2" value="${esc(ans[x.k]||'')}"><button class="btn" type="submit">Next</button></form>`;
+    else h+=`<form class="answers typed" novalidate><input name="name" aria-label="Your name" placeholder="Your name" autocomplete="name" value="${esc(ans.name||'')}"><input name="company" aria-label="Company" placeholder="Company" autocomplete="organization" value="${esc(ans.company||'')}"><button class="btn" type="submit">Finish my profile</button></form>`;
+    ask.innerHTML=h;
+    ask.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ans[x.k]=c.textContent;next()});
+    const f=ask.querySelector('form');
+    if(f)f.onsubmit=e=>{
+      e.preventDefault();let ok=true;
+      f.querySelectorAll('.err').forEach(n=>n.remove());
+      f.querySelectorAll('input').forEach(i=>{const v=i.value.trim();i.classList.toggle('bad',!v);
+        if(!v){ok=false;i.insertAdjacentHTML('afterend','<span class="err">We need this one.</span>')}});
+      if(!ok){f.querySelector('input.bad').focus();return}
+      if(x.input)ans[x.k]=f.v.value.trim();else{ans.name=f.name.value.trim();ans.company=f.company.value.trim()}
+      next();
+    };
+  }
+  ask.querySelector('h4').focus({preventScroll:true});
+  view.scrollTop=0;
+}
+function next(){step++;count(`quiz-${tag2()}-${step>=SIDES[side].steps.length?'done':'step-'+(step+1)}`);render()}
+$('q-back').onclick=()=>{if(step===0){side_.classList.remove('asking');$('c-who').textContent=cards[shown].who;return}step--;render()};
+
+// The email the visitor sends, with their profile written out
+function profileEmail(){
+  const S=SIDES[side];
+  const rows=S.steps.filter(x=>x.row).map(x=>[x.row,x.k==='where'?ans[x.k]:low(ans[x.k])]).concat([['Name',ans.name],['Company',ans.company]]);
+  const w=Math.max(...rows.map(r=>r[0].length))+2;
+  const body=`Hello,\n\nHere is my Prism profile, for when it opens.\n\n${S.head}\n${'-'.repeat(S.head.length)}\n`+rows.map(([l,v])=>`${(l+':').padEnd(w)}${v}`).join('\n');
+  return mailto('Early profile: '+S.subject,body);
+}
+function send(){
+  const S=SIDES[side];
+  count('profile-sent-'+tag2(),S.subject);
+  $('ask').querySelector('.done').innerHTML=`<p class="reply" style="display:block" role="status"><b>Prism</b>Press send in your email. You're first in line.</p>
+    <p class="fine">No email app? Write to <a href="${mailto('Prism profile')}">${MAIL}</a>.</p>`;
+  location.href=profileEmail();
+}
+</script>
+<script src="pair.js"></script>
+<script src="life.js"></script>
+<script src="foot.js"></script>
+<script src="slow.js"></script>
 </body>
 </html>
