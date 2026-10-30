@@ -90,6 +90,8 @@ tr.body pre{margin:0;white-space:pre-wrap;font:400 13px/1.5 "Space Mono",monospa
 <script>
 const DB = window.CVP_DB || {url:'', key:''};
 const LIVE = !!(DB.url && DB.key);
+// counting before this moment was skewed by setup and site checks (Mel, 30 October: "get rid of the skewed data"); messages are always kept
+const CLEAN_START = '2026-10-30T22:55:00Z';
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let days = 30, SUBS = [], EVTS = [], openRow = null, query = '';
@@ -141,7 +143,7 @@ async function load(){
   if(LIVE){ const t = tok(); if(!t || t.exp < Date.now()) return loginView(); $('out').hidden = false }
   $('app').innerHTML = '<p class="muted">Loading…</p>';
   const since = new Date(Date.now() - Math.max(days, 2) * 864e5).toISOString();
-  try { [SUBS, EVTS] = await Promise.all([fetchAll('submissions', since), fetchAll('events', since)]); EVTS = EVTS.filter(e => e.page !== 'setup-test'); SUBS = SUBS.filter(x => x.page !== 'setup-test') }
+  try { [SUBS, EVTS] = await Promise.all([fetchAll('submissions', since), fetchAll('events', since)]); EVTS = EVTS.filter(e => e.page !== 'setup-test' && e.created_at >= CLEAN_START); SUBS = SUBS.filter(x => x.page !== 'setup-test') }
   catch(e){ return loginView(e.message === 'signin' ? 'Your sign-in expired. Sign in again.' : 'Could not reach the database.') }
   render();
 }
@@ -310,7 +312,7 @@ function render(){
     <div class="card"><h3>Where visitors came from</h3>${bars(src, null, 8, 'visit')}</div>
     <div class="card"><h3>Buttons pressed</h3>${bars(count(clicks, 'name'), k => k.replace(/-/g, ' '), 8, 'press')}</div>
   </div></section>
-  <p class="muted" style="margin-top:28px;font-size:12.5px">No cookies and no internet addresses are stored. Location is looked up once per visit and kept only as city, state and country. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
+  <p class="muted" style="margin-top:28px;font-size:12.5px">Visits are counted from 30 October, 6:55 PM Eastern, when clean counting began; earlier visits are in GoatCounter. No cookies and no internet addresses are stored. Location is looked up once per visit and kept only as city, state and country. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
   $('upd').textContent = 'Updated ' + new Date().toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) + ', refreshes every minute';
   table();
   $('q').oninput = e => { query = e.target.value; table() };
