@@ -105,7 +105,7 @@
     } else {
       var subj = 'A quick chat' + (data.side ? ', '+data.side : '') + (from ? ' ('+from+')' : '');
       var body = 'Hello,\n\n' + (data.note || 'I would like a quick chat.') + '\n\n' + (data.name ? data.name+'\n' : '') + data.reach + '\n';
-      location.href = 'mailto:'+TO+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+      (window.cvpMail||function(u){location.href=u})('mailto:'+TO+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body));
       done();
     }
   });

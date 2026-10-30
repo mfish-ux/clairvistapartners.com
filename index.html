@@ -290,6 +290,7 @@ button{font:inherit;color:inherit}
 .turn.on+.early-look{visibility:hidden}
 </style>
 <script data-goatcounter="https://clairvista.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="capture.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="paint" x="-10%" y="-40%" width="120%" height="180%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/><feGaussianBlur stdDeviation=".3"/></filter></svg>
@@ -706,7 +707,7 @@ function send(){
   count('profile-sent-'+tag2(),S.subject);
   $('ask').querySelector('.done').innerHTML=`<p class="reply" style="display:block" role="status"><b>Prism</b>Press send in your email. You're first in line.</p>
     <p class="fine">No email app? Write to <a href="${mailto('Prism profile')}">${MAIL}</a>.</p>`;
-  location.href=profileEmail();
+  (window.cvpMail||function(u){location.href=u})(profileEmail());
 }
 </script>
 <script src="pair.js"></script>

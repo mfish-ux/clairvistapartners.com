@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Clairvista: site dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="capture.js"></script>
+<style>
+:root{--ink:#0A0B10;--blue:#0047FF;--muted:#5B5F66;--line:#E5E7EB;--sunk:#F3F4F6;--white:#fff;--o:#FC5700;--g:#00A849}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--white);color:var(--ink);font:400 15px/1.45 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:16px clamp(16px,4vw,48px);border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:5}
+.top img{height:30px;width:auto;display:block}
+.top h1{margin:0;font:800 18px/1 Outfit;letter-spacing:-.01em}
+.mode{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;padding:6px 9px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.mode.live{background:#E8F7EE;color:#00753A}
+.sp{flex:1}
+.range{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--sunk)}
+.range button,.btn{border:0;background:transparent;border-radius:999px;padding:7px 12px;font:700 13px/1 Outfit;color:var(--muted);cursor:pointer}
+.range button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(10,11,16,.14)}
+.btn{background:var(--ink);color:#fff;padding:9px 14px}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+main{padding:24px clamp(16px,4vw,48px) 64px;max-width:1360px;margin:0 auto}
+.note{margin:0 0 20px;padding:12px 14px;border-left:4px solid var(--blue);background:var(--sunk);border-radius:0 10px 10px 0;font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.kpi span{display:block;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.kpi b{display:block;margin-top:10px;font:800 32px/1 Outfit;letter-spacing:-.02em}
+.kpi i{display:block;margin-top:6px;font-style:normal;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section{margin-top:28px}
+h2{margin:0 0 12px;font:800 18px/1.2 Outfit;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h2 small{font:400 13px Outfit;color:var(--muted)}
+.chart{border:1px solid var(--line);border-radius:16px;padding:14px 14px 8px}
+.chart svg{display:block;width:100%;height:180px}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--muted);margin:2px 4px 6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-width:0}
+.card h3{margin:0 0 8px;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.bars{list-style:none;margin:0;padding:0}
+.bars li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 0;font-size:13.5px}
+.bars li .n{font-weight:700}
+.bars li .b{grid-column:1/-1;height:4px;border-radius:2px;background:var(--sunk);overflow:hidden}
+.bars li .b i{display:block;height:100%;background:var(--blue)}
+.bars li .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{color:var(--muted);font-size:13.5px;padding:6px 0}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tools input{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font:400 14px Outfit;min-width:220px}
+.tablewrap{border:1px solid var(--line);border-radius:16px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fff;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.row{cursor:pointer}
+tr.row:hover td{background:#FAFBFF}
+tr.open td{background:#F4F7FF}
+td.when{white-space:nowrap;color:var(--muted)}
+td .k{display:inline-block;font:700 11px/1 Outfit;padding:4px 8px;border-radius:999px;background:var(--sunk)}
+tr.body td{background:#F4F7FF;padding:4px 12px 14px}
+tr.body pre{margin:0;white-space:pre-wrap;font:400 13px/1.5 "Space Mono",monospace}
+.login{max-width:380px;margin:12vh auto 0;border:1px solid var(--line);border-radius:20px;padding:26px}
+.login h2{display:block}
+.login input{width:100%;margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font:400 15px Outfit}
+.login .btn{margin-top:14px;width:100%;padding:12px}
+.login p{font-size:13.5px;color:var(--muted);min-height:1.2em}
+.muted{color:var(--muted)}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="Clairvista Partners">
+  <h1>Site dashboard</h1>
+  <span class="mode" id="mode">…</span>
+  <span class="sp"></span>
+  <div class="range" role="group" aria-label="Time range">
+    <button type="button" data-d="7">7 days</button><button type="button" data-d="30" aria-pressed="true">30 days</button><button type="button" data-d="90">90 days</button><button type="button" data-d="3650">All</button>
+  </div>
+  <a class="btn ghost" href="https://clairvista.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>
+  <button class="btn ghost" type="button" id="out" hidden>Sign out</button>
+</header>
+
+<main id="app"></main>
+
+<script>
+const DB = window.CVP_DB || {url:'', key:''};
+const LIVE = !!(DB.url && DB.key);
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let days = 30, SUBS = [], EVTS = [], openRow = null, query = '';
+$('mode').textContent = LIVE ? 'Live database' : 'This browser only';
+$('mode').classList.toggle('live', LIVE);
+
+// ----- sign in (live database only) -----
+const tok = () => { try { return JSON.parse(sessionStorage.getItem('cvp-admin') || 'null') } catch(e) { return null } };
+function loginView(msg){
+  $('out').hidden = true;
+  $('app').innerHTML = `<form class="login" id="lf"><h2>Sign in</h2>
+    <input type="email" id="le" placeholder="Your email" autocomplete="username" required>
+    <button class="btn" type="submit">Email me a sign-in link</button><p id="lm">${esc(msg || '')}</p></form>`;
+  $('lf').onsubmit = async e => {
+    e.preventDefault(); $('lm').textContent = 'Sending…';
+    try {
+      const r = await fetch(DB.url + '/auth/v1/otp?redirect_to=' + encodeURIComponent(location.origin + location.pathname), {method:'POST',
+        headers:{apikey:DB.key,'Content-Type':'application/json'}, body: JSON.stringify({email:$('le').value.trim(), create_user:false})});
+      if(!r.ok){ const j = await r.json().catch(() => ({})); throw new Error(j.msg || j.error_description || 'That did not work.') }
+      $('lm').textContent = 'Check your inbox for the sign-in link. It works once, for an hour.';
+    } catch(err) { $('lm').textContent = err.message }
+  };
+}
+// arriving from the emailed link: the session is in the address, keep it for this tab and tidy the address
+(() => { const h = new URLSearchParams(location.hash.slice(1));
+  if(h.get('access_token')){ sessionStorage.setItem('cvp-admin', JSON.stringify({t:h.get('access_token'), exp:Date.now() + (+h.get('expires_in') || 3600) * 1000})); history.replaceState(null, '', location.pathname) }
+  else if(h.get('error_description')) setTimeout(() => loginView(h.get('error_description').replace(/\+/g,' ')), 0) })();
+$('out').onclick = () => { sessionStorage.removeItem('cvp-admin'); loginView('Signed out.') };
+
+// ----- data -----
+async function fetchAll(table, since){
+  if(!LIVE){
+    try { return JSON.parse(localStorage.getItem('cvp-local-' + table) || '[]').filter(r => r.created_at >= since).reverse() } catch(e) { return [] }
+  }
+  const t = tok(), out = [];
+  for(let off = 0; off < 100000; off += 1000){
+    const r = await fetch(`${DB.url}/rest/v1/${table}?select=*&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&limit=1000&offset=${off}`,
+      {headers:{apikey:DB.key, Authorization:'Bearer ' + t.t}});
+    if(r.status === 401){ sessionStorage.removeItem('cvp-admin'); throw new Error('signin') }
+    const rows = await r.json(); out.push(...rows); if(rows.length < 1000) break;
+  }
+  return out;
+}
+async function load(){
+  if(LIVE){ const t = tok(); if(!t || t.exp < Date.now()) return loginView(); $('out').hidden = false }
+  $('app').innerHTML = '<p class="muted">Loading…</p>';
+  const since = new Date(Date.now() - days * 864e5).toISOString();
+  try { [SUBS, EVTS] = await Promise.all([fetchAll('submissions', since), fetchAll('events', since)]) }
+  catch(e){ return loginView(e.message === 'signin' ? 'Your sign-in expired. Sign in again.' : 'Could not reach the database.') }
+  render();
+}
+
+// ----- helpers -----
+const count = (rows, key) => { const m = new Map(); rows.forEach(r => { const k = typeof key === 'function' ? key(r) : r[key]; if(k) m.set(k, (m.get(k) || 0) + 1) }); return [...m].sort((a,b) => b[1] - a[1]) };
+const PAGE = {index:'Home', companies:'I have stuff', warehouses:'I have space', 'how-it-works':'How it works', about:'About', partners:'Partnerships', '404':'Page not found'};
+const source = r => r.from_tag ? r.from_tag : (r.referrer || 'Direct or email');
+const day = iso => iso.slice(0, 10);
+const when = iso => { const d = new Date(iso); return d.toLocaleDateString(undefined, {month:'short', day:'numeric'}) + ' ' + d.toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) };
+function bars(list, label, max = 8){
+  if(!list.length) return '<p class="empty">Nothing yet.</p>';
+  const top = list[0][1];
+  return '<ul class="bars">' + list.slice(0, max).map(([k, n]) => `<li><span class="t" title="${esc(label ? label(k) : k)}">${esc(label ? label(k) : k)}</span><span class="n">${n}</span><span class="b"><i style="width:${Math.max(4, n / top * 100)}%"></i></span></li>`).join('') + '</ul>';
+}
+function chart(){
+  const n = Math.min(days, 90), d0 = new Date(); d0.setHours(0,0,0,0);
+  const keys = [...Array(n)].map((_, i) => { const d = new Date(d0 - (n - 1 - i) * 864e5); return d.toISOString().slice(0,10) });
+  const v = new Map(keys.map(k => [k, 0])), m = new Map(keys.map(k => [k, 0]));
+  EVTS.forEach(e => { if(e.type === 'view' && v.has(day(e.created_at))) v.set(day(e.created_at), v.get(day(e.created_at)) + 1) });
+  SUBS.forEach(s => { if(m.has(day(s.created_at))) m.set(day(s.created_at), m.get(day(s.created_at)) + 1) });
+  const W = 1000, H = 160, top = Math.max(4, ...v.values(), ...m.values()), bw = W / n;
+  let g = '';
+  keys.forEach((k, i) => {
+    const h = v.get(k) / top * (H - 20), x = i * bw;
+    g += `<rect x="${x + bw * .18}" y="${H - h}" width="${bw * .64}" height="${h}" rx="2" fill="#0047FF" opacity=".85"><title>${k}: ${v.get(k)} views, ${m.get(k)} messages</title></rect>`;
+    if(m.get(k)){ const y = H - m.get(k) / top * (H - 20); g += `<circle cx="${x + bw / 2}" cy="${y}" r="5" fill="#FC5700" stroke="#fff" stroke-width="2"><title>${k}: ${m.get(k)} messages</title></circle>` }
+  });
+  const lab = [0, Math.floor(n / 2), n - 1].map(i => `<text x="${i * bw + bw / 2}" y="${H + 16}" text-anchor="middle" font-size="12" fill="#5B5F66" font-family="Outfit">${keys[i].slice(5)}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H + 22}" preserveAspectRatio="none" role="img" aria-label="Page views and messages per day">${g}${lab}</svg>`;
+}
+
+// ----- the page -----
+function render(){
+  const views = EVTS.filter(e => e.type === 'view'), clicks = EVTS.filter(e => e.type === 'click');
+  const companies = new Map();
+  SUBS.forEach(s => { const k = s.company || s.from_tag; if(!k) return; const c = companies.get(k) || {views:0, msgs:0, last:''}; c.msgs++; if(s.created_at > c.last) c.last = s.created_at; companies.set(k, c) });
+  views.forEach(e => { if(!e.from_tag) return; const c = companies.get(e.from_tag) || {views:0, msgs:0, last:''}; c.views++; if(e.created_at > c.last) c.last = e.created_at; companies.set(e.from_tag, c) });
+  const comp = [...companies].sort((a,b) => (b[1].msgs - a[1].msgs) || (b[1].views - a[1].views));
+  const src = count(views, source);
+  const note = LIVE ? '' : `<p class="note"><b>Not connected yet.</b> This shows only what was done in this browser on the preview. Once the database keys are added to <code>capture.js</code>, it shows the live site and asks you to sign in.</p>`;
+  $('app').innerHTML = note + `
+  <div class="kpis">
+    <div class="kpi"><span>Page views</span><b>${views.length}</b><i>${(n => n + (n === 1 ? ' day' : ' days') + ' with visits')(new Set(views.map(v => day(v.created_at))).size)}</i></div>
+    <div class="kpi"><span>Messages sent</span><b>${SUBS.length}</b><i>${count(SUBS, 'kind')[0] ? 'Most: ' + esc(count(SUBS, 'kind')[0][0]) : 'none yet'}</i></div>
+    <div class="kpi"><span>Companies</span><b>${comp.length}</b><i>${comp[0] ? esc(comp[0][0]) + ' most active' : 'from messages and link tags'}</i></div>
+    <div class="kpi"><span>Top source</span><b style="font-size:22px;line-height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src[0] ? esc(src[0][0]) : 'None yet'}</b><i>${src[0] ? src[0][1] + ' views' : 'tag links with ?from=name'}</i></div>
+  </div>
+  <section><h2>Every day</h2><div class="chart"><div class="legend"><span><i style="background:#0047FF"></i>Page views</span><span><i style="background:#FC5700;border-radius:50%"></i>Messages sent</span></div>${chart()}</div></section>
+  <section>
+    <h2>Messages <small>${SUBS.length} in this range. Click a row to read it.</small><span class="sp"></span>
+      <span class="tools"><input id="q" type="search" placeholder="Search name, company, words" value="${esc(query)}"><button class="btn ghost" type="button" id="csv">Download spreadsheet</button></span></h2>
+    <div class="tablewrap"><table><thead><tr><th>When</th><th>What</th><th>Company</th><th>Person</th><th>Page</th><th>Source</th></tr></thead><tbody id="tb"></tbody></table></div>
+  </section>
+  <section><h2>Companies <small>From what people wrote, their email address, and the ?from= tag on links you send</small></h2>
+    <div class="tablewrap"><table><thead><tr><th>Company or tag</th><th>Messages</th><th>Page views</th><th>Last seen</th></tr></thead><tbody>
+    ${comp.length ? comp.slice(0, 50).map(([k, c]) => `<tr><td><b>${esc(k)}</b></td><td>${c.msgs}</td><td>${c.views}</td><td class="when">${c.last ? when(c.last) : ''}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Nothing yet.</td></tr>'}
+    </tbody></table></div></section>
+  <section><div class="grid3">
+    <div class="card"><h3>Pages</h3>${bars(count(views, 'page'), k => PAGE[k] || k)}</div>
+    <div class="card"><h3>Where visitors came from</h3>${bars(src)}</div>
+    <div class="card"><h3>Buttons pressed</h3>${bars(count(clicks, 'name'), k => k.replace(/-/g, ' '))}</div>
+  </div></section>
+  <p class="muted" style="margin-top:28px;font-size:12.5px">No cookies and no IP addresses are stored. A company appears only when a visitor names it, writes from a company email address, or arrives on a link you tagged.</p>`;
+  table();
+  $('q').oninput = e => { query = e.target.value; table() };
+  $('csv').onclick = csv;
+}
+function rows(){
+  const q = query.trim().toLowerCase();
+  return q ? SUBS.filter(s => [s.kind, s.company, s.name, s.email, s.body, s.from_tag, s.page].join(' ').toLowerCase().includes(q)) : SUBS;
+}
+function table(){
+  const list = rows();
+  $('tb').innerHTML = list.length ? list.slice(0, 500).map((s, i) => `<tr class="row${openRow === s.created_at ? ' open' : ''}" data-i="${i}" tabindex="0"><td class="when">${when(s.created_at)}</td><td><span class="k">${esc(s.kind || 'Message')}</span></td><td>${esc(s.company)}</td><td>${esc(s.name)}${s.name && s.email ? '<br>' : ''}<span class="muted">${esc(s.email)}</span></td><td>${esc(PAGE[s.page] || s.page)}</td><td>${esc(s.from_tag || s.referrer || '')}</td></tr>`
+    + (openRow === s.created_at ? `<tr class="body"><td colspan="6"><pre>${esc(s.subject)}\n\n${esc(s.body)}</pre></td></tr>` : '')).join('')
+    : '<tr><td colspan="6" class="empty">No messages in this range.</td></tr>';
+  $('tb').querySelectorAll('tr.row').forEach(tr => { const go = () => { const s = list[+tr.dataset.i]; openRow = openRow === s.created_at ? null : s.created_at; table() };
+    tr.onclick = go; tr.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go() } } });
+}
+function csv(){
+  const cols = ['created_at','kind','company','name','email','page','from_tag','referrer','subject','body'];
+  const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const text = [cols.join(',')].concat(rows().map(r => cols.map(c => q(r[c])).join(','))).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + text], {type:'text/csv'}));
+  a.download = 'clairvista-messages-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+document.querySelectorAll('.range button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.range button').forEach(x => x.setAttribute('aria-pressed', x === b)); days = +b.dataset.d; load();
+});
+load();
+</script>
+</body>
+</html>

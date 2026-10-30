@@ -95,7 +95,7 @@
       if(FORM_ENDPOINT){
         fetch(FORM_ENDPOINT, {method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'}, body:JSON.stringify({subject:subject, checklist:listText(), name:f.name.value, company:f.company.value, reach:f.reach.value, page:page, from:from||''})})
           .then(function(r){ if(!r.ok) throw 0; done() }).catch(function(){ err.textContent = 'That did not go through. Try again, or write to ' + MAIL + '.' });
-      } else { location.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); done() }
+      } else { (window.cvpMail||function(u){location.href=u})('mailto:' + MAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body)); done() }
     };
   }
   sendBtn.addEventListener('click', openSend);

@@ -22,7 +22,7 @@
     var NL = String.fromCharCode(10);
     var body = 'Hello,' + NL + NL + picks.join(', ') + NL + NL;
     count('reach-send-' + kind);
-    location.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(label + ': ' + picks.join(', ') + (from ? ' (' + from + ')' : '')) + '&body=' + encodeURIComponent(body);
+    (window.cvpMail||function(u){location.href=u})('mailto:' + MAIL + '?subject=' + encodeURIComponent(label + ': ' + picks.join(', ') + (from ? ' (' + from + ')' : '')) + '&body=' + encodeURIComponent(body));
     msg.innerHTML = '<b>Your note is started.</b> Add a line or two in your email, press send, and we will get back to you.';
   });
 })();

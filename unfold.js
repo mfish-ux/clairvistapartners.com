@@ -28,7 +28,7 @@
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ msg.textContent = 'Add an email address so we can tell you the day it opens.'; em.focus(); return }
       try{ window.goatcounter && goatcounter.count({path:'early-list-' + (sd || 'site'), title:'early list', event:true}) }catch(_){}
       var body = 'Hello,\n\nPut me on the early list for Prism.\n\n' + v + '\n' + side + '\n';
-      location.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Early list: ' + side + (from ? ' (' + from + ')' : '')) + '&body=' + encodeURIComponent(body);
+      (window.cvpMail||function(u){location.href=u})('mailto:' + MAIL + '?subject=' + encodeURIComponent('Early list: ' + side + (from ? ' (' + from + ')' : '')) + '&body=' + encodeURIComponent(body));
       f.classList.add('done');
       msg.innerHTML = '<b>You’re on the list.</b> Press send in your email and we’ll tell you the day it opens.';
     });
