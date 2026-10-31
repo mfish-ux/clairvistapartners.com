@@ -11,13 +11,39 @@ window.cvpPick = function(fig){
   Array.prototype.forEach.call(p.children, function(c){ if(c.classList.contains('s-fig')) c.classList.toggle('picked', c === fig) });
   p.classList.add('has-pick');
 };
-// Drag one and let go: they spring back to their own stool, picked, and the leaflet opens for their side.
-window.cvpDrop = function(fig){
+// Held, they go wherever the pointer takes them, anywhere on the screen, swinging a little with its speed, above
+// everything (Mel, 31 Oct: "allow the user to drag the characters anywhere on the screen they want, still snapping back
+// with the same form that pops up").
+window.cvpCarry = function(fig, d, e){
+  var dx = e.clientX - d.x, dy = e.clientY - d.y;
+  d.far = Math.max(d.far || 0, Math.abs(dx) + Math.abs(dy));
+  var vx = d.lx == null ? 0 : e.clientX - d.lx; d.lx = e.clientX;
+  d.tilt = Math.max(-14, Math.min(14, (d.tilt || 0) * 0.75 + vx * 0.9));
+  d.dx = dx; d.dy = dy; d.ex = e.clientX; d.ey = e.clientY;
+  fig.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + d.tilt.toFixed(1) + 'deg)';
+};
+// Drag one and let go: they spring back to their own stool, picked, and the leaflet opens for their side. Where they
+// were dropped is noted for the dashboard: onto what, how far, how long (Mel, 31 Oct: "its a fun feature and would be
+// interesting to track as a way to see what people are doing and behaving").
+window.cvpDrop = function(fig, d){
   var party = fig.classList.contains('him') ? 'I have space' : fig.classList.contains('her') ? 'I have stuff' : '';
+  var who = party === 'I have space' ? 'him' : 'her', onto = 'page';
+  if(d && d.ex != null){
+    fig.style.pointerEvents = 'none';
+    var el = document.elementFromPoint(d.ex, d.ey), f = el && el.closest('.s-fig');
+    fig.style.pointerEvents = '';
+    onto = !el ? 'off-screen' : el.closest('.device') ? 'phone' : f ? (f === fig ? 'own-stool' : 'the-other-one')
+      : el.closest('.cast .who') ? 'card' : el.closest('h1') ? 'headline' : el.closest('.ways') ? 'buttons' : el.closest('.slow') ? 'chat-card'
+      : el.closest('.bar') ? 'menu' : el.closest('footer') ? 'footer' : el.closest('.ad') ? 'prism-strip' : el.closest('.intake') ? 'checklist'
+      : el.closest('.tcards') ? 'steps' : el.closest('p') ? 'words' : 'page';
+  }
+  var page = (location.pathname.split('/').pop() || 'index').replace('.html', '') || 'index', name = 'drag-' + who + '-onto-' + onto;
+  if(window.cvpTrack) cvpTrack(name, 'page ' + page + '; ' + Math.round(Math.sqrt((d && d.dx || 0) * (d && d.dx || 0) + (d && d.dy || 0) * (d && d.dy || 0))) + 'px'
+    + '; ' + (d && d.t ? Date.now() - d.t : 0) + 'ms; dx ' + Math.round(d && d.dx || 0) + ', dy ' + Math.round(d && d.dy || 0) + '; screen ' + innerWidth + 'x' + innerHeight);
   cvpPick(fig);
-  fig.classList.add('settle'); fig.style.transform = '';
-  setTimeout(function(){ fig.classList.remove('settle') }, 700);
-  try{ window.goatcounter && goatcounter.count({path:'figure-dragged-' + (party === 'I have space' ? 'space' : 'stuff'), title:'figure dragged', event:true}) }catch(e){}
+  fig.classList.add('settle', 'flying'); fig.style.transform = '';
+  setTimeout(function(){ fig.classList.remove('settle', 'flying') }, 700);
+  try{ window.goatcounter && goatcounter.count({path:name, title:'figure dragged', event:true}) }catch(e){}
   var still = matchMedia('(prefers-reduced-motion:reduce)').matches;
   setTimeout(function(){ if(window.cvpLeaflet) cvpLeaflet(fig, party) }, still ? 60 : 420);
   return true;

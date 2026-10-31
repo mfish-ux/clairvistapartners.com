@@ -171,6 +171,9 @@
 
   // ---- the profile: each step once per page, and each tapped answer (never typed text)
   var stepsDone = {}, answered = {};
+  // a named moment that is not a button press, with a short note; stored as a click so the database needs no change
+  // (Mel, 31 October: where people drag the two characters)
+  window.cvpTrack = function(name, detail){ var row = base('click', name); if(detail) row.detail = cut(detail, 300); save('events', row); touch() };
   window.cvpStep = function(name){ if(stepsDone[name]) return; stepsDone[name] = 1; save('events', base('step', name)); touch() };
   window.cvpAnswer = function(question, value){ var k = question + '=' + value; if(answered[k]) return; answered[k] = 1;
     var row = base('answer', question); row.answer = cut(value, 120); save('events', row); touch() };

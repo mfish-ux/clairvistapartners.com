@@ -17,9 +17,9 @@
     tip.innerHTML = o.dataset.say + ' <i>→</i>'; o.appendChild(tip);
     var d = null;
     function go(){ if(window.cvpPick) cvpPick(o); setTimeout(function(){ count('home-figure-to-' + o.dataset.go.replace('.html','')); location.href = o.dataset.go + (from ? '?from=' + encodeURIComponent(from) : '') }, 220) }
-    o.addEventListener('pointerdown', function(e){ if(e.button !== 0) return; e.preventDefault(); d = {x:e.clientX, y:e.clientY, far:0}; o.setPointerCapture(e.pointerId); o.classList.add('held') });
-    o.addEventListener('pointermove', function(e){ if(!d) return; var dx = e.clientX - d.x, dy = e.clientY - d.y; d.far = Math.max(d.far, Math.abs(dx) + Math.abs(dy)); o.style.transform = 'translate(' + Math.max(-140, Math.min(140, dx * .55)) + 'px,' + Math.max(-80, Math.min(80, dy * .55)) + 'px) rotate(' + Math.max(-12, Math.min(12, dx / 14)) + 'deg)' });
-    o.addEventListener('pointerup', function(){ if(!d) return; var far = d.far; d = null; o.classList.remove('held'); if(far > 24 && window.cvpDrop) cvpDrop(o); else { o.style.transform = ''; go() } });
+    o.addEventListener('pointerdown', function(e){ if(e.button !== 0) return; e.preventDefault(); d = {x:e.clientX, y:e.clientY, far:0, t:Date.now()}; o.setPointerCapture(e.pointerId); o.classList.add('held') });
+    o.addEventListener('pointermove', function(e){ if(d && window.cvpCarry) cvpCarry(o, d, e) });
+    o.addEventListener('pointerup', function(){ if(!d) return; var info = d; d = null; o.classList.remove('held'); if(info.far > 24 && window.cvpDrop) cvpDrop(o, info); else { o.style.transform = ''; go() } });
     o.addEventListener('pointercancel', function(){ d = null; o.classList.remove('held'); o.style.transform = '' });
     o.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go() } });
   });
@@ -54,4 +54,26 @@
     }, {threshold: .6});
     io.observe(pair);
   }
+
+  // Mel, 31 Oct: "when user hovers over have stuff or have space on the landing page, the characters should respond
+  // intelligently in line with how they behave". The one a button speaks for perks up: a small lift, their phone lights,
+  // a nod, and their label shows. The other one carries on as before. Keyboard focus does the same; on a touch screen the
+  // tap that opens the page does it for a moment.
+  document.querySelectorAll('.hero .words .way').forEach(function(btn){
+    var href = btn.getAttribute('href') || '', who = /companies/.test(href) ? her : /warehouses/.test(href) ? him : null;
+    if(!who) return;
+    var which = who === her ? 'her' : 'him', nodT = null;
+    function on(){
+      if(who.classList.contains('perk')) return;
+      who.classList.add('perk');
+      if(window.cvpPhonePulse) cvpPhonePulse(which);
+      clearTimeout(nodT); nodT = setTimeout(function(){ nod(who) }, 220);
+    }
+    function off(){ clearTimeout(nodT); who.classList.remove('perk') }
+    btn.addEventListener('mouseenter', on); btn.addEventListener('mouseleave', off);
+    btn.addEventListener('focus', function(){ if(btn.matches(':focus-visible')) on() }); btn.addEventListener('blur', off);
+    btn.addEventListener('touchstart', on, {passive:true});
+  });
+  // coming back to the page with the browser's Back button finds them at rest
+  addEventListener('pageshow', function(){ [her, him].forEach(function(f){ if(f) f.classList.remove('perk') }) });
 })();

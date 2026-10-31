@@ -164,22 +164,20 @@
   var drag = null;
   fig.addEventListener('pointerdown', function(e){
     if(e.button !== 0) return; e.preventDefault();
-    drag = {x:e.clientX, y:e.clientY, moved:false}; fig.setPointerCapture(e.pointerId); fig.classList.add('held');
+    drag = {x:e.clientX, y:e.clientY, moved:false, t:Date.now()}; fig.setPointerCapture(e.pointerId); fig.classList.add('held');
   });
   fig.addEventListener('pointermove', function(e){
     if(!drag) return;
     var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if(Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
-    drag.far = Math.max(drag.far || 0, Math.abs(dx) + Math.abs(dy));
-    // she follows, with some reluctance, and tilts the way she is pulled
-    var k = 0.55, rx = Math.max(-140, Math.min(140, dx * k)), ry = Math.max(-80, Math.min(80, dy * k));
-    fig.style.transform = 'translate(' + rx + 'px,' + ry + 'px) rotate(' + Math.max(-12, Math.min(12, dx / 14)) + 'deg)';
+    // she goes wherever she is carried, anywhere on the screen (Mel, 31 Oct)
+    if(window.cvpCarry) cvpCarry(fig, drag, e);
   });
   function letGo(){
-    if(!drag) return; var moved = drag.moved, far = drag.far || 0; drag = null;
+    if(!drag) return; var info = drag, moved = drag.moved, far = drag.far || 0; drag = null;
     fig.classList.remove('held');
     if(window.cvpPick) cvpPick(fig);
-    if(far > 24 && window.cvpDrop){ cvpDrop(fig); count('buddy-dragged-' + side); return }
+    if(far > 24 && window.cvpDrop){ cvpDrop(fig, info); count('buddy-dragged-' + side); return }
     fig.classList.add('settle'); fig.style.transform = '';
     setTimeout(function(){ fig.classList.remove('settle') }, 700);
     if(moved) count('buddy-dragged-' + side);
@@ -198,9 +196,9 @@
     var d = null;
     // no fade, no pause: the page swaps underneath while the two of them stay put (view transitions in site.css)
     function go(){ if(window.cvpPick) cvpPick(o); setTimeout(function(){ count('buddy-switch-to-' + o.dataset.go.replace('.html','')); location.href = o.dataset.go + (from2 ? '?from=' + encodeURIComponent(from2) : '') }, 220) }
-    o.addEventListener('pointerdown', function(e){ if(e.button !== 0) return; e.preventDefault(); d = {x:e.clientX, y:e.clientY, far:0}; o.setPointerCapture(e.pointerId); o.classList.add('held') });
-    o.addEventListener('pointermove', function(e){ if(!d) return; var dx = e.clientX - d.x, dy = e.clientY - d.y; d.far = Math.max(d.far, Math.abs(dx) + Math.abs(dy)); o.style.transform = 'translate(' + Math.max(-140, Math.min(140, dx * .55)) + 'px,' + Math.max(-80, Math.min(80, dy * .55)) + 'px) rotate(' + Math.max(-12, Math.min(12, dx / 14)) + 'deg)' });
-    function up(){ if(!d) return; var far = d.far; d = null; o.classList.remove('held'); if(far > 24 && window.cvpDrop) cvpDrop(o); else { o.style.transform = ''; go() } }
+    o.addEventListener('pointerdown', function(e){ if(e.button !== 0) return; e.preventDefault(); d = {x:e.clientX, y:e.clientY, far:0, t:Date.now()}; o.setPointerCapture(e.pointerId); o.classList.add('held') });
+    o.addEventListener('pointermove', function(e){ if(d && window.cvpCarry) cvpCarry(o, d, e) });
+    function up(){ if(!d) return; var info = d; d = null; o.classList.remove('held'); if(info.far > 24 && window.cvpDrop) cvpDrop(o, info); else { o.style.transform = ''; go() } }
     o.addEventListener('pointerup', up); o.addEventListener('pointercancel', function(){ d = null; o.classList.remove('held'); o.style.transform = '' });
     o.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go() } });
   });

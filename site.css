@@ -1351,3 +1351,12 @@ input:focus-visible,textarea:focus-visible{outline:3px solid var(--blue)!importa
 .slow:has(button:focus-visible){outline:3px solid var(--blue);outline-offset:3px}
 .slow button:focus-visible{outline:none}
 @media (prefers-reduced-motion:reduce){.slow{transition:none}}
+
+/* Mel, 31 Oct: hovering I have stuff or I have space, the one the button speaks for perks up and shows who they are */
+.s-fig.perk{transform:translateY(-5px)}
+.s-fig.perk .side-tag{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.s-fig.perk{transform:none}}
+
+/* carried anywhere on the screen, and on the way back to the stool, they pass over everything else (Mel, 31 Oct) */
+.s-fig.held,.s-fig.flying{z-index:60;will-change:transform;mix-blend-mode:multiply}  /* the paper stays invisible over anything */
+.s-fig.held .side-tag,.s-fig.flying .side-tag{opacity:0!important}
