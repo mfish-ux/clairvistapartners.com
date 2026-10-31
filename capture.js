@@ -1,36 +1,42 @@
-// Capture, for the admin dashboard (Mel, 30 October: "All forms should be collected in some sort of easy database").
-// Every form on the site ends by opening a written email to prism@. Just before it opens, this saves a copy.
-// It also counts visits, page views, button presses, the profile steps, time and scroll, and how well the site works.
-// Honest counting (Mel, 30 October: "make sure you arent counting duplicate visitors"):
-//   - a visitor is counted once a day per device (new_today), a visit once per 30 minutes of activity (visit_start);
-//   - reloads, bots, the local preview and the team's own devices are not counted.
-// No cookies and no visitor ID. Location is kept only as city, state and country. "No thanks" on the notice turns
-// off the location lookup and the device flags; the visit is then counted without them.
+// Capture, for the site dashboard. Every form on the site ends by opening a written email to prism@; just before it
+// opens, this saves a copy. It also records visits and how the site works, the way proven privacy-first tools do
+// (Plausible, Fathom, GA4's base fields), checked against them on 31 October 2026 (Mel: "I am concerned that we are
+// improperly doing things and overlooking standard and proven baseline methodologies").
+//
+// What it records, all from the browser itself: page, visit (a random ID that ends after 30 minutes idle), landing
+// page, source (the ?from= tag, UTM tags, the referring site and its type), device, browser, system, screen size,
+// language, time zone, local day and hour, approximate city, the company behind a company network (internet
+// providers and cloud networks are dropped), the answers a visitor taps in the profile, time in view, scroll depth,
+// load speed and problems. Never: typed text that was not sent, a lasting visitor ID, fingerprinting, cookies of
+// our own. Decline keeps counting the visit but drops location, network company and the device's "seen before" date.
 (function(){
   var SUPABASE_URL = 'https://oilvzabkaoiliabefwrh.supabase.co';
-  var SUPABASE_KEY = 'sb_publishable_tFw1kzlY87RsUElfZPNZlA_UoRKk3nr';  // publishable key: safe in a web page; the database only lets it add rows
+  var SUPABASE_KEY = 'sb_publishable_tFw1kzlY87RsUElfZPNZlA_UoRKk3nr';  // publishable key: the database only lets it add rows
+  var CLARITY_ID = '';                                                    // Microsoft Clarity project ID; loads only after Accept
   var preview = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
   var live = !!(SUPABASE_URL && SUPABASE_KEY) && !preview;
   window.CVP_DB = live ? {url:SUPABASE_URL, key:SUPABASE_KEY} : {url:'', key:''};
+  window.CVP_CLARITY = CLARITY_ID;
   var page = (location.pathname.split('/').pop() || 'index.html').replace('.html','') || 'index';
   if(page === 'admin') return;   // the dashboard itself is never counted and never touches the visit flags
-  var q = new URLSearchParams(location.search), from = q.get('from') || '';
-  var ref = '', inRef = ''; try{ var r = document.referrer && new URL(document.referrer); if(r){ if(r.host !== location.host) ref = r.host.replace(/^www\./,''); else inRef = r.pathname } }catch(e){}
-  var FREE = /^(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|mac|aol|proton|protonmail|msn|comcast|verizon|att)\./i;
+
   function get(s, k){ try{ return s.getItem(k) }catch(e){ return null } }
   function put(s, k, v){ try{ s.setItem(k, v) }catch(e){} }
+  function del(s, k){ try{ s.removeItem(k) }catch(e){} }
+  function cut(s, n){ s = String(s == null ? '' : s); return s.length > n ? s.slice(0, n) : s }
+  function rid(){ var a = new Uint8Array(9); (window.crypto || window.msCrypto).getRandomValues(a); return Array.prototype.map.call(a, function(b){ return ('0' + b.toString(16)).slice(-2) }).join('') }
 
-  // who is not counted: bots and link previews, and devices marked by the dashboard as the team's own
+  // ---- who is not counted: bots and link previews, and devices the dashboard marked as the team's own
   var ua = navigator.userAgent || '';
-  var bot = navigator.webdriver || /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|embedly|whatsapp|slackbot|discord|telegram|bingpreview|vercel|uptime|monitor/i.test(ua);
+  var bot = navigator.webdriver || /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|embedly|whatsapp|slackbot|discord|telegram|bingpreview|vercel|uptime|monitor|python|curl|wget|httpclient|scrapy|phantom|puppeteer|playwright/i.test(ua);
   var team = get(localStorage, 'cvp-team') === '1';
   var choice = get(localStorage, 'cvp-consent');              // 'yes', 'no' or nothing yet
-  var full = choice !== 'no';                                  // location and device flags, unless declined
+  var full = choice !== 'no';                                  // location, network company and device memory, unless declined
   var skip = bot || team || window.__cvpSkip;
 
   function save(table, row){
     if(skip) return;
-    row.created_at = new Date().toISOString();
+    row.created_at = new Date().toISOString();                 // the database replaces this with its own clock
     if(live){
       try{ fetch(SUPABASE_URL + '/rest/v1/' + table, {method:'POST', keepalive:true,
         headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
@@ -39,33 +45,87 @@
       try{ var k = 'cvp-local-' + table, a = JSON.parse(localStorage.getItem(k) || '[]'); a.push(row); localStorage.setItem(k, JSON.stringify(a.slice(-2000))) }catch(e){}
     }
   }
-  function cut(s, n){ s = String(s || ''); return s.length > n ? s.slice(0, n) : s }
 
-  // Where the visitor is: city, state and country only, looked up once per visit (the address itself is never kept)
+  // ---- the visitor's own clock: day boundaries at their midnight, not UTC's
+  var d0 = new Date(), pad = function(n){ return ('0' + n).slice(-2) };
+  var today = d0.getFullYear() + '-' + pad(d0.getMonth() + 1) + '-' + pad(d0.getDate());
+  var tz = ''; try{ tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '' }catch(e){}
+
+  // ---- the visit: a random ID that lasts until 30 minutes without activity. Accepted or not decided yet: kept on the
+  // device so two tabs are one visit. Declined: kept in the tab only, so it ends when the tab closes.
+  var store = full ? localStorage : sessionStorage, now = Date.now();
+  var last = +get(store, 'cvp-last') || 0, visitId = get(store, 'cvp-visit'), visitStart = !visitId || now - last > 30 * 60000;
+  if(visitStart){ visitId = rid(); put(store, 'cvp-visit', visitId) }
+  put(store, 'cvp-last', String(now));
+  function touch(){ put(store, 'cvp-last', String(Date.now())) }
+
+  // ---- once a day per device, and the date it was last here (accepted only; declined visitors count once per tab)
+  var newToday, returning = false, prevDay = null;
+  if(full){
+    var seen = get(localStorage, 'cvp-seen'); newToday = seen !== today; returning = !!seen && seen !== today;
+    if(newToday && /^\d{4}-\d{2}-\d{2}$/.test(seen || '')) prevDay = seen;
+    put(localStorage, 'cvp-seen', today);
+  } else { newToday = !get(sessionStorage, 'cvp-tab-seen'); put(sessionStorage, 'cvp-tab-seen', '1') }
+
+  // ---- the source of the visit, fixed at its first page and carried to every page after it
+  var q = new URLSearchParams(location.search), src = null;
+  try{ src = JSON.parse(get(sessionStorage, 'cvp-src') || 'null') }catch(e){}
+  var ref = '', inRef = ''; try{ var r = document.referrer && new URL(document.referrer); if(r){ if(r.host !== location.host) ref = r.host.replace(/^www\./,''); else inRef = r.pathname } }catch(e){}
+  function refType(host, medium){
+    if(/email|newsletter/i.test(medium || '')) return 'Email';
+    if(/social/i.test(medium || '')) return 'Social';
+    if(/cpc|paid|ppc|display/i.test(medium || '')) return 'Paid';
+    if(!host) return medium ? 'Other' : 'Direct or email';
+    if(/(^|\.)(google|bing|duckduckgo|yahoo|ecosia|brave|baidu|yandex|startpage)\./i.test(host) && !/mail\./i.test(host)) return 'Search';
+    if(/linkedin|lnkd\.in|facebook|fb\.|instagram|twitter|(^|\.)x\.com|t\.co$|reddit|youtube|tiktok|threads|pinterest/i.test(host)) return 'Social';
+    if(/mail\.|outlook\.|proton|superhuman|hey\.com/i.test(host)) return 'Email';
+    if(/chatgpt|openai|perplexity|claude\.ai|gemini|copilot/i.test(host)) return 'AI assistant';
+    return 'Other site';
+  }
+  var hasTags = q.get('from') || q.get('utm_source') || q.get('utm_campaign');
+  if(visitStart || !src || hasTags){
+    src = {from: cut(q.get('from'), 80), utm_source: cut(q.get('utm_source'), 80), utm_medium: cut(q.get('utm_medium'), 80),
+      utm_campaign: cut(q.get('utm_campaign'), 120), utm_content: cut(q.get('utm_content'), 80), utm_term: cut(q.get('utm_term'), 80),
+      referrer: cut(ref, 120), ref_type: refType(ref, q.get('utm_medium')), landing: page};
+    if(!visitStart && !hasTags && src.ref_type === 'Direct or email' && inRef) src.ref_type = 'Inside the site';
+    put(sessionStorage, 'cvp-src', JSON.stringify(src));
+  }
+
+  // ---- the device, from the browser's own description of itself
+  var device = /iPad|Tablet|PlayBook|Silk|(Android(?!.*Mobile))/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'Tablet'
+    : /Mobi|iPhone|iPod|Android/i.test(ua) ? 'Phone' : 'Desktop';
+  var browser = /Edg\//.test(ua) ? 'Edge' : /OPR\/|Opera/.test(ua) ? 'Opera' : /SamsungBrowser/.test(ua) ? 'Samsung Internet' : /Firefox|FxiOS/.test(ua) ? 'Firefox'
+    : /Chrome|CriOS/.test(ua) ? 'Chrome' : /Safari/.test(ua) ? 'Safari' : 'Other';
+  var os = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'iOS' : /Android/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows'
+    : /CrOS/.test(ua) ? 'ChromeOS' : /Mac OS X/.test(ua) ? 'macOS' : /Linux/.test(ua) ? 'Linux' : 'Other';
+
+  // ---- where, and the company behind a company network: one lookup per visit (accepted or undecided only).
+  // Internet providers and mobile carriers name no company, so they are dropped; cloud and VPN networks are marked.
+  var ISP = /comcast|xfinity|verizon|at&t|at ?& ?t|\batt\b|charter|spectrum|cox |cox communications|centurylink|lumen|frontier|optimum|altice|cablevision|t-mobile|tmobile|sprint|cellco|mediacom|windstream|rcn|astound|wideopenwest|\bwow\b|google fiber|starlink|space exploration|rogers|bell canada|telus|shaw|videotron|vodafone|british telecom|\bbt\b|sky uk|orange|telekom|telefonica|movistar|claro|telmex|cable communications|cablevision|broadband|wireless|telecommunications|telecom|mobility|cellular|internet service|fiber|fibre|hughes|viasat|earthlink|consolidated communications|tds telecom|brightspeed|ziply|metronet|google llc/i;
+  var CLOUD = /amazon|aws|google cloud|microsoft|azure|digitalocean|linode|akamai|cloudflare|ovh|hetzner|oracle|fastly|zscaler|netskope|apple inc|icloud|private relay|choopa|vultr|leaseweb|m247|datacamp|ipxo|contabo|scaleway|alibaba|tencent|hostinger|godaddy|rackspace|nordvpn|expressvpn|mullvad|proton ag|cdn77/i;
+  function company(org){ org = String(org || '').trim(); if(!org || ISP.test(org)) return null; if(CLOUD.test(org)) return 'cloud:' + cut(org, 100); return cut(org, 120) }
   var geo = null; try{ geo = JSON.parse(get(sessionStorage, 'cvp-geo') || 'null') }catch(e){}
+  if(geo && !visitStart && !('org' in geo)) geo = null;
   var geoReady = (geo || !full || skip) ? Promise.resolve(geo) : new Promise(function(res){
     var done = false, fin = function(g){ if(done) return; done = true; geo = g || {}; put(sessionStorage, 'cvp-geo', JSON.stringify(geo)); res(geo) };
     setTimeout(function(){ fin(null) }, 1500);
-    try{ fetch('https://get.geojs.io/v1/ip/geo.json').then(function(r){ return r.json() }).then(function(d){ fin({city:cut(d.city,80), region:cut(d.region,80), country:cut(d.country_code,4)}) }).catch(function(){ fin(null) }) }catch(e){ fin(null) }
+    try{ fetch('https://get.geojs.io/v1/ip/geo.json').then(function(r){ return r.json() }).then(function(d){
+      fin({city:cut(d.city,80), region:cut(d.region,80), country:cut(d.country_code,4), org:company(d.organization_name)}) }).catch(function(){ fin(null) }) }catch(e){ fin(null) }
   });
 
-  // once a day per device, once per visit (30 minutes without activity starts a new one), and been here before
-  var today = new Date().toISOString().slice(0, 10), now = Date.now();
-  var newToday = true, visitStart = true, returning = false, prevDay = null;
-  if(full){
-    var seen = get(localStorage, 'cvp-seen'); returning = !!seen && seen !== today; newToday = seen !== today; put(localStorage, 'cvp-seen', today);
-    // the date this device last visited, so the dashboard can count each device once over any range and spot repeat visitors
-    if(newToday && /^\d{4}-\d{2}-\d{2}$/.test(seen || '')) prevDay = seen;
-    var last = +get(localStorage, 'cvp-last') || 0; visitStart = now - last > 30 * 60000; put(localStorage, 'cvp-last', String(now));
-  }
+  var viewId = rid();
   function base(type, name){
-    var row = {type:type, name:cut(name, 120), page:page, from_tag:cut(from, 80), referrer:cut(ref, 120), wide: innerWidth >= 960};
-    if(full){ row.repeat_visit = returning; if(geo){ row.city = geo.city || null; row.region = geo.region || null; row.country = geo.country || null } }
+    var row = {type:type, name:cut(name, 120), page:page, visit_id:visitId, view_id:viewId, from_tag:src.from, referrer:src.referrer, ref_type:src.ref_type,
+      utm_source:src.utm_source, utm_medium:src.utm_medium, utm_campaign:src.utm_campaign, utm_content:src.utm_content, utm_term:src.utm_term, landing:src.landing,
+      device:device, browser:browser, os:os, screen:screen.width ? screen.width + 'x' + screen.height : null, lang:cut(navigator.language, 20), tz:cut(tz, 60),
+      local_day:today, local_hour:new Date().getHours(), weekday:new Date().getDay(), wide: innerWidth >= 960};
+    if(full){ row.repeat_visit = returning; if(geo){ row.city = geo.city || null; row.region = geo.region || null; row.country = geo.country || null; row.net_org = geo.org || null } }
+    for(var k in row) if(row[k] === '') row[k] = null;
     return row;
   }
-  function touch(){ if(full) put(localStorage, 'cvp-last', String(Date.now())) }
 
-  // read what the visitor wrote out of the email the site prepared
+  // ---- read what the visitor sent out of the email the site prepared
+  var FREE = /^(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|mac|aol|proton|protonmail|msn|comcast|verizon|att)\./i;
   function parse(url){
     var out = {subject:'', body:''};
     try{ var qs = url.split('?')[1] || ''; qs.split('&').forEach(function(p){ var i = p.indexOf('='); if(i < 0) return;
@@ -80,17 +140,16 @@
     var m = parse(url), body = m.body, subject = m.subject;
     var email = (body.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i) || [''])[0];
     if(/clairvistapartners\.com$/i.test(email)) email = '';
-    var company = field(body, ['Company','Business','Brand']);
-    if(!company && email){ var d = email.split('@')[1]; if(d && !FREE.test(d)) company = d.replace(/\.(com|co|net|org|io|us|biz)(\.[a-z]{2})?$/i,'') }
-    var row = {page:page, kind:cut(subject.split(':')[0], 80), subject:cut(subject, 300), body:cut(body, 6000),
-      email:cut(email, 200), name:cut(field(body, ['Name','Ask for']), 120), company:cut(company, 160), from_tag:cut(from, 80), referrer:cut(ref, 120)};
-    if(full && geo){ row.city = geo.city || null; row.region = geo.region || null; row.country = geo.country || null }
+    var co = field(body, ['Company','Business','Brand']);
+    if(!co && email){ var dm = email.split('@')[1]; if(dm && !FREE.test(dm)) co = dm.replace(/\.(com|co|net|org|io|us|biz)(\.[a-z]{2})?$/i,'') }
+    var row = {page:page, kind:cut(subject.split(':')[0], 80), subject:cut(subject, 300), body:cut(body, 6000), email:cut(email, 200),
+      name:cut(field(body, ['Name','Ask for']), 120), company:cut(co, 160), from_tag:src.from, referrer:src.referrer, utm_source:src.utm_source, utm_campaign:src.utm_campaign, visit_id:visitId};
+    if(full && geo){ row.city = geo.city || null; row.region = geo.region || null; row.country = geo.country || null; row.net_org = geo.org || null }
     save('submissions', row); touch();
     if(!window.__cvpNoNav) location.href = url;
   };
 
-
-  // ---- the view: once per page load, never for a reload or a back-button return from the cache
+  // ---- the view: once per page load, never for a reload
   var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {};
   var reload = nav.type === 'reload';
   geoReady.then(function(){
@@ -100,9 +159,11 @@
     save('events', row);
   });
 
-  // ---- the profile questions, step by step (called by the home page); each step once per page load
-  var stepsDone = {};
+  // ---- the profile: each step once per page, and each tapped answer (never typed text)
+  var stepsDone = {}, answered = {};
   window.cvpStep = function(name){ if(stepsDone[name]) return; stepsDone[name] = 1; save('events', base('step', name)); touch() };
+  window.cvpAnswer = function(question, value){ var k = question + '=' + value; if(answered[k]) return; answered[k] = 1;
+    var row = base('answer', question); row.answer = cut(value, 120); save('events', row); touch() };
 
   // ---- button presses (a double click counts once)
   var lastClick = {n:'', t:0};
@@ -113,11 +174,12 @@
     rage(e);
   }, true);
 
-  // ---- site health: frustrated repeat clicks on one spot (3 within a second), errors, broken files, speed
-  var clicks = [], raged = 0;
+  // ---- site health: three fast clicks on one spot that is not meant for fast tapping, errors, broken files, speed
+  var clicks = [], raged = 0, FAST_OK = '#gallery, .zone, .arrow, .pass, .chip, .eye, .heart, button.btn, .b-way, input, textarea, select, [data-fast-ok]';
   function label(el){ if(!el || !el.tagName) return ''; var t = (el.getAttribute('aria-label') || el.alt || el.textContent || '').trim().replace(/\s+/g,' ').slice(0, 40);
     return el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/)[0] : '') + (t ? ' "' + t + '"' : '') }
   function rage(e){
+    if(e.target.closest && e.target.closest(FAST_OK)) return;
     var t = Date.now(); clicks = clicks.filter(function(c){ return t - c.t < 1000 }); clicks.push({t:t, x:e.clientX, y:e.clientY});
     var near = clicks.filter(function(c){ return Math.abs(c.x - e.clientX) < 30 && Math.abs(c.y - e.clientY) < 30 });
     if(near.length >= 3 && raged < 3){ raged++; clicks = []; var row = base('rage', 'repeat-clicks'); row.detail = cut(label(e.target), 300); save('events', row) }
@@ -132,36 +194,53 @@
   addEventListener('unhandledrejection', function(e){ oops('Script error: ' + ((e.reason && (e.reason.message || e.reason)) || 'a promise failed')) });
   var lcp = 0; try{ new PerformanceObserver(function(l){ var es = l.getEntries(); if(es.length) lcp = Math.round(es[es.length - 1].startTime) }).observe({type:'largest-contentful-paint', buffered:true}) }catch(e){}
 
-  // ---- time in view and scroll depth, sent once when the visitor leaves, with the page's load speed
-  var shown = 0, since = document.hidden ? 0 : Date.now(), deepest = 0, sent = false;
+  // ---- time in view and scroll depth. Sent each time the page is hidden (the only signal phones reliably give),
+  // always as the running total for this page view; the dashboard keeps the largest per page view.
+  var shown = 0, since = document.hidden ? 0 : Date.now(), deepest = 0, lastSent = -1;
   function depth(){ var h = document.documentElement.scrollHeight - innerHeight; deepest = Math.max(deepest, h > 0 ? Math.round(scrollY / h * 100) : 100) }
   addEventListener('scroll', depth, {passive:true}); depth();
-  document.addEventListener('visibilitychange', function(){ if(document.hidden){ if(since){ shown += Date.now() - since; since = 0 } leave() } else { since = Date.now(); sent = false } });
-  addEventListener('pagehide', leave);
-  function leave(){ if(sent) return; if(since){ shown += Date.now() - since; since = Date.now() } var secs = Math.min(86400, Math.round(shown / 1000)); if(secs < 1) return; sent = true;
+  function flush(){
+    if(since){ shown += Date.now() - since; since = document.hidden ? 0 : Date.now() }
+    var secs = Math.min(86400, Math.round(shown / 1000)); if(secs < 1 || secs === lastSent) return; lastSent = secs;
     var row = base('engage', page); row.secs = secs; row.depth = Math.min(100, deepest);
     var ms = lcp || Math.round(nav.loadEventEnd || nav.domContentLoadedEventEnd || 0); if(ms > 0 && ms < 600000) row.ms = ms;
-    save('events', row); shown = 0; touch() }
+    save('events', row); touch();
+  }
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) flush(); else since = Date.now() });
+  addEventListener('pagehide', flush);
 
-  // ---- the notice (Mel, 30 October: "a notification ... like a normal thing that pops up on sites")
+  // ---- Microsoft Clarity: recordings and heatmaps, only after Accept, tagged so a recording can be found by prospect
+  function clarity(){
+    if(!CLARITY_ID || !live || skip || get(localStorage, 'cvp-consent') !== 'yes' || window.clarity) return;
+    (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y) })(window, document, 'clarity', 'script', CLARITY_ID);
+    if(src.from) clarity('set', 'from', src.from);
+    if(src.utm_campaign) clarity('set', 'campaign', src.utm_campaign);
+    clarity('set', 'source', src.ref_type); clarity('set', 'landing', src.landing);
+    geoReady.then(function(){ if(geo && geo.org && geo.org.indexOf('cloud:') !== 0) clarity('set', 'company', geo.org) });
+  }
+  clarity();
+
+  // ---- the notice
   if(choice || bot) return;
   function notice(){
     var css = document.createElement('style');
     css.textContent = '.cvp-note{position:fixed;left:16px;bottom:16px;z-index:80;max-width:380px;padding:16px 16px 14px;border:1.5px solid #0A0B10;border-radius:16px;background:#fff;box-shadow:5px 5px 0 #0047FF;font:400 14px/1.45 Outfit,system-ui,sans-serif;color:#0A0B10}'
-      + '.cvp-note p{margin:0}.cvp-note b{font-weight:700}.cvp-note .row{display:flex;gap:8px;margin-top:12px}'
+      + '.cvp-note p{margin:0}.cvp-note a{color:#0A0B10;text-decoration:underline;text-underline-offset:2px}.cvp-note .row{display:flex;gap:8px;margin-top:12px}'
       + '.cvp-note button{border:0;border-radius:999px;padding:9px 16px;font:700 13.5px/1 Outfit,system-ui,sans-serif;cursor:pointer}'
       + '.cvp-note .ok{background:#0A0B10;color:#fff}.cvp-note .no{background:#fff;color:#0A0B10;border:1.5px solid #E5E7EB}'
-      + '.cvp-note button:focus-visible{outline:2px solid #0047FF;outline-offset:2px}'
+      + '.cvp-note button:focus-visible,.cvp-note a:focus-visible{outline:2px solid #0047FF;outline-offset:2px}'
       + '@media (max-width:520px){.cvp-note{left:16px;right:16px;max-width:none}}';
     document.head.appendChild(css);
     var box = document.createElement('div'); box.className = 'cvp-note'; box.setAttribute('role', 'region'); box.setAttribute('aria-label', 'Data notice');
-    box.innerHTML = '<p>This site collects anonymous usage data to understand how it is used and improve your experience.</p>'
+    box.innerHTML = '<p>This site collects anonymous usage data to understand how it is used and improve your experience. <a href="privacy.html">How we use it</a></p>'
       + '<div class="row"><button type="button" class="ok">Accept</button><button type="button" class="no">Decline</button></div>';
     document.body.appendChild(box);
-    box.querySelector('.ok').onclick = function(){ put(localStorage, 'cvp-consent', 'yes'); box.remove() };
+    box.querySelector('.ok').onclick = function(){ put(localStorage, 'cvp-consent', 'yes'); box.remove(); clarity() };
     box.querySelector('.no').onclick = function(){ put(localStorage, 'cvp-consent', 'no');
-      ['cvp-seen','cvp-last'].forEach(function(k){ try{ localStorage.removeItem(k) }catch(e){} }); try{ sessionStorage.removeItem('cvp-geo') }catch(e){}
-      full = false; geo = null; box.remove() };
+      ['cvp-seen','cvp-last','cvp-visit'].forEach(function(k){ del(localStorage, k) }); del(sessionStorage, 'cvp-geo');
+      put(sessionStorage, 'cvp-visit', visitId); put(sessionStorage, 'cvp-last', String(Date.now())); put(sessionStorage, 'cvp-tab-seen', '1');
+      full = false; geo = null; store = sessionStorage; box.remove() };
   }
   if(document.body) notice(); else document.addEventListener('DOMContentLoaded', notice);
 })();
