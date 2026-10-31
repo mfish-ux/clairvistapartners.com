@@ -108,7 +108,22 @@ $('mode').textContent = LIVE ? 'Live database' : 'This browser only';
 $('mode').classList.toggle('live', LIVE);
 
 // ----- sign in (live database only) -----
-const tok = () => { try { return JSON.parse(sessionStorage.getItem('cvp-admin') || 'null') } catch(e) { return null } };
+// Signed in stays signed in on this device for 30 days (Mel, 31 October: "all feels too complicated"). The hour-long
+// access is renewed quietly with the refresh token; after 30 days, or on Sign out, the link is asked for again.
+const KEEP = 30 * 864e5;
+const tok = () => { try { const t = JSON.parse(localStorage.getItem('cvp-admin') || 'null'); return t && Date.now() - (t.since || 0) < KEEP ? t : null } catch(e) { return null } };
+const saveTok = t => { try { localStorage.setItem('cvp-admin', JSON.stringify(t)) } catch(e) {} };
+const dropTok = () => { try { localStorage.removeItem('cvp-admin'); sessionStorage.removeItem('cvp-admin') } catch(e) {} };
+async function freshTok(){
+  const t = tok(); if(!t) return null;
+  if(t.exp - Date.now() > 120000) return t;
+  if(!t.r) return null;
+  try {
+    const r = await fetch(DB.url + '/auth/v1/token?grant_type=refresh_token', {method:'POST', headers:{apikey:DB.key, 'Content-Type':'application/json'}, body:JSON.stringify({refresh_token:t.r})});
+    if(!r.ok) return null; const j = await r.json();
+    const n = {t:j.access_token, r:j.refresh_token || t.r, exp:Date.now() + (j.expires_in || 3600) * 1000, since:t.since}; saveTok(n); return n;
+  } catch(e) { return t.exp > Date.now() ? t : null }
+}
 function loginView(msg){
   $('out').hidden = true;
   $('app').innerHTML = `<form class="login" id="lf"><h2>Sign in</h2>
@@ -126,9 +141,9 @@ function loginView(msg){
 }
 // arriving from the emailed link: the session is in the address, keep it for this tab and tidy the address
 (() => { const h = new URLSearchParams(location.hash.slice(1));
-  if(h.get('access_token')){ sessionStorage.setItem('cvp-admin', JSON.stringify({t:h.get('access_token'), exp:Date.now() + (+h.get('expires_in') || 3600) * 1000})); history.replaceState(null, '', location.pathname) }
+  if(h.get('access_token')){ saveTok({t:h.get('access_token'), r:h.get('refresh_token'), exp:Date.now() + (+h.get('expires_in') || 3600) * 1000, since:Date.now()}); history.replaceState(null, '', location.pathname) }
   else if(h.get('error_description')) setTimeout(() => loginView(h.get('error_description').replace(/\+/g,' ')), 0) })();
-$('out').onclick = () => { sessionStorage.removeItem('cvp-admin'); loginView('Signed out.') };
+$('out').onclick = () => { dropTok(); loginView('Signed out.') };
 
 // ----- data -----
 async function fetchAll(table, since){
@@ -139,7 +154,7 @@ async function fetchAll(table, since){
   for(let off = 0; off < 100000; off += 1000){
     const r = await fetch(`${DB.url}/rest/v1/${table}?select=*&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&limit=1000&offset=${off}`,
       {headers:{apikey:DB.key, Authorization:'Bearer ' + t.t}});
-    if(r.status === 401){ sessionStorage.removeItem('cvp-admin'); throw new Error('signin') }
+    if(r.status === 401){ dropTok(); throw new Error('signin') }
     const rows = await r.json(); out.push(...rows); if(rows.length < 1000) break;
   }
   return out;
@@ -157,7 +172,7 @@ function dedupeEngage(rows){
   return rest.concat([...best.values()]);
 }
 async function load(){
-  if(LIVE){ const t = tok(); if(!t || t.exp < Date.now()) return loginView(); $('out').hidden = false }
+  if(LIVE){ const t = await freshTok(); if(!t){ dropTok(); return loginView() } $('out').hidden = false }
   $('app').innerHTML = '<p class="muted">Loading…</p>';
   const since = new Date(Date.now() - Math.max(days, 2) * 864e5).toISOString();
   try { [SUBS, EVTS, PROS] = await Promise.all([fetchAll('submissions', since), fetchAll('events', since), fetchProspects()]);

@@ -1,0 +1,6 @@
+# kept on this PC, never published
+backups/
+notes/
+*.py
+*.md
+.claude/
