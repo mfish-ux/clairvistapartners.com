@@ -1285,3 +1285,14 @@ main.hero{--ph:min(700px,calc(100svh - 222px))}
   .hero>.cast .her,.hero .cast .her{align-self:auto;margin-bottom:0}
 }
 @media (max-width:380px){main.hero{--ph:540px}}
+/* Mel, 30 Oct: "the man on the landing page should sit to the right of the phone. thats why i said to make them a bit
+   bigger". On laptops and up the pair splits: she sits left of the phone over her card, he sits right of it over his,
+   each on a stretch of counter. On phones they stay together under the buttons. */
+@media (min-width:961px){
+  .hero>.home-figs{display:contents}
+  .hero>.home-figs .s-fig{grid-row:1;align-self:start;justify-self:center;margin:clamp(2px,1.4vh,14px) 0 0;padding:0 12px;border-bottom:1.5px solid var(--obsidian);border-radius:0}
+  .hero>.home-figs .s-fig.her{grid-column:2;margin-left:clamp(6px,1.6vw,34px)}
+  .hero>.home-figs .s-fig.him{grid-column:4;margin-left:0}
+  .hero>.home-figs .pair-heart{display:none}
+  .hero .cast .him{align-self:end;margin-bottom:clamp(8px,16vh,150px)}
+}

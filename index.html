@@ -673,22 +673,27 @@ function render(){
     let h=`<p class="who2">Prism asks</p><h4 tabindex="-1">${x.q}</h4>${x.sub?`<p class="sub">${x.sub}</p>`:''}`;
     if(x.opts)h+=`<div class="answers">${x.opts.map(o=>`<button class="chip" type="button" aria-pressed="${ans[x.k]===o}">${o}</button>`).join('')}</div>`;
     else if(x.input)h+=`<form class="answers typed" novalidate><input name="v" aria-label="${x.q}" placeholder="${x.input}" autocomplete="address-level2" value="${esc(ans[x.k]||'')}"><button class="btn" type="submit">Next</button></form>`;
-    else h+=`<form class="answers typed" novalidate><input name="name" aria-label="Your name" placeholder="Your name" autocomplete="name" value="${esc(ans.name||'')}"><input name="company" aria-label="Company" placeholder="Company" autocomplete="organization" value="${esc(ans.company||'')}"><button class="btn" type="submit">Finish my profile</button></form>`;
+    else h+=`<form class="answers typed" novalidate><input name="name" aria-label="Your name" placeholder="Your name" autocomplete="name" value="${esc(ans.name||'')}"><input name="company" aria-label="Company" placeholder="Company" autocomplete="organization" value="${esc(ans.company||'')}"><input name="email" type="email" aria-label="Email" placeholder="Email" autocomplete="email" inputmode="email" value="${esc(ans.email||'')}"><input name="phone" type="tel" data-opt aria-label="Phone, optional" placeholder="Phone (optional)" autocomplete="tel" inputmode="tel" value="${esc(ans.phone||'')}"><button class="btn" type="submit">Finish my profile</button></form>`;
     ask.innerHTML=h;
     ask.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ans[x.k]=c.textContent;next()});
     const f=ask.querySelector('form');
     if(f)f.onsubmit=e=>{
       e.preventDefault();let ok=true;
       f.querySelectorAll('.err').forEach(n=>n.remove());
-      f.querySelectorAll('input').forEach(i=>{const v=i.value.trim();i.classList.toggle('bad',!v);
-        if(!v){ok=false;i.insertAdjacentHTML('afterend','<span class="err">We need this one.</span>')}});
-      if(!ok){f.querySelector('input.bad').focus();return}
-      if(x.input)ans[x.k]=f.v.value.trim();else{ans.name=f.name.value.trim();ans.company=f.company.value.trim()}
+      // Mel, 30 Oct: email is required, phone is optional
+      f.querySelectorAll('input').forEach(i=>{const v=i.value.trim();
+        const msg=!v?(i.hasAttribute('data-opt')?'':'We need this one.'):i.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?"That email doesn't look right.":'';
+        i.classList.toggle('bad',!!msg);
+        if(msg){ok=false;i.insertAdjacentHTML('afterend',`<span class="err">${msg}</span>`)}});
+      if(!ok){if(!x.input)view.scrollTop=view.scrollHeight;f.querySelector('input.bad').focus({preventScroll:!x.input});return}
+      if(x.input)ans[x.k]=f.v.value.trim();else{ans.name=f.name.value.trim();ans.company=f.company.value.trim();ans.email=f.email.value.trim();ans.phone=f.phone.value.trim()}
       next();
     };
   }
   ask.querySelector('h4').focus({preventScroll:true});
   view.scrollTop=0;
+  // the last question has four fields; scroll the phone's screen to the end so the button shows
+  if(!done&&!S.steps[step].opts&&!S.steps[step].input)view.scrollTop=view.scrollHeight;
 }
 function next(){step++;count(`quiz-${tag2()}-${step>=SIDES[side].steps.length?'done':'step-'+(step+1)}`);render()}
 $('q-back').onclick=()=>{if(step===0){side_.classList.remove('asking');$('c-who').textContent=cards[shown].who;return}step--;render()};
@@ -696,7 +701,7 @@ $('q-back').onclick=()=>{if(step===0){side_.classList.remove('asking');$('c-who'
 // The email the visitor sends, with their profile written out
 function profileEmail(){
   const S=SIDES[side];
-  const rows=S.steps.filter(x=>x.row).map(x=>[x.row,x.k==='where'?ans[x.k]:low(ans[x.k])]).concat([['Name',ans.name],['Company',ans.company]]);
+  const rows=S.steps.filter(x=>x.row).map(x=>[x.row,x.k==='where'?ans[x.k]:low(ans[x.k])]).concat([['Name',ans.name],['Company',ans.company],['Email',ans.email]]).concat(ans.phone?[['Phone',ans.phone]]:[]);
   const w=Math.max(...rows.map(r=>r[0].length))+2;
   const body=`Hello,\n\nHere is my Prism profile, for when it opens.\n\n${S.head}\n${'-'.repeat(S.head.length)}\n`+rows.map(([l,v])=>`${(l+':').padEnd(w)}${v}`).join('\n');
   return mailto('Early profile: '+S.subject,body);
