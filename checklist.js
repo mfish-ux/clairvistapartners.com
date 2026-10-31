@@ -87,15 +87,23 @@
       e.preventDefault(); var f = e.target.elements, err = card.querySelector('.lf-err');
       if(!f.reach.value.trim()){ err.textContent = 'Leave an email or a phone number so we can reach you.'; f.reach.focus(); return }
       var who = [f.name.value.trim(), f.company.value.trim(), f.reach.value.trim()].filter(Boolean).join('\n');
-      var subject = (page === 'space' ? 'Checklist: I have space' : 'Checklist: I have stuff') + (from ? ' (' + from + ')' : '');
+      var subject = page === 'space' ? 'Checklist: I have space' : 'Checklist: I have stuff';
       var body = 'Hello,\n\nHere is my checklist. Let us talk.\n\n' + listText() + '\n\n' + who + '\n';
       if(window.cvpAttach) body += '\nI am attaching ' + window.cvpAttach + ' with our requirements.\n';
       count('checklist-sent-' + page);
-      function done(){ document.dispatchEvent(new CustomEvent('cvp-sent')); card.innerHTML = '<button class="lf-x" type="button" aria-label="Close">&times;</button><p class="lf-k">Sent</p><h2 tabindex="-1">Talk soon.</h2><p class="lf-sub">We read every checklist and call back ourselves.</p>'; card.querySelector('.lf-x').onclick = close }
+      var url = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      function done(){ document.dispatchEvent(new CustomEvent('cvp-sent')); card.innerHTML = '<button class="lf-x" type="button" aria-label="Close">&times;</button><p class="lf-k">Got it</p><h2 tabindex="-1">A real person reads it.</h2><p class="lf-sub">We read every checklist and call back ourselves. <a href="' + url + '" data-goatcounter-click="checklist-copy-email">Also send from my email</a></p>'; card.querySelector('.lf-x').onclick = close }
       if(FORM_ENDPOINT){
         fetch(FORM_ENDPOINT, {method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'}, body:JSON.stringify({subject:subject, checklist:listText(), name:f.name.value, company:f.company.value, reach:f.reach.value, page:page, from:from||''})})
           .then(function(r){ if(!r.ok) throw 0; done() }).catch(function(){ err.textContent = 'That did not go through. Try again, or write to ' + MAIL + '.' });
-      } else { (window.cvpMail||function(u){location.href=u})('mailto:' + MAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body)); done() }
+      } else {
+        // the site's own Send does the sending; the visitor's email app is an optional copy (Mel, 31 October)
+        var go = card.querySelector('[type=submit]'); if(go) go.disabled = true;
+        (window.cvpSend ? cvpSend(url) : Promise.resolve(false)).then(function(ok){
+          if(go) go.disabled = false;
+          if(ok) done(); else err.innerHTML = 'That did not go through. Try again, or <a href="' + url + '">send it from your email</a>.';
+        });
+      }
     };
   }
   sendBtn.addEventListener('click', openSend);

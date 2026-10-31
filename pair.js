@@ -36,5 +36,22 @@
     if(s === 'match') pair.classList.add('glance', 'met');
   }
   if(hero && 'MutationObserver' in window) new MutationObserver(sync).observe(hero, {attributes:true, attributeFilter:['data-scene']});
-  sync();
+  // the first scene is set before anyone can see it; their first visible beat is the entrance below
+  last = hero ? hero.dataset.scene : '';
+
+  // Mel, 31 Oct ("make sure mobile animation works the same as desktop"): the first time the two of them come into view,
+  // they settle onto their stools, her phone lights and she nods, on a phone as on a laptop. On touch screens, where
+  // nothing hovers, who is who shows once, both at the same time.
+  var still = matchMedia('(prefers-reduced-motion:reduce)').matches, touch = matchMedia('(hover: none)').matches;
+  if(!still && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      if(!es.some(function(e){ return e.isIntersecting })) return;
+      io.disconnect();
+      [her, him].forEach(function(f, i){ if(!f) return;
+        setTimeout(function(){ f.classList.add('settle'); setTimeout(function(){ f.classList.remove('settle') }, 700) }, 700 + i * 160) });
+      setTimeout(function(){ if(window.cvpPhonePulse) cvpPhonePulse('her'); setTimeout(function(){ nod(her) }, 250) }, 1500);
+      if(touch && pair.classList.contains('home-figs')) setTimeout(function(){ pair.classList.add('tell'); setTimeout(function(){ pair.classList.remove('tell') }, 2600) }, 900);
+    }, {threshold: .6});
+    io.observe(pair);
+  }
 })();

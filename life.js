@@ -76,6 +76,23 @@ window.cvpDrop = function(fig){
       img.style.setProperty('--lean', a.toFixed(2) + 'deg');
     });
   }
+  // the lean lets go when the pointer leaves the window or a finger lifts (Mel, 31 Oct)
+  function letGoLean(){ px = py = -1e4; if(!raf) raf = requestAnimationFrame(lean) }
+  document.addEventListener('mouseleave', letGoLean); addEventListener('blur', letGoLean);
+  addEventListener('pointerup', function(e){ if(e.pointerType !== 'mouse') letGoLean() }, {passive:true});
+  addEventListener('pointercancel', letGoLean, {passive:true});
+  // touch screens have no pointer to lean toward: the two of them sway a little with the page as it scrolls, then settle
+  if(matchMedia('(hover: none)').matches){
+    var sy = scrollY, sway = 0, swRaf = null;
+    var settleSway = function(){
+      swRaf = null; sway *= 0.88; if(Math.abs(sway) < 0.02) sway = 0;
+      figs.forEach(function(f){ var img = f.querySelector('img'); if(!img || f.classList.contains('held')) return;
+        img.style.setProperty('--lean', (flipped(img) ? -sway : sway).toFixed(2) + 'deg') });
+      if(sway) swRaf = requestAnimationFrame(settleSway);
+    };
+    addEventListener('scroll', function(){ var d = scrollY - sy; sy = scrollY;
+      sway = Math.max(-0.8, Math.min(0.8, sway + d * 0.015)); if(!swRaf) swRaf = requestAnimationFrame(settleSway) }, {passive:true});
+  }
 
   // when something happens to them, their phone lights up
   var hero = document.getElementById('hero');

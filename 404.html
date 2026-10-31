@@ -1,31 +1,56 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- GitHub Pages serves this page at every missing address, so every path below starts at the site root,
+     and the base makes any link a script adds (the cookie notice's Privacy link) resolve from the root too. -->
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found: Clairvista Partners</title>
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
 <style>
-:root{--ink:#0A0B10;--blue:#0047FF;--g-deep:#1F8A4C}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--ink);color:#fff;font:500 18px/1.5 Outfit,system-ui,sans-serif}
-main{min-height:100svh;display:grid;place-items:center;padding:40px 16px}
-.box{width:min(760px,100%);text-align:center}
-img{width:100%;display:block;aspect-ratio:1376/768;object-fit:cover}
-h1{margin:32px 0 0;font:900 clamp(30px,5vw,52px)/1.05 Outfit;letter-spacing:-.025em}
-a{display:inline-flex;align-items:center;justify-content:center;min-height:52px;margin-top:26px;padding:0 24px;border-radius:4px;font:800 17px/1 Outfit;text-decoration:none;color:#fff;background:var(--g-deep);box-shadow:5px 5px 0 var(--blue);transition:transform .12s ease,box-shadow .12s ease}
-a:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--blue)}
+/* the page not found: the two of them on their stretch of counter, the line, the way back; centered on white */
+.lost{max-width:1320px;min-height:calc(100svh - 160px);margin:0 auto;padding:clamp(36px,8vh,88px) clamp(16px,5vw,80px) clamp(44px,9vh,96px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(24px,4vh,40px);text-align:center}
+.lost .home-figs{align-self:center;margin:0;padding:0 clamp(16px,2.4vw,32px)}
+.lost .home-figs .s-fig img{height:clamp(150px,24vh,216px)}
+.lost h1{font:400 clamp(32px,min(3.5vw,6.2vh),60px)/1.04 Outfit;letter-spacing:-.035em}
+.lost h1 span,.lost h1 b{display:block;text-wrap:balance}
+.lost h1 b{font-weight:800}
+.lost .ways{justify-content:center}
+@media (max-width:960px){.lost .ways{width:100%;max-width:560px}}
 </style>
+<script>window.CVP_PAGE='404'</script>
 <script src="/capture.js"></script>
 </head>
 <body>
-<main><div class="box">
-  <img src="/assets/adu-end-empty.jpg" alt="The diner at sunrise, the lighthouse in the window and its light across the counter.">
-  <h1>That page is not here. The counter is.</h1>
-  <a href="/" data-goatcounter-click="notfound-back">Back to the counter</a>
-</div></main>
+<header class="bar"><a class="brand" href="/"><img src="/assets/logo.png" alt="Clairvista Partners" width="132" height="38"></a><nav class="nav" aria-label="Site"><a href="/companies.html" data-goatcounter-click="nav-i-have-stuff">I have stuff</a><a href="/warehouses.html" data-goatcounter-click="nav-i-have-space">I have space</a><a href="/how-it-works.html" data-goatcounter-click="nav-how">How it works</a><a href="/about.html" data-goatcounter-click="nav-about">About</a><a href="/partners.html" data-goatcounter-click="nav-partners">Partnerships</a></nav><button class="talk" type="button" data-leaflet data-goatcounter-click="open-easy-call-top" title="There are plenty of fish in the sea.">Let&#39;s talk</button></header>
+<main class="lost">
+  <div class="s-figs home-figs"><figure class="s-fig her" data-go="/companies.html" data-say="I have stuff"><img src="/assets/fig-her-a.webp" alt="Ink drawing of the head of operations on a diner stool, searching her phone"></figure><figure class="s-fig him" data-go="/warehouses.html" data-say="I have space"><img src="/assets/fig-him-b.webp" alt="Ink drawing of the warehouse manager on a diner stool, phone in hand, scratching his head"></figure></div>
+  <h1><span>That page is not here.</span> <b>The counter is.</b></h1>
+  <div class="ways">
+    <a class="way primary" href="/" data-goatcounter-click="notfound-back">Back to the counter</a>
+    <a class="way" href="/companies.html" data-goatcounter-click="notfound-i-have-stuff">I have stuff</a>
+    <a class="way" href="/warehouses.html" data-goatcounter-click="notfound-i-have-space">I have space</a>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="f-top">
+    <div class="f-brand"><a class="brand" href="/"><img src="/assets/logo.png" alt="Clairvista Partners" width="132" height="38"></a><p class="f-line">Warehouses get lonely too.</p></div>
+    <nav class="f-cols" aria-label="Site, footer">
+      <div><span class="f-k">Find</span><a href="/companies.html">I have stuff</a><a href="/warehouses.html">I have space</a><a href="/how-it-works.html">How it works</a></div>
+      <div><span class="f-k">Clairvista</span><a href="/about.html">About</a><a href="/partners.html">Partnerships</a><a href="/privacy.html">Privacy</a></div>
+      <div><span class="f-k">Talk</span><a data-goatcounter-click="email-footer" data-subject="Talk to Clairvista, footer" href="mailto:prism@clairvistapartners.com">prism@clairvistapartners.com</a><button type="button" class="f-chat" data-leaflet data-goatcounter-click="open-easy-call-footer">Let&#39;s chat <i>&rarr;</i></button></div>
+    </nav>
+  </div>
+  <div class="f-base"><span>&copy; 2026 Clairvista Partners &middot; Needham, Massachusetts</span><span>Prism is coming soon. An early look, and it will change as we build it.</span></div>
+</footer>
+<script src="/life.js"></script>
+<script src="/pair.js"></script>
 <script src="/foot.js"></script>
 <script src="/slow.js"></script>
 </body>

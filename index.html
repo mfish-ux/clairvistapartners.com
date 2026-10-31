@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clairvista Partners: a dating app for warehouses</title>
 <meta name="description" content="We find the companies that will need space before they start looking, and introduce them to the warehouse companies that will welcome them with open arms.">
@@ -46,7 +46,7 @@ button{font:inherit;color:inherit}
 .words h1{font:400 clamp(32px,min(3.5vw,6.2vh),60px)/1.04 Outfit;letter-spacing:-.035em}
 .words h1 span,.words h1 b{display:block;text-wrap:balance}
 .words h1 b{font-weight:800}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,71,255,.45)}60%{box-shadow:0 0 0 7px rgba(0,71,255,0)}}
+@keyframes ring{0%{transform:scale(1);opacity:.6}70%,100%{transform:scale(1.3);opacity:0}}
 .phonecol{grid-column:3;grid-row:1;position:relative;align-self:center;scroll-margin-top:12px}
 /* the visitor's line, under the phone, only once the phone is theirs */
 .turn{position:absolute;left:0;right:0;top:100%;margin-top:10px;text-align:center;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);opacity:0;transition:opacity .3s ease}
@@ -55,19 +55,19 @@ button{font:inherit;color:inherit}
 /* the two of them stand on either side of the phone: who they are, their face, their name, what they are doing right now */
 .cast{display:contents}
 .cast .glow{display:none}
-.cast .who{position:relative;z-index:1;grid-row:1;align-self:center;display:flex;flex-direction:column;align-items:flex-start;gap:9px;width:clamp(150px,11vw,172px);padding:13px 14px 15px;border-radius:18px;border:1px solid var(--line2);background:#fff;box-shadow:0 1px 2px rgba(10,11,16,.05),0 10px 24px -14px rgba(10,11,16,.35);cursor:pointer;text-align:left;opacity:.55;transition:opacity .4s ease,transform .25s ease}
+.cast .who{position:relative;z-index:1;grid-row:1;align-self:center;display:flex;flex-direction:column;align-items:flex-start;gap:9px;width:clamp(150px,11vw,172px);padding:13px 14px 15px;border-radius:18px;border:1px solid var(--line2);background:#fff;box-shadow:0 1px 2px rgba(10,11,16,.05),0 10px 24px -14px rgba(10,11,16,.35);cursor:pointer;text-align:left;transition:transform .25s ease}
 .cast .her{grid-column:2;margin-left:clamp(6px,1.6vw,34px)}
 .cast .him{grid-column:4}
 .cast .who:hover{opacity:1;transform:translateY(-2px)}
 .cast .who .kick{display:block;white-space:nowrap;font:700 10px/1 "Space Mono",monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
-.cast .who img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--line);transition:border-color .4s ease}
+.cast .who img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--line);opacity:.55;filter:grayscale(1);transition:border-color .4s ease,opacity .4s ease,filter .4s ease}
 .cast .who b{display:block;font:700 14px/1.2 Outfit;white-space:normal}
 .cast .who i{display:block;margin-top:3px;font:400 13px/1.3 Outfit;font-style:normal;color:var(--muted);white-space:normal;transition:color .3s ease}
 .cast .who .st{display:flex;align-items:flex-start;gap:6px}
 .cast .who .st:before{margin-top:4px}
 .hero[data-scene="her"] .cast .her,.hero[data-scene="his"] .cast .him,.hero[data-scene="talk"] .cast .who,.hero[data-scene="match"] .cast .who{opacity:1}
-.hero[data-scene="her"] .cast .her img,.hero[data-scene="his"] .cast .him img,.hero[data-scene="talk"] .cast .who img,.hero[data-scene="match"] .cast .who img{border-color:var(--blue)}
-.hero[data-scene="her"] .cast .her img,.hero[data-scene="his"] .cast .him img{animation:pulse 2s ease-in-out infinite}
+.hero[data-scene="her"] .cast .her img,.hero[data-scene="his"] .cast .him img,.hero[data-scene="talk"] .cast .who img,.hero[data-scene="match"] .cast .who img{border-color:var(--blue);opacity:1;filter:none}
+.hero[data-scene="her"] .cast .her .ring,.hero[data-scene="his"] .cast .him .ring{animation:ring 2s ease-out infinite}
 .hero[data-scene="her"] .cast .her i,.hero[data-scene="his"] .cast .him i,.hero[data-scene="match"] .cast .who i{color:var(--obsidian)}
 /* at the match, thin bands of light run from each of them to the phone, the one place orange, green and blue appear */
 .cast .who:after{content:"";position:absolute;top:57px;width:calc(var(--gap) + 6px);height:6px;z-index:-1;background:linear-gradient(var(--m-o) 0 2px,var(--m-g) 2px 4px,var(--m-b) 4px 6px);transform:scaleX(0);transition:transform 1.6s cubic-bezier(.3,0,.2,1)}
@@ -265,10 +265,10 @@ button{font:inherit;color:inherit}
 /* Mel, 30 Oct: "has the new prism graphic been run through figma? It looks bad" -- it had not; it was CSS. Now the beam is
    the illustrator's (Figma 240:2): one painted beam on white, narrow at the phone and fanning toward the card, laid on the
    paper with multiply so the white disappears. Her side uses the mirrored copy. The bloom is the same picture, blurred. */
-.cast .who:before,.cast .who:after{background:url(assets/light-beam.jpg) no-repeat center/100% 100%;clip-path:none;filter:none;mix-blend-mode:multiply;height:26px;top:46px}
-.cast .her:before,.cast .her:after{background-image:url(assets/light-beam-left.jpg)}
+.cast .who:before,.cast .who:after{background:url(assets/light-beam-clear.webp) no-repeat center/100% 100%;clip-path:none;filter:none;mix-blend-mode:normal;height:26px;top:46px}
+.cast .her:before,.cast .her:after{background-image:url(assets/light-beam-clear-left.webp)}
 .cast .who:before{filter:blur(7px);opacity:.5;height:40px;top:39px}
-.glow{background:url(assets/light-beam.jpg) no-repeat center/100% 100%;filter:none;mix-blend-mode:multiply;height:16px;margin-top:-8px}
+.glow{background:url(assets/light-beam-clear.webp) no-repeat center/100% 100%;filter:none;mix-blend-mode:normal;height:16px;margin-top:-8px}
 
 /* Mel, 30 Oct: "the user should just have a much better UI experience navigating his or her profiles" -- whose eyes you
    look through is two pills in the app bar; the photos get visible arrows, swipe and arrow keys; pass goes to the next
@@ -288,6 +288,34 @@ button{font:inherit;color:inherit}
 .pass{width:46px;height:46px}
 /* the 'Your turn' hint takes the early-look line's place under the phone instead of landing on top of it */
 .turn.on+.early-look{visibility:hidden}
+
+/* Mel, 31 Oct, round 1 ("Go, yes to all three") */
+.cast .who .ring{position:absolute;left:14px;top:13px;width:56px;height:56px;border-radius:50%;border:2px solid var(--blue);opacity:0;pointer-events:none}
+.cast .who:hover img,.cast .who:focus-visible img{opacity:1;filter:none}
+.hero.paused .cast .who .ring,.hero.offscreen .cast .who .ring{animation:none}
+/* the phone's hidden layers never take keyboard focus, and focus can never scroll its screen */
+.screen{overflow:clip}
+/* while the story plays the phone is a picture: a finger or a wheel on it scrolls the page. A tap makes it the visitor's */
+.screen.live .appview{overflow-y:hidden}
+/* fields never render under 16px, so an iPhone does not zoom the page when one is tapped */
+.appview .typed input{font-size:max(16px,calc(16px / var(--z,1)))}
+.sheet input{font-size:16px}
+/* Mel, 31 Oct: "change the copy under the landing page iphone ... to something like coming soon and make it cool and
+   attractive and aligned with the banner thing in spirit": a small obsidian pill that speaks like the Prism strip on the
+   other pages (its kicker, its name), without a second Prism card beside the phone */
+.phonecol .early-look{display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;margin:16px auto 0;padding:9px 16px 9px 13px;border-radius:999px;background:var(--obsidian);color:#fff;font:400 13.5px/1 Outfit;letter-spacing:-.01em;text-align:left;box-shadow:0 12px 26px -16px rgba(10,11,16,.6)}
+.phonecol .early-look .el-k{display:inline-flex;align-items:center;gap:7px;font:700 10px/1 "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#8FB0FF}
+.phonecol .early-look .el-k:before{content:"";width:6px;height:6px;border-radius:50%;background:#8FB0FF;animation:soonblink 2.4s ease-in-out infinite}
+.phonecol .early-look b{font-weight:800}
+@keyframes soonblink{0%,100%{opacity:1}50%{opacity:.3}}
+@media (max-width:960px){
+  .cast .who .ring{left:7px;top:7px;width:42px;height:42px}
+  /* on phones the two of them sit on a counter line right on top of the phone, so they and the story share one view,
+     the way they flank the phone on a laptop; their cards follow the phone */
+  .hero>.home-figs{order:2;justify-self:center;margin:0 0 -14px!important}
+  .phonecol{order:3}
+  .cast{order:4}
+}
 </style>
 <script src="capture.js"></script>
 </head>
@@ -302,13 +330,13 @@ button{font:inherit;color:inherit}
     <h1><span>Warehouses get lonely too.</span><span class="logo-line" aria-hidden="true"></span> <b>So we built a dating app for warehouses.</b></h1>
     <p class="cap">We find the <b>companies that will need space</b> before they start looking, and introduce them to the <b>warehouse companies</b> that will welcome them with open arms.</p>
     <div class="ways">
-      <a class="way primary" href="warehouses.html" data-goatcounter-click="way-i-have-space">I have space</a>
       <a class="way" href="companies.html" data-goatcounter-click="way-i-have-stuff">I have stuff</a>
+      <a class="way primary" href="warehouses.html" data-goatcounter-click="way-i-have-space">I have space</a>
     </div>
-    <p class="slow"><span>Prefer to take it slow?</span> <button type="button" data-goatcounter-click="open-easy-call-home">Let's chat and see if there's chemistry.</button></p>
+    <p class="slow"><svg class="slow-i" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 8.5A3.5 3.5 0 0 1 9.5 5h13A3.5 3.5 0 0 1 26 8.5v9a3.5 3.5 0 0 1-3.5 3.5H14l-6 5v-5.2A3.5 3.5 0 0 1 6 17.5z" fill="none" stroke="#0A0B10" stroke-width="2" stroke-linejoin="round"/><path d="M11 11.5h10M11 15.5h6" stroke="#0047FF" stroke-width="2" stroke-linecap="round"/></svg><span>Prefer to take it slow?</span> <button type="button" data-goatcounter-click="open-easy-call-home">Let's chat and see if there's chemistry.</button></p>
   </div>
 
-  <div class="s-figs home-figs"><figure class="s-fig her" data-go="companies.html" data-say="I have stuff"><img src="assets/fig-her-a.jpg" alt="Ink drawing of the head of operations on a diner stool, searching her phone"></figure><figure class="s-fig him" data-go="warehouses.html" data-say="I have space"><img src="assets/fig-him-b.jpg" alt="Ink drawing of the warehouse manager on a diner stool, phone in hand, scratching his head"></figure></div>
+  <div class="s-figs home-figs"><figure class="s-fig her" data-go="companies.html" data-say="I have stuff"><img src="assets/fig-her-a.webp" alt="Ink drawing of the head of operations on a diner stool, searching her phone"></figure><figure class="s-fig him" data-go="warehouses.html" data-say="I have space"><img src="assets/fig-him-b.webp" alt="Ink drawing of the warehouse manager on a diner stool, phone in hand, scratching his head"></figure></div>
 
   <aside class="phonecol" id="side" aria-label="Her phone, on the Prism app">
     <div class="device">
@@ -324,7 +352,7 @@ button{font:inherit;color:inherit}
 
           <div class="example" id="example">
             <div class="gallery" id="gallery">
-              <img id="g-img" src="assets/lehigh-dc.jpg" alt="">
+              <img id="g-img" src="assets/lehigh-dc.webp" alt="">
               <div class="pager" id="g-pager" aria-hidden="true"></div>
               <button class="zone l" type="button" aria-label="Previous photo" data-goatcounter-click="photo-back"></button>
               <button class="zone r" type="button" aria-label="Next photo" data-goatcounter-click="photo-next"></button><span class="arrow l" aria-hidden="true">&lsaquo;</span><span class="arrow r" aria-hidden="true">&rsaquo;</span>
@@ -336,7 +364,7 @@ button{font:inherit;color:inherit}
             <ul class="rows" id="c-rows"></ul>
             <div class="prompts" id="c-prompts"></div>
             <div class="choose"><button class="pass" type="button" aria-label="Pass" data-goatcounter-click="hero-card-pass"><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13" stroke="#5B5F66" stroke-width="2.2" stroke-linecap="round"/></svg></button><button class="btn hello" type="button" data-goatcounter-click="hero-card-say-hello">Say hello</button></div>
-            <p class="reply"><b>Prism</b>Your turn. <a href="#side" data-start data-goatcounter-click="hero-reply-make-profile">Make its profile</a> and we'll look for its match.</p>
+            <p class="reply"><b>Prism</b>Your turn. Make your own profile: <a href="#side" data-start="need" data-goatcounter-click="hero-reply-i-have-stuff">I have stuff</a> or <a href="#side" data-start="have" data-goatcounter-click="hero-reply-i-have-space">I have space</a>.</p>
           </div>
 
           <div class="quiz" id="quiz">
@@ -347,21 +375,21 @@ button{font:inherit;color:inherit}
         </div>
 
         <div class="dim" id="dim"></div>
-        <div class="sheet" id="sheet" aria-hidden="true">
+        <div class="sheet" id="sheet" aria-hidden="true" inert>
           <div class="quote"><span id="s-q"></span><b id="s-a"></b></div>
           <input id="s-in" placeholder="Add a comment" aria-label="Add a comment">
           <button class="btn" type="button" id="s-send" data-goatcounter-click="like-sent">Send like</button>
         </div>
-        <div class="match" id="match" aria-live="polite">
+        <div class="match" id="match" aria-live="polite" inert>
           <span class="k">Prism</span>
           <h3>It's a match.</h3>
-          <div class="pair"><img id="mt-a" src="assets/card-company.jpg" alt=""><img id="mt-b" src="assets/his/1-dock-doors.jpg" alt=""></div>
+          <div class="pair"><img id="mt-a" src="assets/card-company.webp" alt=""><img id="mt-b" src="assets/his/1-dock-doors.webp" alt=""></div>
           <p id="mt-line">He liked you back in <b>0.4 seconds</b>.</p>
           <div class="yours"><button class="btn" type="button" data-start="need" data-goatcounter-click="match-i-need-space">I have stuff. Make my profile.</button><button class="btn ghost" type="button" data-start="have" data-goatcounter-click="match-i-run-warehouses">I have space. Make its profile.</button></div>
         </div>
-        <div class="notif" id="notif" aria-live="polite"><img src="assets/card-company.jpg" alt=""><div><b>PRISM</b><span id="nt-text"></span></div><em>now</em></div>
-        <div class="chat" id="chat" aria-label="Chat">
-          <div class="chead"><button class="cback" type="button" id="c-back" aria-label="Back to the profile">&lsaquo;</button><img id="ch-img" src="assets/card-company.jpg" alt=""><div><b id="ch-name">Mild Panic Hot Sauce</b><span>Matched on Prism</span></div></div>
+        <div class="notif" id="notif" aria-live="polite"><img src="assets/card-company.webp" alt=""><div><b>PRISM</b><span id="nt-text"></span></div><em>now</em></div>
+        <div class="chat" id="chat" aria-label="Chat" inert>
+          <div class="chead"><button class="cback" type="button" id="c-back" aria-label="Back to the profile">&lsaquo;</button><img id="ch-img" src="assets/card-company.webp" alt=""><div><b id="ch-name">Mild Panic Hot Sauce</b><span>Matched on Prism</span></div></div>
           <div class="msgs" id="msgs"></div>
           <div class="cbar"><div class="cin">Message</div></div>
         </div>
@@ -369,12 +397,12 @@ button{font:inherit;color:inherit}
         <div class="home"></div>
       </div>
     </div>
-    <p class="turn" id="turn" role="status" aria-live="polite"></p><p class="early-look">An early look. Prism will change as we build it.</p>
+    <p class="turn" id="turn" role="status" aria-live="polite"></p><p class="early-look"><span class="el-k">Coming soon</span><span class="el-t">Prism, <b>by Clairvista.</b></span></p>
   </aside>
   <div class="cast" aria-label="The two of them">
     <div class="glow"></div>
-    <button class="who her" type="button" data-start="need" data-goatcounter-click="cast-her-i-need-space" title="I have stuff"><img src="assets/cast-her.jpg" alt=""><span class="kick">Has stuff</span><span><b>Mild Panic Hot Sauce</b><span class="st"><i id="cast-her-s">Reading his profile</i><em class="dots"><span></span><span></span><span></span></em></span></span></button>
-    <button class="who him" type="button" data-start="have" data-goatcounter-click="cast-him-i-run-warehouses" title="I have space"><img src="assets/cast-him.jpg" alt=""><span class="kick">Has space</span><span><b id="cast-him-n">Class A, Lehigh Valley</b><span class="st"><i id="cast-him-s">Online</i><em class="dots"><span></span><span></span><span></span></em></span></span></button>
+    <button class="who her" type="button" data-start="need" data-goatcounter-click="cast-her-i-need-space" title="I have stuff" aria-label="I have stuff. Make my profile."><img src="assets/cast-her.webp" alt=""><span class="ring" aria-hidden="true"></span><span class="kick">Has stuff</span><span><b>Mild Panic Hot Sauce</b><span class="st"><i id="cast-her-s">Reading his profile</i><em class="dots"><span></span><span></span><span></span></em></span></span></button>
+    <button class="who him" type="button" data-start="have" data-goatcounter-click="cast-him-i-run-warehouses" title="I have space" aria-label="I have space. Make its profile."><img src="assets/cast-him.webp" alt=""><span class="ring" aria-hidden="true"></span><span class="kick">Has space</span><span><b id="cast-him-n">Class A, Lehigh Valley</b><span class="st"><i id="cast-him-s">Online</i><em class="dots"><span></span><span></span><span></span></em></span></span></button>
   </div>
 </main>
 
@@ -392,9 +420,8 @@ button{font:inherit;color:inherit}
 
 <script>
 const MAIL='prism@clairvistapartners.com';
-// Where the visitor came from (?from=venturelane) rides along in every subject.
-const tag=(new URLSearchParams(location.search).get('from')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,40);
-const subj=s=>tag?`${s} (${tag})`:s;
+// Where the visitor came from (?from=...) is saved with each message (capture.js); it never goes in the visitor's own subject line.
+const subj=s=>s;
 const mailto=(s,body)=>`mailto:${MAIL}?subject=${encodeURIComponent(subj(s))}`+(body?`&body=${encodeURIComponent(body)}`:'');
 document.querySelectorAll('[data-subject]').forEach(a=>a.href=mailto(a.dataset.subject));
 const count=(path,title)=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title:title||path,event:true});if(window.cvpStep&&/^(quiz-|profile-sent-|pass-)/.test(path))cvpStep(path)};
@@ -409,35 +436,35 @@ const HEART='<svg viewBox="0 0 16 16"><path d="M8 14s-5.5-3.4-5.5-7.4A3 3 0 0 1 
 // Space, Time and Cost are Mel's Lehigh Valley lines, used for all three markets (Mel, 30 October: "just use the same cost range").
 const SPACE="100-500,000 square feet Modern Class A Distribution Center",TIME="1 month to 10 years",COST="$10-30 per square foot per year";
 const MARKETS=[
-  {name:"Class A, Lehigh Valley",building:["assets/lehigh-dc.jpg","A modern distribution center in the Lehigh Valley, drawn in ink"],
-    his:[["assets/his/1-dock-doors.jpg","The warehouse manager flexing in front of a long row of dock doors","Dock doors. Lots of them."],
-      ["assets/his/2-truck-court.jpg","He leans on a semi in sunglasses in the truck court","A truck court with space to turn."],
-      ["assets/his/3-pallet-fish.jpg","He holds up a pallet like a prize fish","Catch of the day: one pallet."],
-      ["assets/his/4-clear-height.jpg","He points up from the top of a tall ladder, a tape measure dangling to the floor","Tall ceilings. He's tall too."],
-      ["assets/his/5-lights.jpg","Arms wide under the bright warehouse lights","Bright lights. Sprinklers overhead."],
-      ["assets/his/6-office.jpg","A mirror selfie in the office, a tie over his safety vest","There's an office. He dressed up."],
-      ["assets/his/7-highway.jpg","On the roof at sunset, pointing at the highway interchange","Close to the highway. Golden hour."],
-      ["assets/his/8-security.jpg","Kneeling at the security gate with the guard dog","Gated. Guarded. Good boy."]],
+  {name:"Class A, Lehigh Valley",building:["assets/lehigh-dc.webp","A modern distribution center in the Lehigh Valley, drawn in ink"],
+    his:[["assets/his/1-dock-doors.webp","The warehouse manager flexing in front of a long row of dock doors","Dock doors. Lots of them."],
+      ["assets/his/2-truck-court.webp","He leans on a semi in sunglasses in the truck court","A truck court with space to turn."],
+      ["assets/his/3-pallet-fish.webp","He holds up a pallet like a prize fish","Catch of the day: one pallet."],
+      ["assets/his/4-clear-height.webp","He points up from the top of a tall ladder, a tape measure dangling to the floor","Tall ceilings. He's tall too."],
+      ["assets/his/5-lights.webp","Arms wide under the bright warehouse lights","Bright lights. Sprinklers overhead."],
+      ["assets/his/6-office.webp","A mirror selfie in the office, a tie over his safety vest","There's an office. He dressed up."],
+      ["assets/his/7-highway.webp","On the roof at sunset, pointing at the highway interchange","Close to the highway. Golden hour."],
+      ["assets/his/8-security.webp","Kneeling at the security gate with the guard dog","Gated. Guarded. Good boy."]],
     turns:[[0,2,1],[3,5,7],[2,6,4]],
     rows:[["Place","Lehigh Valley, PA"],["Space",SPACE],["Time",TIME],["Cost",COST]],
     prompts:[["My ideal first date","Admire a warehouse in person together."],["I'm looking for","Something serious. Or a fling. 1 month to 10 years."],
       ["Two truths and a lie",["I have space to grow.","I'm in the Lehigh Valley.","I'm never lonely."]],["My love language","Long-term commitments."],["Green flag","You know your pallet count."]],
     comment:"Thursday? I'll bring the hot sauce.",match:"He liked you back in <b>0.4 seconds</b>.",handoff:"He saw it in 0.4 seconds.",
     chat:["Thursday works. I'll have a dock door open for you.","I need space by December 1.","Then let's not waste a minute."],book:"Walkthrough booked for Thursday."},
-  {name:"Class A, Greater Dallas",building:["assets/dallas/0-building.jpg","A modern distribution center outside Dallas under a huge sky, drawn in ink"],
-    his:[["assets/dallas/1-cowboy.jpg","In a cowboy hat, one boot on the truck court fence","A truck court as big as Texas."],
-      ["assets/dallas/2-brisket.jpg","Holding up a smoked brisket beside the dock doors","Brisket Fridays. Dock doors daily."],
-      ["assets/dallas/3-rodeo.jpg","Waving his hat from a forklift like a bull rider","Rides forklifts. Not bulls."]],
+  {name:"Class A, Greater Dallas",building:["assets/dallas/0-building.webp","A modern distribution center outside Dallas under a huge sky, drawn in ink"],
+    his:[["assets/dallas/1-cowboy.webp","In a cowboy hat, one boot on the truck court fence","A truck court as big as Texas."],
+      ["assets/dallas/2-brisket.webp","Holding up a smoked brisket beside the dock doors","Brisket Fridays. Dock doors daily."],
+      ["assets/dallas/3-rodeo.webp","Waving his hat from a forklift like a bull rider","Rides forklifts. Not bulls."]],
     turns:[[0,1,2]],
     rows:[["Place","Greater Dallas, TX"],["Space",SPACE],["Time",TIME],["Cost",COST]],
     prompts:[["My ideal first date","Brisket, then a walkthrough."],["I'm looking for","A long-term partner off I-35."],
       ["Two truths and a lie",["Everything's bigger here.","I'm close to the highway.","I've never owned a cowboy hat."]],["Green flag","You say y'all."]],
     comment:"Save me a seat by the smoker.",match:"He liked you back <b>before you finished typing</b>.",handoff:"He saw it before she finished typing.",
     chat:["Already saved. Brisket's on at six.","Can you hold space for the holiday rush?","Everything's bigger here. Including my yes."],book:"Walkthrough booked for Friday, after the brisket."},
-  {name:"Class A, Phoenix",building:["assets/phoenix/0-building.jpg","A modern distribution center among saguaros outside Phoenix, drawn in ink"],
-    his:[["assets/phoenix/1-summit.jpg","On a desert summit in a sun hat, fist raised, the distribution center below","Views of the valley. And the dock doors."],
-      ["assets/phoenix/2-golf.jpg","Mid golf swing on a desert course in front of the building","Plays golf. Loads trucks."],
-      ["assets/phoenix/3-shade.jpg","Lounging with an iced drink in the shade of the dock canopy","Dry heat. Dry storage."]],
+  {name:"Class A, Phoenix",building:["assets/phoenix/0-building.webp","A modern distribution center among saguaros outside Phoenix, drawn in ink"],
+    his:[["assets/phoenix/1-summit.webp","On a desert summit in a sun hat, fist raised, the distribution center below","Views of the valley. And the dock doors."],
+      ["assets/phoenix/2-golf.webp","Mid golf swing on a desert course in front of the building","Plays golf. Loads trucks."],
+      ["assets/phoenix/3-shade.webp","Lounging with an iced drink in the shade of the dock canopy","Dry heat. Dry storage."]],
     turns:[[0,1,2]],
     rows:[["Place","Phoenix, AZ"],["Space",SPACE],["Time",TIME],["Cost",COST]],
     prompts:[["My ideal first date","A sunrise walkthrough, before the heat."],["I'm looking for","Something that lasts longer than monsoon season."],
@@ -454,7 +481,7 @@ function warehouse(m){
 const cards={
   have:warehouse(0),
   need:{who:"What he sees",name:"Mild Panic Hot Sauce",
-    photos:[["assets/card-company.jpg","The head of operations at a hot sauce company, holding up a bottle","Active now"]],
+    photos:[["assets/card-company.webp","The head of operations at a hot sauce company, holding up a bottle","Active now"]],
     rows:[["Space","dry, ships to the chain's warehouses"],["Time","by December 1"],["Stays","for years, if it fits"],["Brings","steady cases, every week"]],
     prompts:[["My ideal first date","You, by December 1."],["I'm looking for","Someone who can handle the heat."],
       ["Two truths and a lie",["We just landed a grocery chain.","We're out of space.","We're calm about it."]],["Green flag","You pick up the phone."]],
@@ -480,39 +507,40 @@ function showSide(w,instant){
   setTimeout(()=>{fill();example.classList.remove('away')},230);
 }
 showSide('have',true);
-// preload every photo so taps are instant
-MARKETS.forEach(M=>[M.building,...M.his].forEach(p=>{const i=new Image();i.src=p[0]}));
+// preload the photos of the market on screen now, and the next market's as each one starts (Mel, 31 Oct: lighter on phones)
+const preload=m=>{const M=MARKETS[m];[M.building,...M.his].forEach(p=>{const i=new Image();i.src=p[0]})};
+preload(0);
 
 // The screen's contents are laid out for a phone about 640px tall; they scale with the phone.
-const fitScreen=()=>{const h=document.querySelector('.device').getBoundingClientRect().height;view.style.zoom=Math.max(.78,Math.min(1.18,h/640)).toFixed(3)};
+const fitScreen=()=>{const h=document.querySelector('.device').getBoundingClientRect().height,z=Math.max(.78,Math.min(1.18,h/640)).toFixed(3);view.style.zoom=z;view.style.setProperty('--z',z)};
 fitScreen();addEventListener('resize',fitScreen);
 
 // Liking a prompt, the sheet, and the match
 function openSheet(k){
   const p=cards[shown].prompts[k];
   $('s-q').textContent=p[0];$('s-a').textContent=Array.isArray(p[1])?p[1].join(' '):p[1];$('s-in').value='';
-  $('dim').classList.add('open');$('sheet').classList.add('open');$('sheet').setAttribute('aria-hidden','false');
+  $('dim').classList.add('open');$('sheet').classList.add('open');$('sheet').setAttribute('aria-hidden','false');$('sheet').inert=false;
 }
-function closeSheet(){$('dim').classList.remove('open');$('sheet').classList.remove('open');$('sheet').setAttribute('aria-hidden','true')}
+function closeSheet(){$('dim').classList.remove('open');$('sheet').classList.remove('open');$('sheet').setAttribute('aria-hidden','true');$('sheet').inert=true}
 function showMatch(){
   const d=cards[shown];
-  $('mt-a').src=shown==='have'?'assets/card-company.jpg':d.photos[0][0];
-  $('mt-b').src=shown==='have'?d.him:'assets/card-company.jpg';
+  $('mt-a').src=shown==='have'?'assets/card-company.webp':d.photos[0][0];
+  $('mt-b').src=shown==='have'?d.him:'assets/card-company.webp';
   $('mt-line').innerHTML=d.match;
-  $('match').classList.add('open');
+  $('match').classList.add('open');$('match').inert=false;
 }
-function closeMatch(){$('match').classList.remove('open')}
+function closeMatch(){$('match').classList.remove('open');$('match').inert=true}
 $('c-prompts').addEventListener('click',e=>{const h=e.target.closest('.heart');if(!h)return;h.classList.add('on');openSheet(+h.parentNode.dataset.k)});
 $('dim').addEventListener('click',closeSheet);
 $('s-send').addEventListener('click',()=>{closeSheet();setTimeout(showMatch,500)});
 document.querySelector('.zone.r').addEventListener('click',()=>photo(ph+1));
 document.querySelector('.zone.l').addEventListener('click',()=>photo(ph-1));
-example.querySelector('.pass').addEventListener('click',()=>{if(shown==='have'){market=(market+1)%MARKETS.length;cards.have=warehouse(market);$('cast-him-n').textContent=cards.have.name;count('pass-next-warehouse')}showSide('have')});
+example.querySelector('.pass').addEventListener('click',()=>{if(shown==='have'){market=(market+1)%MARKETS.length;cards.have=warehouse(market);$('cast-him-n').textContent=cards.have.name;preload((market+1)%MARKETS.length);count('pass-next-warehouse')}showSide('have')});
 document.querySelectorAll('.eye').forEach(b=>b.addEventListener('click',()=>showSide(b.dataset.side)));
 // swipe the photos, and arrow keys when the phone has focus
 (()=>{const g=$('gallery');let x0=null,swiped=false;
   g.addEventListener('pointerdown',e=>{x0=e.clientX});
-  g.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>28){swiped=true;photo(ph+(dx<0?1:-1));setTimeout(()=>swiped=false,0)}});
+  g.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>28){if(e.isTrusted)her.stop();swiped=true;photo(ph+(dx<0?1:-1));setTimeout(()=>swiped=false,0)}});
   g.addEventListener('click',e=>{if(swiped){e.stopPropagation();e.preventDefault()}},true);
   example.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){photo(ph+1);e.preventDefault()}else if(e.key==='ArrowLeft'){photo(ph-1);e.preventDefault()}});
 })();
@@ -524,8 +552,8 @@ function flip(swap){return new Promise(r=>{device.style.transform='perspective(1
 function clock(t){$('clock').textContent=t}
 function notify(t){$('nt-text').textContent=t;$('notif').classList.add('open')}
 function unnotify(){$('notif').classList.remove('open')}
-function openChat(){$('msgs').innerHTML='';$('chat').classList.add('open')}
-function closeChat(){$('chat').classList.remove('open')}
+function openChat(){$('msgs').innerHTML='';$('chat').classList.add('open');$('chat').inert=false}
+function closeChat(){$('chat').classList.remove('open');$('chat').inert=true}
 function bubble(cls,html){const m=document.createElement('div');m.className=cls;m.innerHTML=html;const box=$('msgs');box.appendChild(m);while(box.scrollHeight>box.clientHeight&&box.children.length>1)box.removeChild(box.firstChild);return m}
 $('c-back').addEventListener('click',()=>{closeChat();unnotify();clock('9:41');scene('her');showSide('have',true)});
 $('notif').addEventListener('click',()=>{unnotify();openChat()});
@@ -546,10 +574,14 @@ function say(t){if(t===lastSaid)return;lastSaid=t;
   turn.classList.remove('on')}
 
 // ===== Her session: someone really interested, taking her time, one market after another (about half a minute each).
-// It plays on its own; the first real touch anywhere on the phone hands it to the visitor.
+// It plays on its own while the phone can be seen (Mel, 31 Oct: phones "the same as desktop"): it starts the first time the
+// phone is at least 40% on screen, waits while it is off screen or the tab is in the background, and a tap, a photo swipe
+// or a key on the phone hands it to the visitor. Scrolling past it never does.
 const her=(()=>{
-  const scr=$('screen'),fg=$('finger');let live=true,run=0,first=true;
-  const sleep=ms=>new Promise((r,j)=>{const id=run;setTimeout(()=>id===run&&live?r():j('stop'),ms)});
+  const scr=$('screen'),fg=$('finger'),hero=$('hero');let live=true,run=0,first=true,seen=false,visible=false;
+  const sleep=ms=>new Promise((r,j)=>{const id=run;let left=ms,t=performance.now();
+    const tick=()=>{if(id!==run||!live)return j('stop');const n=performance.now();if(visible&&!document.hidden)left-=n-t;t=n;left<=0?r():setTimeout(tick,Math.min(left,250))};
+    setTimeout(tick,Math.min(ms,250))});
   const at=(el,fx=.5,fy=.5)=>{const s=scr.getBoundingClientRect(),b=el.getBoundingClientRect();return[b.left-s.left+b.width*fx,b.top-s.top+b.height*fy]};
   const place=(x,y)=>{fg.style.left=x+'px';fg.style.top=y+'px'};
   async function tap(el,fx,fy,act){const[x,y]=at(el,fx,fy);place(x,y);fg.classList.add('on');await sleep(320);fg.classList.add('press');act&&act();await sleep(160);fg.classList.remove('press');await sleep(200);fg.classList.remove('on')}
@@ -565,7 +597,7 @@ const her=(()=>{
   const top=el=>el.offsetTop-54;
   async function session(){
     closeSheet();closeMatch();closeChat();unnotify();clock('9:41');
-    cards.have=warehouse(market);showSide('have',first);first=false;
+    cards.have=warehouse(market);showSide('have',first);first=false;preload((market+1)%MARKETS.length);
     const W=cards.have;$('cast-him-n').textContent=W.name;
     // her phone: his photos, his details, his first-date answer
     scene('her');say(`<b>Her phone.</b> She's browsing ${W.name}.`);
@@ -603,14 +635,20 @@ const her=(()=>{
     turn[market]++;market=(market+1)%MARKETS.length;
   }
   async function loop(){while(live){try{await session()}catch(e){return}}}
-  function stop(){if(!live)return;live=false;run++;fg.classList.remove('on','press');device.style.transform='';say(`<b>Your turn.</b> Tap through his photos, or pass to the next warehouse.`)}
+  function stop(){if(!live)return;live=false;run++;scr.classList.remove('live');hero.classList.add('paused');fg.classList.remove('on','press');device.style.transform='';say(`<b>Your turn.</b> Tap through his photos, or pass to the next warehouse.`)}
   // Mel, 30 Oct: a click anywhere outside the phone, and the story picks up again five seconds later (never while a profile is being made)
-  function resume(){if(live||side_.classList.contains('asking'))return;live=true;run++;loop()}
+  function resume(){if(live||side_.classList.contains('asking'))return;live=true;run++;scr.classList.add('live');hero.classList.remove('paused');$('turn').classList.remove('on');lastSaid='';loop()}
   let resumeT=null;const dev=document.querySelector('.device');
-  document.addEventListener('pointerdown',e=>{if(!e.isTrusted)return;clearTimeout(resumeT);if(dev.contains(e.target)||live)return;resumeT=setTimeout(resume,5000)},{capture:true,passive:true});
-  // the first real touch, wheel or key on the phone is the visitor's
-  ['pointerdown','wheel','keydown','touchstart'].forEach(ev=>scr.addEventListener(ev,e=>{if(e.isTrusted)stop()},{capture:true,passive:true}));
-  if(!matchMedia('(prefers-reduced-motion:reduce)').matches)loop();else say(`<b>Your turn.</b> Tap through his photos, or pass to the next warehouse.`);
+  // only a real click or tap counts, so a finger scrolling the page never stops or restarts anything
+  document.addEventListener('click',e=>{if(!e.isTrusted)return;clearTimeout(resumeT);if(dev.contains(e.target)||live)return;resumeT=setTimeout(resume,5000)},true);
+  ['click','keydown'].forEach(ev=>scr.addEventListener(ev,e=>{if(e.isTrusted)stop()},true));
+  const begin=()=>{if(seen||!live)return;seen=true;loop()};
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)say(`<b>Your turn.</b> Tap through his photos, or pass to the next warehouse.`);
+  else{
+    scr.classList.add('live');
+    if('IntersectionObserver' in window)new IntersectionObserver(es=>{const e=es[es.length-1];visible=e.intersectionRatio>=.4;hero.classList.toggle('offscreen',!visible);if(visible)begin()},{threshold:[0,.4,.7]}).observe(dev);
+    else{visible=true;begin()}
+  }
   return {stop,resume};
 })();
 
@@ -664,7 +702,7 @@ function render(){
   $('m-rows').innerHTML=rowsHTML(rows);
   const ask=$('ask');
   if(done){
-    ask.innerHTML=`<p class="who2">Prism · opens soon</p><h4 tabindex="-1">You're early. Good.</h4><p class="sub">Prism isn't matching yet. Say hello and this profile goes in first; we'll tell you the day it opens. Your email opens with the profile written out, and nothing is sent until you press send.</p>
+    ask.innerHTML=`<p class="who2">Prism · opens soon</p><h4 tabindex="-1">You're early. Good.</h4><p class="sub">Prism isn't matching yet. We are, in real life. Say hello and we start looking now. Your profile goes in first when Prism opens.</p>
       <div class="done"><div class="acts2"><button class="btn quiet" type="button" id="q-redo">Start over</button><button class="btn" type="button" id="q-send">Say hello</button></div></div>`;
     $('q-redo').onclick=()=>start(side);
     $('q-send').onclick=send;
@@ -703,15 +741,20 @@ function profileEmail(){
   const S=SIDES[side];
   const rows=S.steps.filter(x=>x.row).map(x=>[x.row,x.k==='where'?ans[x.k]:low(ans[x.k])]).concat([['Name',ans.name],['Company',ans.company],['Email',ans.email]]).concat(ans.phone?[['Phone',ans.phone]]:[]);
   const w=Math.max(...rows.map(r=>r[0].length))+2;
-  const body=`Hello,\n\nHere is my Prism profile, for when it opens.\n\n${S.head}\n${'-'.repeat(S.head.length)}\n`+rows.map(([l,v])=>`${(l+':').padEnd(w)}${v}`).join('\n');
+  const body=`Hello,\n\nHere is my profile. Start looking, and keep it for when Prism opens.\n\n${S.head}\n${'-'.repeat(S.head.length)}\n`+rows.map(([l,v])=>`${(l+':').padEnd(w)}${v}`).join('\n');
   return mailto('Early profile: '+S.subject,body);
 }
+// Mel, 31 Oct: the site's own Say hello does the sending; the visitor's email app is an optional copy
 function send(){
-  const S=SIDES[side];
+  const S=SIDES[side],url=profileEmail(),box=$('ask').querySelector('.done'),b=$('q-send');
   count('profile-sent-'+tag2(),S.subject);
-  $('ask').querySelector('.done').innerHTML=`<p class="reply" style="display:block" role="status"><b>Prism</b>Press send in your email. You're first in line.</p>
-    <p class="fine">No email app? Write to <a href="${mailto('Prism profile')}">${MAIL}</a>.</p>`;
-  (window.cvpMail||function(u){location.href=u})(profileEmail());
+  if(b)b.disabled=true;
+  (window.cvpSend?cvpSend(url):Promise.resolve(false)).then(ok=>{
+    box.innerHTML=ok?`<p class="reply" style="display:block" role="status"><b>Prism</b>Got it. A real person reads it. You're first in line when Prism opens.</p>
+      <p class="fine"><a href="${url}" data-goatcounter-click="profile-copy-email">Also send from my email</a></p>`
+      :`<p class="reply" style="display:block" role="status"><b>Prism</b>That did not go through.</p>
+      <p class="fine"><a href="${url}">Send it from your email</a>, or write to ${MAIL}.</p>`;
+  });
 }
 </script>
 <script src="pair.js"></script>

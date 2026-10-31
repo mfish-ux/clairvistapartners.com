@@ -1,5 +1,5 @@
-// Capture, for the site dashboard. Every form on the site ends by opening a written email to prism@; just before it
-// opens, this saves a copy. It also records visits and how the site works, the way proven privacy-first tools do
+// Capture, for the site dashboard. Every form on the site saves what the visitor sends (cvpSend); the visitor's own
+// email app opens only if they ask for a copy (Mel, 31 October: the site's own Send does the sending). It also records visits and how the site works, the way proven privacy-first tools do
 // (Plausible, Fathom, GA4's base fields), checked against them on 31 October 2026 (Mel: "I am concerned that we are
 // improperly doing things and overlooking standard and proven baseline methodologies").
 //
@@ -17,7 +17,8 @@
   var live = !!(SUPABASE_URL && SUPABASE_KEY) && !preview;
   window.CVP_DB = live ? {url:SUPABASE_URL, key:SUPABASE_KEY} : {url:'', key:''};
   window.CVP_CLARITY = CLARITY_ID;
-  var page = (location.pathname.split('/').pop() || 'index.html').replace('.html','') || 'index';
+  // a page can name itself (404.html does, since GitHub Pages serves it at whatever missing address was asked for)
+  var page = window.CVP_PAGE || (location.pathname.split('/').pop() || 'index.html').replace('.html','') || 'index';
   if(page === 'admin') return;   // the dashboard itself is never counted and never touches the visit flags
 
   function get(s, k){ try{ return s.getItem(k) }catch(e){ return null } }
@@ -34,16 +35,17 @@
   var full = choice !== 'no';                                  // location, network company and device memory, unless declined
   var skip = bot || team || window.__cvpSkip;
 
+  // resolves true once the row is stored (or deliberately not stored: bots and the team's own devices), false if it failed
   function save(table, row){
-    if(skip) return;
+    if(skip) return Promise.resolve(true);
     row.created_at = new Date().toISOString();                 // the database replaces this with its own clock
     if(live){
-      try{ fetch(SUPABASE_URL + '/rest/v1/' + table, {method:'POST', keepalive:true,
+      try{ return fetch(SUPABASE_URL + '/rest/v1/' + table, {method:'POST', keepalive:true,
         headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body: JSON.stringify(row)}) }catch(e){}
-    } else {
-      try{ var k = 'cvp-local-' + table, a = JSON.parse(localStorage.getItem(k) || '[]'); a.push(row); localStorage.setItem(k, JSON.stringify(a.slice(-2000))) }catch(e){}
+        body: JSON.stringify(row)}).then(function(r){ return r.ok }, function(){ return false }) }catch(e){ return Promise.resolve(false) }
     }
+    try{ var k = 'cvp-local-' + table, a = JSON.parse(localStorage.getItem(k) || '[]'); a.push(row); localStorage.setItem(k, JSON.stringify(a.slice(-2000))) }catch(e){}
+    return Promise.resolve(true);
   }
 
   // ---- the visitor's own clock: day boundaries at their midnight, not UTC's
@@ -136,7 +138,7 @@
     for(var i = 0; i < names.length; i++){ var m = body.match(new RegExp('^\\s*' + names[i] + '\\s*:\\s*(.+)$', 'im')); if(m) return m[1].trim() }
     return '';
   }
-  window.cvpMail = function(url){
+  function submission(url){
     var m = parse(url), body = m.body, subject = m.subject;
     var email = (body.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i) || [''])[0];
     if(/clairvistapartners\.com$/i.test(email)) email = '';
@@ -145,8 +147,16 @@
     var row = {page:page, kind:cut(subject.split(':')[0], 80), subject:cut(subject, 300), body:cut(body, 6000), email:cut(email, 200),
       name:cut(field(body, ['Name','Ask for']), 120), company:cut(co, 160), from_tag:src.from, referrer:src.referrer, utm_source:src.utm_source, utm_campaign:src.utm_campaign, visit_id:visitId};
     if(full && geo){ row.city = geo.city || null; row.region = geo.region || null; row.country = geo.country || null; row.net_org = geo.org || null }
-    save('submissions', row); touch();
+    return row;
+  }
+  window.cvpMail = function(url){
+    save('submissions', submission(url)); touch();
     if(!window.__cvpNoNav) location.href = url;
+  };
+  // the site's own Send: stores the message and tells the page whether it arrived; no email app opens
+  window.cvpSend = function(url){
+    var p = save('submissions', submission(url)); touch();
+    return p;
   };
 
   // ---- the view: once per page load, never for a reload

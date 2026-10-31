@@ -185,7 +185,9 @@
     if(moved) count('buddy-dragged-' + side);
     setTimeout(show, moved && !still ? 420 : 0);
   }
-  fig.addEventListener('pointerup', letGo); fig.addEventListener('pointercancel', letGo);
+  // a cancelled pointer means the browser took the gesture to scroll the page: just put her back (Mel, 31 Oct)
+  fig.addEventListener('pointerup', letGo);
+  fig.addEventListener('pointercancel', function(){ if(!drag) return; drag = null; fig.classList.remove('held'); fig.style.transform = '' });
   fig.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(window.cvpPick) cvpPick(fig); open ? close() : show() } });
 
   // the other one, back to back with her: pick him up or click him, and go meet him on his own page

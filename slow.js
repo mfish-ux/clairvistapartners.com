@@ -19,25 +19,24 @@
     '<button class="lf-x" type="button" aria-label="Close">&times;</button>'+
     '<p class="lf-k">A quick chat</p>'+
     '<h2 id="lf-h">No profile. <b>No pressure.</b></h2>'+
-    '<p class="lf-sub">Tell us a little, or just call. Either way, a real person picks up.</p>'+
+    // until the number exists the card offers writing only; the Call us tab returns by itself once PHONE is set (Mel, 31 October)
+    (PHONE ? '<p class="lf-sub">Tell us a little, or just call. Either way, a real person picks up.</p>'+
     '<div class="lf-tabs" role="tablist">'+
       '<button type="button" role="tab" aria-selected="true" data-t="write">Write to us</button>'+
       '<button type="button" role="tab" aria-selected="false" data-t="call">Call us</button>'+
-    '</div>'+
+    '</div>' : '<p class="lf-sub">Tell us a little. A real person reads it.</p>')+
     '<form class="lf-pane" data-p="write" novalidate>'+
-      '<div class="lf-side"><button type="button" aria-pressed="false" data-s="I have space">I have space</button><button type="button" aria-pressed="false" data-s="I have stuff">I have stuff</button></div>'+
+      '<div class="lf-side"><button type="button" aria-pressed="false" data-s="I have stuff">I have stuff</button><button type="button" aria-pressed="false" data-s="I have space">I have space</button></div>'+
       '<input name="name" placeholder="Your name" autocomplete="name" aria-label="Your name">'+
       '<input name="reach" placeholder="Email or phone" autocomplete="email" aria-label="Email or phone">'+
       '<textarea name="note" rows="2" placeholder="What\'s on your mind? One line is plenty." aria-label="Your note"></textarea>'+
       '<button class="way primary lf-send" type="submit">Send</button>'+
       '<p class="lf-err" aria-live="polite"></p>'+
     '</form>'+
-    '<div class="lf-pane" data-p="call" hidden>'+
-      (PHONE
-        ? '<a class="lf-num" href="tel:'+PHONE+'" data-goatcounter-click="easy-call-dial-'+page+'">'+PHONE_SHOWN+'</a><p class="lf-small">Weekdays. If we miss you, we call back the same day.</p>'
-        : '<p class="lf-num soon">Our number is on its way.</p><p class="lf-small">Until it lands, write to us and say "call me". We will.</p>')+
-    '</div>'+
-    '<div class="lf-done" hidden><p class="lf-k">Sent</p><h2>Talk soon.</h2><p class="lf-sub">We read every note and reply ourselves.</p></div>';
+    (PHONE ? '<div class="lf-pane" data-p="call" hidden>'+
+      '<a class="lf-num" href="tel:'+PHONE+'" data-goatcounter-click="easy-call-dial-'+page+'">'+PHONE_SHOWN+'</a><p class="lf-small">Weekdays. If we miss you, we call back the same day.</p>'+
+    '</div>' : '')+
+    '<div class="lf-done" hidden><p class="lf-k">Got it</p><h2>A real person reads it.</h2><p class="lf-sub">Talk soon. <a class="lf-copy" href="#" data-goatcounter-click="easy-call-copy-email">Also send from my email</a></p></div>';
 
   var open = null, side = '';
   // who it is for: a character the visitor dragged speaks for that side (Mel, 30 October:
@@ -59,7 +58,7 @@
     lf.style.left = left+'px'; lf.style.top = top+'px';
     void lf.offsetWidth; lf.classList.add('on');
     open = btn; btn.setAttribute('aria-expanded','true');
-    lf.querySelector('[aria-selected="true"]').focus();
+    (lf.querySelector('[aria-selected="true"]') || lf.querySelector('.lf-side button')).focus();  // no tabs until the number exists
     count('easy-call-open-'+page);
   }
   function hide(){
@@ -96,17 +95,23 @@
     err.textContent = '';
     var data = { name:f.name.value.trim(), reach:f.reach.value.trim(), note:f.note.value.trim(), side:side, page:page, from:from||'' };
     count('easy-call-sent-'+page);
-    function done(){ form.hidden = true; lf.querySelector('.lf-tabs').hidden = true;
+    function done(){ form.hidden = true; var tabs = lf.querySelector('.lf-tabs'); if(tabs) tabs.hidden = true;
       lf.querySelectorAll('.lf-pane').forEach(function(p){ p.hidden = true }); lf.querySelector('.lf-done').hidden = false }
     if (FORM_ENDPOINT) {
       fetch(FORM_ENDPOINT, {method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'}, body:JSON.stringify(data)})
         .then(function(r){ if(!r.ok) throw 0; done() })
         .catch(function(){ err.textContent = 'That did not go through. Try again, or write to '+TO+'.' });
     } else {
-      var subj = 'A quick chat' + (data.side ? ', '+data.side : '') + (from ? ' ('+from+')' : '');
+      var subj = 'A quick chat' + (data.side ? ', '+data.side : '');
       var body = 'Hello,\n\n' + (data.note || 'I would like a quick chat.') + '\n\n' + (data.name ? data.name+'\n' : '') + data.reach + '\n';
-      (window.cvpMail||function(u){location.href=u})('mailto:'+TO+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body));
-      done();
+      var url = 'mailto:'+TO+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+      // the site's own Send does the sending; the visitor's email app is an optional copy (Mel, 31 October)
+      var go = form.querySelector('.lf-send'); go.disabled = true;
+      (window.cvpSend ? cvpSend(url) : Promise.resolve(false)).then(function(ok){
+        go.disabled = false;
+        if(!ok){ err.innerHTML = 'That did not go through. Try again, or <a href="'+url+'">send it from your email</a>.'; return }
+        lf.querySelector('.lf-copy').href = url; done();
+      });
     }
   });
 })();
