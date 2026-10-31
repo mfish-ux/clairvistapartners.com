@@ -56,7 +56,8 @@
       lf.hidden = false; veil.hidden = false; document.body.style.overflow = 'hidden';
       void lf.offsetWidth; lf.classList.add('on');
       open = btn; btn.setAttribute('aria-expanded','true');
-      (lf.querySelector('[aria-selected="true"]') || lf.querySelector('.lf-side button')).focus({preventScroll:true});
+      // the heading takes focus, so no focus ring lands under the thumb
+      var hd = lf.querySelector('h2'); hd.setAttribute('tabindex', '-1'); hd.focus({preventScroll:true});
       count('easy-call-open-'+page);
       return;
     }
@@ -70,7 +71,8 @@
     lf.style.left = left+'px'; lf.style.top = top+'px';
     void lf.offsetWidth; lf.classList.add('on');
     open = btn; btn.setAttribute('aria-expanded','true');
-    (lf.querySelector('[aria-selected="true"]') || lf.querySelector('.lf-side button')).focus();  // no tabs until the number exists
+    // no tabs until the number exists; the side already chosen, if any, takes focus
+    (lf.querySelector('[aria-selected="true"]') || lf.querySelector('.lf-side [aria-pressed="true"]') || lf.querySelector('.lf-side button')).focus();
     count('easy-call-open-'+page);
   }
   function hide(){
