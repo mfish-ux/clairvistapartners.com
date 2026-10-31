@@ -361,7 +361,7 @@ const vsource = v => v.tag ? tagCo(v.tag) + (tagPerson(v.tag) ? ' (' + tagPerson
 
 // ----- the page -----
 function render(){
-  const views = EVTS.filter(e => e.type === 'view'), clicks = EVTS.filter(e => e.type === 'click');
+  const views = EVTS.filter(e => e.type === 'view'), clicks = EVTS.filter(e => e.type === 'click' && !/^drag-/.test(e.name || '')), drags = EVTS.filter(e => e.type === 'click' && /^drag-/.test(e.name || ''));
   const visits = buildVisits(), people = views.filter(v => v.new_today === true);
   // each device once over the whole range: its first day here in the range is the one whose previous visit came before the range
   const rangeStart = new Date(Date.now() - days * 864e5).toISOString().slice(0, 10);
@@ -412,6 +412,10 @@ function render(){
     <div class="card"><h3>I have stuff</h3>${funnel('company')}</div>
     <div class="card"><h3>I have space</h3>${funnel('warehouse')}</div>
     <div class="card"><h3>What they picked</h3>${bars(count(EVTS.filter(e => e.type === 'answer'), e => answerLabel(e.name) + ': ' + e.answer), null, 12, 'pick')}</div>
+  </div></section>
+  <section><h2>Playing with the characters <small>Drags of the two of them, a sign the page is being enjoyed</small></h2><div class="grid2">
+    <div class="card"><h3>What they did</h3>${bars(count(drags, e => e.name.replace(/^drag-/, '').replace(/-/g, ' ')), null, 8, 'drag')}</div>
+    <div class="card"><h3>Who plays</h3>${bars(count(drags, e => (e.page ? (PAGE[e.page] || e.page) + ', ' : '') + (e.device || '')), null, 8, 'drag')}<p class="muted" style="font-size:12.5px;margin:8px 0 0">${drags.length ? new Set(drags.map(e => e.visit_id).filter(Boolean)).size + ' of ' + visits.length + ' visits dragged one of them.' : 'Nobody has yet.'}</p></div>
   </div></section>
   <section><h2>Where they are <small>Approximate: a phone often shows its carrier's city.</small></h2><div class="grid3">
     <div class="card"><h3>Cities</h3>${bars(count(visits, v => v.city ? v.city + (v.region ? ', ' + v.region : '') : ''), null, 10, 'visit')}</div>
