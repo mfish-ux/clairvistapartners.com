@@ -1266,3 +1266,22 @@ main.hero .words h1 .logo-line{display:block;width:clamp(110px,10vw,160px);heigh
 .bar .brand img{width:150px;height:auto;display:block}
 .bar .nav,.bar .talk{position:relative;top:-12px}
 @media (max-width:960px){.bar .nav,.bar .talk{top:0}}
+
+/* Mel, 30 Oct: "keep the girl character on the left and the guy on the right ... whatever character a user clicks
+   and/or drags is the one that should be shaded darker indicating theyve been selectred". They no longer swap places;
+   the picked one is inked darker and the other goes pale (hover brings the pale one partway back). */
+.s-figs.has-pick>.s-fig.picked img{opacity:1;filter:contrast(1.5)}
+.s-figs.has-pick>.s-fig:not(.picked) img{opacity:.4;filter:grayscale(1)}
+.s-figs.has-pick>.s-fig:not(.picked):hover img,.s-figs.has-pick>.s-fig:not(.picked):focus-visible img{opacity:.75}
+/* Mel, 30 Oct: "they can be a little bigger for the landing page, resize the phone and everything else accordingly".
+   The pair is a quarter bigger; the phone gives back a little height; her card drops to sit below the counter. */
+main.hero{--ph:min(700px,calc(100svh - 222px))}
+.hero>.home-figs .s-fig img{height:clamp(150px,24vh,216px)}
+.hero>.home-figs .pair-heart{left:calc(6px + clamp(150px,24vh,216px) * .55)}
+.hero>.cast .her,.hero .cast .her{align-self:end;margin-bottom:clamp(8px,16vh,150px)}
+@media (max-width:960px){
+  main.hero{--ph:min(600px,calc(100svh - 150px))}
+  .hero>.home-figs .s-fig img{height:124px}
+  .hero>.cast .her,.hero .cast .her{align-self:auto;margin-bottom:0}
+}
+@media (max-width:380px){main.hero{--ph:540px}}

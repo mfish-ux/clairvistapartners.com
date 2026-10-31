@@ -178,14 +178,15 @@
   function letGo(){
     if(!drag) return; var moved = drag.moved, far = drag.far || 0; drag = null;
     fig.classList.remove('held');
-    if(far > 24 && window.cvpSwap){ cvpSwap(fig); count('buddy-dragged-' + side); return }
+    if(window.cvpPick) cvpPick(fig);
+    if(far > 24 && window.cvpDrop){ cvpDrop(fig); count('buddy-dragged-' + side); return }
     fig.classList.add('settle'); fig.style.transform = '';
     setTimeout(function(){ fig.classList.remove('settle') }, 700);
     if(moved) count('buddy-dragged-' + side);
     setTimeout(show, moved && !still ? 420 : 0);
   }
   fig.addEventListener('pointerup', letGo); fig.addEventListener('pointercancel', letGo);
-  fig.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open ? close() : show() } });
+  fig.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(window.cvpPick) cvpPick(fig); open ? close() : show() } });
 
   // the other one, back to back with her: pick him up or click him, and go meet him on his own page
   document.querySelectorAll('.s-fig.other').forEach(function(o){
@@ -194,10 +195,10 @@
     var tip = document.createElement('span'); tip.className = 'side-tag'; tip.setAttribute('aria-hidden','true'); tip.innerHTML = o.dataset.say + ' <i>→</i>'; o.appendChild(tip);
     var d = null;
     // no fade, no pause: the page swaps underneath while the two of them stay put (view transitions in site.css)
-    function go(){ count('buddy-switch-to-' + o.dataset.go.replace('.html','')); location.href = o.dataset.go + (from2 ? '?from=' + encodeURIComponent(from2) : '') }
+    function go(){ if(window.cvpPick) cvpPick(o); setTimeout(function(){ count('buddy-switch-to-' + o.dataset.go.replace('.html','')); location.href = o.dataset.go + (from2 ? '?from=' + encodeURIComponent(from2) : '') }, 220) }
     o.addEventListener('pointerdown', function(e){ if(e.button !== 0) return; e.preventDefault(); d = {x:e.clientX, y:e.clientY, far:0}; o.setPointerCapture(e.pointerId); o.classList.add('held') });
     o.addEventListener('pointermove', function(e){ if(!d) return; var dx = e.clientX - d.x, dy = e.clientY - d.y; d.far = Math.max(d.far, Math.abs(dx) + Math.abs(dy)); o.style.transform = 'translate(' + Math.max(-140, Math.min(140, dx * .55)) + 'px,' + Math.max(-80, Math.min(80, dy * .55)) + 'px) rotate(' + Math.max(-12, Math.min(12, dx / 14)) + 'deg)' });
-    function up(){ if(!d) return; var far = d.far; d = null; o.classList.remove('held'); if(far > 24 && window.cvpSwap) cvpSwap(o); else { o.style.transform = ''; go() } }
+    function up(){ if(!d) return; var far = d.far; d = null; o.classList.remove('held'); if(far > 24 && window.cvpDrop) cvpDrop(o); else { o.style.transform = ''; go() } }
     o.addEventListener('pointerup', up); o.addEventListener('pointercancel', function(){ d = null; o.classList.remove('held'); o.style.transform = '' });
     o.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go() } });
   });

@@ -4,23 +4,22 @@
 // - now and then one shifts its weight on the stool
 // - near the pointer they lean a degree or two toward it, slowly, like half-noticing someone walk up
 // - their phone lights up when something happens to them
-// Drag one of the pair and let go: the two swap places with a short glide (Mel, 30 October).
-window.cvpSwap = function(fig){
-  var p = fig.parentNode, figs = Array.prototype.filter.call(p.children, function(c){ return c.classList.contains('s-fig') });
-  if(figs.length < 2) return false;
-  // whoever was dragged is who the leaflet is for; it opens beside them once they land
+// The two of them keep their places, her on the left and him on the right (Mel, 30 October). Whoever the
+// visitor clicks or drags is picked: shaded darker, the other one paler (Mel, 30 October).
+window.cvpPick = function(fig){
+  var p = fig && fig.parentNode; if(!p) return;
+  Array.prototype.forEach.call(p.children, function(c){ if(c.classList.contains('s-fig')) c.classList.toggle('picked', c === fig) });
+  p.classList.add('has-pick');
+};
+// Drag one and let go: they spring back to their own stool, picked, and the leaflet opens for their side.
+window.cvpDrop = function(fig){
   var party = fig.classList.contains('him') ? 'I have space' : fig.classList.contains('her') ? 'I have stuff' : '';
-  function offer(ms){ setTimeout(function(){ if(window.cvpLeaflet) cvpLeaflet(fig, party) }, ms) }
-  var a = figs[0], b = figs[1], ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-  [a, b].forEach(function(f){ f.style.transition = 'none'; f.style.transform = '' });
-  p.insertBefore(b, a); p.classList.toggle('swapped');
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ offer(60); return true }
-  [[a, ra], [b, rb]].forEach(function(x){ var n = x[0].getBoundingClientRect(); x[0].style.transform = 'translate(' + (x[1].left - n.left) + 'px,' + (x[1].top - n.top) + 'px)' });
-  void p.offsetWidth;
-  [a, b].forEach(function(f){ f.style.transition = 'transform .6s cubic-bezier(.3,1.2,.5,1)'; f.style.transform = '' });
-  setTimeout(function(){ [a, b].forEach(function(f){ f.style.transition = '' }) }, 700);
-  try{ window.goatcounter && goatcounter.count({path:'figures-swapped', title:'figures swapped', event:true}) }catch(e){}
-  offer(480);
+  cvpPick(fig);
+  fig.classList.add('settle'); fig.style.transform = '';
+  setTimeout(function(){ fig.classList.remove('settle') }, 700);
+  try{ window.goatcounter && goatcounter.count({path:'figure-dragged-' + (party === 'I have space' ? 'space' : 'stuff'), title:'figure dragged', event:true}) }catch(e){}
+  var still = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  setTimeout(function(){ if(window.cvpLeaflet) cvpLeaflet(fig, party) }, still ? 60 : 420);
   return true;
 };
 (function(){
