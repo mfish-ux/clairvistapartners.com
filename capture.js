@@ -211,7 +211,7 @@
 
   // ---- Microsoft Clarity: recordings and heatmaps, only after Accept, tagged so a recording can be found by prospect
   function clarity(){
-    if(!CLARITY_ID || !live || skip || get(localStorage, 'cvp-consent') !== 'yes' || window.clarity) return;
+    if(!CLARITY_ID || !live || skip || get(localStorage, 'cvp-consent') === 'no' || window.clarity) return;
     (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
       y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y) })(window, document, 'clarity', 'script', CLARITY_ID);
     if(src.from) clarity('set', 'from', src.from);
@@ -221,26 +221,22 @@
   }
   clarity();
 
-  // ---- the notice
+  // ---- the notice (Mel, 31 October: "way too in your face ... make this as subtle as possible while remaining legal"):
+  // one small line at the foot of the first page, gone on OK or on a second page; turning analytics off lives on the privacy page
+  window.cvpOptOut = function(){ put(localStorage, 'cvp-consent', 'no'); ['cvp-seen','cvp-last','cvp-visit'].forEach(function(k){ del(localStorage, k) }); del(sessionStorage, 'cvp-geo') };
+  window.cvpOptIn = function(){ put(localStorage, 'cvp-consent', 'yes') };
   if(choice || bot) return;
+  put(localStorage, 'cvp-consent', 'seen');
   function notice(){
     var css = document.createElement('style');
-    css.textContent = '.cvp-note{position:fixed;left:16px;bottom:16px;z-index:80;max-width:380px;padding:16px 16px 14px;border:1.5px solid #0A0B10;border-radius:16px;background:#fff;box-shadow:5px 5px 0 #0047FF;font:400 14px/1.45 Outfit,system-ui,sans-serif;color:#0A0B10}'
-      + '.cvp-note p{margin:0}.cvp-note a{color:#0A0B10;text-decoration:underline;text-underline-offset:2px}.cvp-note .row{display:flex;gap:8px;margin-top:12px}'
-      + '.cvp-note button{border:0;border-radius:999px;padding:9px 16px;font:700 13.5px/1 Outfit,system-ui,sans-serif;cursor:pointer}'
-      + '.cvp-note .ok{background:#0A0B10;color:#fff}.cvp-note .no{background:#fff;color:#0A0B10;border:1.5px solid #E5E7EB}'
-      + '.cvp-note button:focus-visible,.cvp-note a:focus-visible{outline:2px solid #0047FF;outline-offset:2px}'
-      + '@media (max-width:520px){.cvp-note{left:16px;right:16px;max-width:none}}';
+    css.textContent = '.cvp-note{position:fixed;left:12px;bottom:12px;z-index:80;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:7px 8px 7px 12px;border:1px solid #E5E7EB;border-radius:999px;background:rgba(255,255,255,.96);font:400 12px/1.3 Outfit,system-ui,sans-serif;color:#5B5F66;box-shadow:0 2px 10px rgba(10,11,16,.06);transition:opacity .3s ease}'
+      + '.cvp-note a{color:#5B5F66;text-decoration:underline;text-underline-offset:2px}.cvp-note button{border:0;border-radius:999px;background:#F3F4F6;color:#0A0B10;padding:4px 10px;font:600 12px/1.2 Outfit,system-ui,sans-serif;cursor:pointer}'
+      + '.cvp-note a:focus-visible,.cvp-note button:focus-visible{outline:2px solid #0047FF;outline-offset:2px}';
     document.head.appendChild(css);
-    var box = document.createElement('div'); box.className = 'cvp-note'; box.setAttribute('role', 'region'); box.setAttribute('aria-label', 'Data notice');
-    box.innerHTML = '<p>This site collects anonymous usage data to understand how it is used and improve your experience. <a href="privacy.html">How we use it</a></p>'
-      + '<div class="row"><button type="button" class="ok">Accept</button><button type="button" class="no">Decline</button></div>';
+    var box = document.createElement('div'); box.className = 'cvp-note'; box.setAttribute('role', 'region'); box.setAttribute('aria-label', 'Cookie notice');
+    box.innerHTML = '<span>We use cookies for analytics. <a href="privacy.html">Privacy</a></span><button type="button">OK</button>';
     document.body.appendChild(box);
-    box.querySelector('.ok').onclick = function(){ put(localStorage, 'cvp-consent', 'yes'); box.remove(); clarity() };
-    box.querySelector('.no').onclick = function(){ put(localStorage, 'cvp-consent', 'no');
-      ['cvp-seen','cvp-last','cvp-visit'].forEach(function(k){ del(localStorage, k) }); del(sessionStorage, 'cvp-geo');
-      put(sessionStorage, 'cvp-visit', visitId); put(sessionStorage, 'cvp-last', String(Date.now())); put(sessionStorage, 'cvp-tab-seen', '1');
-      full = false; geo = null; store = sessionStorage; box.remove() };
+    box.querySelector('button').onclick = function(){ put(localStorage, 'cvp-consent', 'yes'); box.style.opacity = '0'; setTimeout(function(){ box.remove() }, 300) };
   }
   if(document.body) notice(); else document.addEventListener('DOMContentLoaded', notice);
 })();
