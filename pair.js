@@ -27,13 +27,18 @@
   // follow the story on the phone
   var hero = document.getElementById('hero'), her = pair.querySelector('.her'), him = pair.querySelector('.him');
   function nod(el){ if(!el) return; el.classList.remove('nod'); void el.offsetWidth; el.classList.add('nod') }
+  // a turn on the stool is a quick swivel with a little hop (Mel, 31 Oct, round 2: "the match done properly")
+  function hop(el){ if(!el) return; el.classList.add('hop'); setTimeout(function(){ el.classList.remove('hop') }, 140) }
   var last = '';
   function sync(){
     var s = hero ? hero.dataset.scene : ''; if(s === last) return; last = s;
-    if(s === 'her') { pair.classList.remove('met', 'glance'); nod(her) }
+    if(s === 'her') { if(pair.classList.contains('met')){ hop(her); hop(him) } pair.classList.remove('met', 'glance'); nod(her) }
     if(s === 'his') nod(him);
-    if(s === 'talk') { pair.classList.add('glance'); nod(her); setTimeout(function(){ nod(him) }, 600) }
-    if(s === 'match') pair.classList.add('glance', 'met');
+    if(s === 'talk') { pair.classList.add('glance'); nod(her); setTimeout(function(){ nod(him) }, 600);
+      // he looks over at her for a moment, and back to his phone
+      if(him && pair.classList.contains('home-figs')){ setTimeout(function(){ hop(him); him.classList.add('peek') }, 900);
+        setTimeout(function(){ hop(him); him.classList.remove('peek') }, 2100) } }
+    if(s === 'match'){ hop(her); hop(him); pair.classList.add('glance', 'met') }
   }
   if(hero && 'MutationObserver' in window) new MutationObserver(sync).observe(hero, {attributes:true, attributeFilter:['data-scene']});
   // the first scene is set before anyone can see it; their first visible beat is the entrance below

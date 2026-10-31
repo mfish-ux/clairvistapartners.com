@@ -149,7 +149,9 @@
     if(open) return; open = true; render(); bub.hidden = false;
     fig.setAttribute('aria-expanded','true'); fig.classList.add('talking');
     requestAnimationFrame(function(){ bub.classList.add('on') }); setTimeout(function(){ bub.classList.add('on') }, 30);
-    setTimeout(function(){ var t = bub.querySelector('textarea'); if(t) t.focus({preventScroll:true}) }, still ? 0 : 380);
+    // on a phone the bubble takes focus, not its text box, so the keyboard waits until the visitor taps it (Mel, 31 Oct)
+    setTimeout(function(){ var t = bub.querySelector('textarea');
+      if(matchMedia('(pointer:coarse)').matches){ bub.setAttribute('tabindex', '-1'); bub.focus({preventScroll:true}) } else if(t) t.focus({preventScroll:true}) }, still ? 0 : 380);
     count('buddy-open-' + side);
   }
   function close(){

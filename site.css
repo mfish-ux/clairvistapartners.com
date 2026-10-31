@@ -1360,3 +1360,20 @@ input:focus-visible,textarea:focus-visible{outline:3px solid var(--blue)!importa
 /* carried anywhere on the screen, and on the way back to the stool, they pass over everything else (Mel, 31 Oct) */
 .s-fig.held,.s-fig.flying{z-index:60;will-change:transform;mix-blend-mode:multiply}  /* the paper stays invisible over anything */
 .s-fig.held .side-tag,.s-fig.flying .side-tag{opacity:0!important}
+
+/* ===== Mel, 31 Oct, round 2 ("Start round 2") ===== */
+/* the match done properly: a quick swivel on the stool with a little hop, never a paper-thin flip; on phones the heart
+   sits between them; during the talk he looks over at her for a moment */
+.s-fig img{transition:scale .24s cubic-bezier(.4,0,.2,1),opacity .5s ease,filter .5s ease}
+.s-fig.lives img{transition:scale .24s cubic-bezier(.4,0,.2,1),opacity .5s ease,filter .5s ease,rotate .9s cubic-bezier(.2,.7,.2,1)}
+.s-fig.hop{transform:translateY(-4px);transition:transform .12s ease-out}
+.home-figs .s-fig.him.peek img{scale:calc(-1 * var(--m,1)) 1}
+@media (max-width:960px){.hero>.home-figs .pair-heart{left:50%;margin-left:-9px}}
+/* phone polish: the chat card as a sheet from the bottom over a veil, finger-sized controls, no grey tap flash */
+.lf-veil{position:fixed;inset:0;z-index:58;background:rgba(10,11,16,.36)}
+.lf-veil[hidden]{display:none}
+.leaflet.sheet{position:fixed!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;width:auto!important;max-height:88svh;overflow:auto;border-radius:22px 22px 0 0;padding-bottom:calc(20px + env(safe-area-inset-bottom));transform:translateY(24px)}
+.leaflet.sheet.on{transform:none}
+.leaflet.sheet{z-index:59!important}
+@media (max-width:600px){.lf-x{width:44px;height:44px;top:6px;right:6px}.lf-tabs button,.lf-side button{min-height:44px}}
+a,button,summary,label,[role=button],[role=link],.s-fig{-webkit-tap-highlight-color:transparent}

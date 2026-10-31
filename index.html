@@ -308,6 +308,13 @@ button{font:inherit;color:inherit}
 .phonecol .early-look .el-k:before{content:"";width:6px;height:6px;border-radius:50%;background:#8FB0FF;animation:soonblink 2.4s ease-in-out infinite}
 .phonecol .early-look b{font-weight:800}
 @keyframes soonblink{0%,100%{opacity:1}50%{opacity:.3}}
+/* Mel, 31 Oct, round 2, phone polish: every control in the phone is at least 44px under a finger as rendered */
+.eye,.cback,.qtop .back{position:relative}
+.eye:after,.heart:after,.cback:after,.qtop .back:after{content:"";position:absolute;inset:-8px}
+.qtop .back:after{inset:-13px -10px}
+.appview .chip,.appview .btn{min-height:calc(44px / var(--z,1))}
+.appview .pass{width:calc(46px / var(--z,1));height:calc(46px / var(--z,1))}
+@media (orientation:landscape) and (max-height:500px){main.hero{--ph:480px!important}}
 @media (max-width:960px){
   .cast .who .ring{left:7px;top:7px;width:42px;height:42px}
   /* on phones the two of them sit on a counter line right on top of the phone, so they and the story share one view,

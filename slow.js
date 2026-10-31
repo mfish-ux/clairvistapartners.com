@@ -47,8 +47,20 @@
     if(s){ side = s; lf.querySelectorAll('.lf-side button').forEach(function(x){ x.setAttribute('aria-pressed', x.dataset.s === s) }) }
   }
   window.cvpLeaflet = function(anchor, s){ if(open) hide(); forSide(s); show(anchor); count('easy-call-open-drag-' + (s === 'I have space' ? 'space' : 'stuff') + '-' + page) };
+  var veil = document.createElement('div'); veil.className = 'lf-veil'; veil.hidden = true;
   function show(btn){
-    if(!lf.parentNode) document.body.appendChild(lf);
+    if(!lf.parentNode){ document.body.appendChild(veil); document.body.appendChild(lf) }
+    // on a phone the card rises from the bottom over a veil, within thumb reach (Mel, 31 Oct, round 2)
+    if(matchMedia('(max-width:600px)').matches){
+      lf.classList.add('sheet'); lf.style.left = lf.style.top = lf.style.width = '';
+      lf.hidden = false; veil.hidden = false; document.body.style.overflow = 'hidden';
+      void lf.offsetWidth; lf.classList.add('on');
+      open = btn; btn.setAttribute('aria-expanded','true');
+      (lf.querySelector('[aria-selected="true"]') || lf.querySelector('.lf-side button')).focus({preventScroll:true});
+      count('easy-call-open-'+page);
+      return;
+    }
+    lf.classList.remove('sheet');
     var r = btn.getBoundingClientRect(), w = Math.min(380, innerWidth - 32);
     lf.style.width = w+'px';
     lf.hidden = false;
@@ -62,7 +74,7 @@
     count('easy-call-open-'+page);
   }
   function hide(){
-    if(!open) return; lf.classList.remove('on'); lf.hidden = true;
+    if(!open) return; lf.classList.remove('on'); lf.hidden = true; veil.hidden = true; document.body.style.overflow = '';
     open.setAttribute('aria-expanded','false'); open.focus(); open = null;
   }
   document.querySelectorAll('.slow button, [data-leaflet]').forEach(function(b){

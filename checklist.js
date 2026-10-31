@@ -82,7 +82,9 @@
       '<button class="way primary" type="submit">Send my checklist</button><p class="lf-err" aria-live="polite"></p></form>';
     veil.hidden = false; document.body.style.overflow = 'hidden';
     card.querySelector('.lf-x').onclick = close;
-    card.querySelector('input').focus();
+    // on a phone, focus the card's heading so the keyboard waits until the visitor taps a field (Mel, 31 Oct, round 2)
+    if(matchMedia('(pointer:coarse)').matches){ var hd = card.querySelector('h2'); if(hd){ hd.setAttribute('tabindex', '-1'); hd.focus({preventScroll:true}) } }
+    else card.querySelector('input').focus();
     card.querySelector('form').onsubmit = function(e){
       e.preventDefault(); var f = e.target.elements, err = card.querySelector('.lf-err');
       if(!f.reach.value.trim()){ err.textContent = 'Leave an email or a phone number so we can reach you.'; f.reach.focus(); return }

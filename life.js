@@ -126,9 +126,9 @@ window.cvpDrop = function(fig, d){
     var last = '';
     new MutationObserver(function(){
       var s = hero.dataset.scene; if(s === last) return; last = s;
-      if(s === 'her') pulse(figs.filter(function(f){ return f.classList.contains('her') })[0]);
+      if(s === 'her') setTimeout(function(){ pulse(figs.filter(function(f){ return f.classList.contains('her') })[0]) }, 300);
       if(s === 'his') pulse(figs.filter(function(f){ return f.classList.contains('him') })[0]);
-      if(s === 'match') figs.forEach(pulse);
+      if(s === 'match') setTimeout(function(){ figs.forEach(pulse) }, 300);
     }).observe(hero, {attributes:true, attributeFilter:['data-scene']});
   }
   var other = document.querySelector('.s-fig.other');
