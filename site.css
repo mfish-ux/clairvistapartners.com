@@ -1234,7 +1234,10 @@ main.hero .words h1 span{margin-bottom:clamp(10px,1.8vh,18px)}
 main.hero .words h1 b .mk{display:inline;margin:0}
 /* Mel, 30 Oct: "put that as the dividing line after warehouses get lonely too" */
 main.hero .words h1 span{margin-bottom:0}
-main.hero .words h1 .scribble.divider{position:static;display:block;width:clamp(110px,10vw,160px);height:clamp(12px,1.1vw,17px);margin:clamp(12px,2vh,20px) 0 clamp(12px,2vh,20px) -2px}
+/* Mel, 30 Oct: the dividing line takes the logo's line, straight and the same weight (13 of the logo's 165 pixels, 3.5px at its 150px width) */
+main.hero .words h1 .logo-line{display:block;width:clamp(110px,10vw,160px);height:3.5px;background:var(--blue);margin:clamp(16px,2.6vh,26px) 0;transform-origin:left;transform:scaleX(0);animation:logoline .6s cubic-bezier(.5,0,.2,1) .5s forwards}
+@keyframes logoline{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){main.hero .words h1 .logo-line{animation:none;transform:none}}
 
 /* Mel, 30 Oct: Partnerships page. The intro line and "Who sits at the table" are cut on his word; six seats in one row */
 .partners .reach{margin-top:36px}
