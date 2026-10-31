@@ -12,7 +12,7 @@
 (function(){
   var SUPABASE_URL = 'https://oilvzabkaoiliabefwrh.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_tFw1kzlY87RsUElfZPNZlA_UoRKk3nr';  // publishable key: the database only lets it add rows
-  var CLARITY_ID = '';                                                    // Microsoft Clarity project ID; loads only after Accept
+  var CLARITY_ID = 'z6bzag7hip';                                                    // Microsoft Clarity project ID; loads only after Accept
   var preview = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
   var live = !!(SUPABASE_URL && SUPABASE_KEY) && !preview;
   window.CVP_DB = live ? {url:SUPABASE_URL, key:SUPABASE_KEY} : {url:'', key:''};
