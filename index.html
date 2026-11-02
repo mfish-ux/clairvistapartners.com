@@ -4,12 +4,12 @@
 <meta charset="utf-8"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clairvista Partners: a dating app for warehouses</title>
-<meta name="description" content="We find the companies that will need space before they start looking, and introduce them to the warehouse companies that will welcome them with open arms.">
+<meta name="description" content="Companies with stuff talk pallets and dates. Warehouses with space talk square feet and rates. We're fluent in both.">
 <link rel="canonical" href="https://clairvistapartners.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Clairvista Partners">
 <meta property="og:title" content="A dating app for warehouses">
-<meta property="og:description" content="Warehouses get lonely too. We find the companies that will need space before they start looking, and introduce them to the warehouse companies that will welcome them with open arms.">
+<meta property="og:description" content="Warehouses get lonely too. Companies with stuff talk pallets and dates. Warehouses with space talk square feet and rates. We're fluent in both.">
 <meta property="og:url" content="https://clairvistapartners.com/">
 <meta property="og:image" content="https://clairvistapartners.com/assets/share-dating-app.jpg?v=2">
 <meta property="og:image:width" content="1200">
@@ -326,9 +326,31 @@ button{font:inherit;color:inherit}
      stopped before it (Clarity, 31 Oct to 2 Nov; Mel, 2 Nov: "Yes, build them") */
   .words{display:contents}
   .words>*{order:1;justify-self:start}
-  .words>.cap,.words>.ways{margin-top:calc(clamp(16px,2.6vh,26px) - 26px)}
+  /* the phone's first screen (Mel, 2 Nov, the plan: it ends after the two of them; the Prism phone opens the second
+     screen). One budget, measured on a 390 by 664 iPhone screen: tighter gaps, the logo line and the bands a little
+     closer, the cost line at the site's 13 px size, and the two of them drawn at 112 px instead of 124 */
+  main.hero{row-gap:18px}
+  .words>.cap,.words>.ways{margin-top:calc(clamp(16px,2.6vh,26px) - 18px)}
+  main.hero .words h1 .logo-line{margin:12px 0}
+  main.hero .cap.dia .d,main.hero .cap.dia .fl{padding-top:10px}
+  main.hero .words>.cost{font-size:13px;line-height:1.3}
+  main.hero>.home-figs .s-fig img{height:112px}
   .words>.slow{order:5;margin-top:0}
 }
+
+/* the line, 2 Nov: two voices side by side (hers left, his right, the way they sit) and ours under both.
+   Each voice gets its own thin band of light: companies blue, warehouses orange, us green (Mel, 28 Oct). The bands
+   draw in reading order so the eye goes left, right, down; the words are never hidden while they draw. */
+.cap.dia,.words>.cap.dia{justify-self:stretch;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(16px,2vw,28px);row-gap:clamp(12px,1.8vh,18px);max-width:600px}
+.cap.dia .d{position:relative;padding-top:13px;font:400 clamp(16px,1.35vw,20px)/1.38 Outfit;color:var(--muted);cursor:default}
+.cap.dia .d b{font:700 .9em/1.38 "Space Mono",monospace;letter-spacing:-.02em;color:var(--obsidian)}
+.cap.dia .fl{grid-column:1/-1;position:relative;padding-top:13px;font:800 clamp(22px,1.9vw,28px)/1.1 Outfit;letter-spacing:-.03em;color:var(--obsidian)}
+.cap.dia .d:before,.cap.dia .fl:before{content:"";position:absolute;left:0;top:0;width:56px;height:3.5px;transform-origin:left;transform:scaleX(0);animation:logoline .5s cubic-bezier(.5,0,.2,1) forwards}
+.cap.dia .d1:before{background:#0047FF;animation-delay:1.1s}
+.cap.dia .d2:before{background:#FC5700;animation-delay:1.5s}
+.cap.dia .fl:before{background:#00A849;animation-delay:1.9s}
+@media (hover:hover){.cap.dia .d:hover:before{width:100%;transition:width .35s ease}}
+@media (prefers-reduced-motion:reduce){.cap.dia .d:before,.cap.dia .fl:before{animation:none;transform:none}}
 </style>
 <script src="capture.js"></script>
 </head>
@@ -341,7 +363,7 @@ button{font:inherit;color:inherit}
 <main class="hero" id="hero" data-scene="her">
   <div class="words">
     <h1><span>Warehouses get lonely too.</span><span class="logo-line" aria-hidden="true"></span> <b>So we built a dating app for warehouses.</b></h1>
-    <p class="cap">We find the <b>companies that will need space</b> before they start looking, and introduce them to the <b>warehouse companies</b> that will welcome them with open arms.</p>
+    <p class="cap dia"><span class="d d1">Companies with stuff talk <b>pallets and dates.</b></span> <span class="d d2">Warehouses with space talk <b>square feet and rates.</b></span> <b class="fl">We're fluent in both.</b></p>
     <div class="ways">
       <a class="way" href="companies.html" data-goatcounter-click="way-i-have-stuff">I have stuff</a>
       <a class="way primary" href="warehouses.html" data-goatcounter-click="way-i-have-space">I have space</a>
@@ -771,6 +793,7 @@ function send(){
   });
 }
 </script>
+<script src="cast.js"></script>
 <script src="pair.js"></script>
 <script src="life.js"></script>
 <script src="foot.js"></script>

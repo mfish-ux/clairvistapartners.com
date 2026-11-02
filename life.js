@@ -5,12 +5,7 @@
 // - near the pointer they lean a degree or two toward it, slowly, like half-noticing someone walk up
 // - their phone lights up when something happens to them
 // The two of them keep their places, her on the left and him on the right (Mel, 30 October). Whoever the
-// visitor clicks or drags is picked: shaded darker, the other one paler (Mel, 30 October).
-window.cvpPick = function(fig){
-  var p = fig && fig.parentNode; if(!p) return;
-  Array.prototype.forEach.call(p.children, function(c){ if(c.classList.contains('s-fig')) c.classList.toggle('picked', c === fig) });
-  p.classList.add('has-pick');
-};
+// visitor clicks or drags is picked (cast.js): shaded darker, the other one paler (Mel, 30 October).
 // Held, they go wherever the pointer takes them, anywhere on the screen, swinging a little with its speed, above
 // everything (Mel, 31 Oct: "allow the user to drag the characters anywhere on the screen they want, still snapping back
 // with the same form that pops up").
@@ -22,12 +17,13 @@ window.cvpCarry = function(fig, d, e){
   d.dx = dx; d.dy = dy; d.ex = e.clientX; d.ey = e.clientY;
   fig.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + d.tilt.toFixed(1) + 'deg)';
 };
-// Drag one and let go: they spring back to their own stool, picked, and the leaflet opens for their side. Where they
-// were dropped is noted for the dashboard: onto what, how far, how long (Mel, 31 Oct: "its a fun feature and would be
-// interesting to track as a way to see what people are doing and behaving").
+// Drag one and let go: they spring back to their own stool, picked. Dropped on the other one, where the two of them
+// sit together (the landing page, the 404, How it works, Partnerships), they meet: face to face, a small heart, both
+// phones light. Nothing opens: play is never answered with a form (Mel, 2 November, the first-date rule; until then the
+// chat card opened here). Where they were dropped is noted for the dashboard: onto what, how far, how long (Mel, 31 Oct:
+// "its a fun feature and would be interesting to track as a way to see what people are doing and behaving").
 window.cvpDrop = function(fig, d){
-  var party = fig.classList.contains('him') ? 'I have space' : fig.classList.contains('her') ? 'I have stuff' : '';
-  var who = party === 'I have space' ? 'him' : 'her', onto = 'page';
+  var who = fig.classList.contains('him') ? 'him' : 'her', onto = 'page';
   if(d && d.ex != null){
     fig.style.pointerEvents = 'none';
     var el = document.elementFromPoint(d.ex, d.ey), f = el && el.closest('.s-fig');
@@ -40,12 +36,11 @@ window.cvpDrop = function(fig, d){
   var page = (location.pathname.split('/').pop() || 'index').replace('.html', '') || 'index', name = 'drag-' + who + '-onto-' + onto;
   if(window.cvpTrack) cvpTrack(name, 'page ' + page + '; ' + Math.round(Math.sqrt((d && d.dx || 0) * (d && d.dx || 0) + (d && d.dy || 0) * (d && d.dy || 0))) + 'px'
     + '; ' + (d && d.t ? Date.now() - d.t : 0) + 'ms; dx ' + Math.round(d && d.dx || 0) + ', dy ' + Math.round(d && d.dy || 0) + '; screen ' + innerWidth + 'x' + innerHeight);
-  cvpPick(fig);
-  fig.classList.add('settle', 'flying'); fig.style.transform = '';
-  setTimeout(function(){ fig.classList.remove('settle', 'flying') }, 700);
+  var cast = window.cvpCast, p = fig.parentNode;
+  fig.style.transform = '';
+  if(onto === 'the-other-one' && p && p.matches && p.matches('.home-figs, .pair-figs')){ cast.unpick(p); cast.beat(fig, 'settle', true); cast.meet(p) }
+  else { cast.pick(fig); cast.beat(fig, 'settle', true) }
   try{ window.goatcounter && goatcounter.count({path:name, title:'figure dragged', event:true}) }catch(e){}
-  var still = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  setTimeout(function(){ if(window.cvpLeaflet) cvpLeaflet(fig, party) }, still ? 60 : 420);
   return true;
 };
 (function(){
@@ -82,7 +77,7 @@ window.cvpDrop = function(fig, d){
     setTimeout(function(){
       if(!document.hidden){
         var f = figs[Math.floor(Math.random() * figs.length)], img = f && f.querySelector('img');
-        if(img && !f.classList.contains('held')){ img.classList.remove('shift'); void img.offsetWidth; img.classList.add('shift') }
+        if(img && !(window.cvpCast && cvpCast.busy(f))){ img.classList.remove('shift'); void img.offsetWidth; img.classList.add('shift') }
       }
       shift();
     }, 7000 + Math.random() * 7000);
@@ -120,18 +115,8 @@ window.cvpDrop = function(fig, d){
       sway = Math.max(-0.8, Math.min(0.8, sway + d * 0.015)); if(!swRaf) swRaf = requestAnimationFrame(settleSway) }, {passive:true});
   }
 
-  // when something happens to them, their phone lights up
-  var hero = document.getElementById('hero');
-  if(hero && 'MutationObserver' in window){
-    var last = '';
-    new MutationObserver(function(){
-      var s = hero.dataset.scene; if(s === last) return; last = s;
-      if(s === 'her') setTimeout(function(){ pulse(figs.filter(function(f){ return f.classList.contains('her') })[0]) }, 300);
-      if(s === 'his') pulse(figs.filter(function(f){ return f.classList.contains('him') })[0]);
-      if(s === 'match') setTimeout(function(){ figs.forEach(pulse) }, 300);
-    }).observe(hero, {attributes:true, attributeFilter:['data-scene']});
-  }
+  // when something happens to them, their phone lights up: the story's scenes are answered in pair.js and a meeting
+  // in cast.js; here, the other one's phone lights at each new checklist answer on the side pages
   var other = document.querySelector('.s-fig.other');
   document.addEventListener('input', function(e){ if(e.target.classList && e.target.classList.contains('ck-in') && e.target.value.trim().length === 1) pulse(other) });
-  document.addEventListener('cvp-sent', function(){ figs.forEach(pulse) });
 })();

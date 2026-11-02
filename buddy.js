@@ -162,11 +162,11 @@
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && open) close() });
   document.addEventListener('pointerdown', function(e){ if(open && !bub.contains(e.target) && !fig.contains(e.target)) close() });
 
-  // ---- pick her up, let go, she settles and turns to you ----
-  var drag = null;
+  // ---- pick her up, let go, she settles and turns to you. Every change to her goes through cast.js (2 Nov) ----
+  var cast = window.cvpCast, drag = null;
   fig.addEventListener('pointerdown', function(e){
     if(e.button !== 0) return; e.preventDefault();
-    drag = {x:e.clientX, y:e.clientY, moved:false, t:Date.now()}; fig.setPointerCapture(e.pointerId); fig.classList.add('held');
+    drag = {x:e.clientX, y:e.clientY, moved:false, t:Date.now()}; fig.setPointerCapture(e.pointerId); cast.hold(fig, true);
   });
   fig.addEventListener('pointermove', function(e){
     if(!drag) return;
@@ -175,36 +175,23 @@
     // she goes wherever she is carried, anywhere on the screen (Mel, 31 Oct)
     if(window.cvpCarry) cvpCarry(fig, drag, e);
   });
+  // a tap opens her bubble: the visitor already picked this side. Carried and let go, she just settles back on her
+  // stool and nothing opens (Mel, 2 November: play is never answered with a form)
   function letGo(){
     if(!drag) return; var info = drag, moved = drag.moved, far = drag.far || 0; drag = null;
-    fig.classList.remove('held');
-    if(window.cvpPick) cvpPick(fig);
+    cast.hold(fig, false); cast.pick(fig);
     if(far > 24 && window.cvpDrop){ cvpDrop(fig, info); count('buddy-dragged-' + side); return }
-    fig.classList.add('settle'); fig.style.transform = '';
-    setTimeout(function(){ fig.classList.remove('settle') }, 700);
+    cast.beat(fig, 'settle'); fig.style.transform = '';
     if(moved) count('buddy-dragged-' + side);
     setTimeout(show, moved && !still ? 420 : 0);
   }
   // a cancelled pointer means the browser took the gesture to scroll the page: just put her back (Mel, 31 Oct)
   fig.addEventListener('pointerup', letGo);
-  fig.addEventListener('pointercancel', function(){ if(!drag) return; drag = null; fig.classList.remove('held'); fig.style.transform = '' });
-  fig.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(window.cvpPick) cvpPick(fig); open ? close() : show() } });
+  fig.addEventListener('pointercancel', function(){ if(!drag) return; drag = null; cast.hold(fig, false); fig.style.transform = '' });
+  fig.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); cast.pick(fig); open ? close() : show() } });
 
   // the other one, back to back with her: pick him up or click him, and go meet him on his own page
-  document.querySelectorAll('.s-fig.other').forEach(function(o){
-    o.setAttribute('role','link'); o.tabIndex = 0; o.setAttribute('aria-label', o.dataset.say + '. Go to that page.');
-    o.classList.add('alive');
-    var tip = document.createElement('span'); tip.className = 'side-tag'; tip.setAttribute('aria-hidden','true'); tip.innerHTML = o.dataset.say + ' <i>→</i>'; o.appendChild(tip);
-    var d = null;
-    // no fade, no pause: the page swaps underneath while the two of them stay put (view transitions in site.css)
-    function go(){ if(window.cvpPick) cvpPick(o); setTimeout(function(){ count('buddy-switch-to-' + o.dataset.go.replace('.html','')); location.href = o.dataset.go + (from2 ? '?from=' + encodeURIComponent(from2) : '') }, 220) }
-    o.addEventListener('pointerdown', function(e){ if(e.button !== 0) return; e.preventDefault(); d = {x:e.clientX, y:e.clientY, far:0, t:Date.now()}; o.setPointerCapture(e.pointerId); o.classList.add('held') });
-    o.addEventListener('pointermove', function(e){ if(d && window.cvpCarry) cvpCarry(o, d, e) });
-    function up(){ if(!d) return; var info = d; d = null; o.classList.remove('held'); if(info.far > 24 && window.cvpDrop) cvpDrop(o, info); else { o.style.transform = ''; go() } }
-    o.addEventListener('pointerup', up); o.addEventListener('pointercancel', function(){ d = null; o.classList.remove('held'); o.style.transform = '' });
-    o.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go() } });
-  });
-  var from2 = new URLSearchParams(location.search).get('from');
+  document.querySelectorAll('.s-fig.other').forEach(function(o){ cast.link(o, 'buddy-switch-to-') });
   // arriving from the other one: your own character turns to you, gently
   // the bubble opens only when the visitor clicks or drags the character on this page; tidy any old ?talk=1 from the address
   if(new URLSearchParams(location.search).has('talk')){ var u = new URL(location.href); u.searchParams.delete('talk'); history.replaceState(null, '', u) }
@@ -215,21 +202,19 @@
 // and a small heart appears between them, once. While the visitor types, their own one nods.
 (function(){
   var pair = document.querySelector('.s-figs'); if(!pair) return;
-  var me = pair.querySelector('.s-fig.me'), other = pair.querySelector('.s-fig.other');
-  var heart = document.createElement('span'); heart.className = 'pair-heart'; heart.setAttribute('aria-hidden','true');
-  heart.innerHTML = '<svg viewBox="0 0 16 16"><path d="M8 14s-5.5-3.4-5.5-7.2A3 3 0 0 1 8 5a3 3 0 0 1 5.5 1.8C13.5 10.6 8 14 8 14z" fill="#0047FF"/></svg>';
-  pair.appendChild(heart);
+  var me = pair.querySelector('.s-fig.me'), cast = window.cvpCast;
+  cast.heart(pair);
   function filled(){ var n = 0; document.querySelectorAll('.ck-in').forEach(function(f){ if(f.value.trim()) n++ }); return n }
   function update(){
     var n = filled();
     pair.style.setProperty('--warm', Math.min(1, 0.5 + n * 0.09));
-    pair.classList.toggle('glance', n >= 3);
+    if(!pair.classList.contains('met')) cast.glance(pair, n >= 3);
   }
   document.addEventListener('input', function(e){
     if(e.target.classList && e.target.classList.contains('ck-in')) update();
-    if(e.target.closest && e.target.closest('.buddy') && me){ me.classList.remove('nod'); void me.offsetWidth; me.classList.add('nod') }
+    if(e.target.closest && e.target.closest('.buddy') && me) cast.beat(me, 'nod');
   });
-  document.addEventListener('cvp-sent', function(){ update(); pair.classList.add('glance', 'met') });
+  document.addEventListener('cvp-sent', function(){ update(); cast.meet(pair, true) });
   // the checklist may have been filled before (saved answers) or by the bubble
   setTimeout(update, 50); document.addEventListener('click', function(){ setTimeout(update, 60) });
 })();
