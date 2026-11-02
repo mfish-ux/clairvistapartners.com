@@ -114,7 +114,7 @@ button{font:inherit;color:inherit}
 .rows li{display:flex;align-items:baseline;gap:9px;padding:6px 0;border-top:1px solid var(--line2)}
 .rows li:first-child{border-top:0}
 .rows li i{flex:0 0 18px;height:7px;border-radius:4px;position:relative;top:-1px}
-.rows li span{flex:0 0 52px;font:700 13px Outfit}
+.rows li span{flex:0 0 78px;font:700 13px Outfit}
 .rows li em{font:400 13px/1.3 Outfit;font-style:normal;color:#3A3F4B}
 .quiz .rows li{animation:in .35s ease both}
 @keyframes in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
@@ -346,6 +346,7 @@ button{font:inherit;color:inherit}
       <a class="way" href="companies.html" data-goatcounter-click="way-i-have-stuff">I have stuff</a>
       <a class="way primary" href="warehouses.html" data-goatcounter-click="way-i-have-space">I have space</a>
     </div>
+    <p class="cost">No cost to look. Any fee is agreed before we introduce you.</p>
     <p class="slow"><svg class="slow-i" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 8.5A3.5 3.5 0 0 1 9.5 5h13A3.5 3.5 0 0 1 26 8.5v9a3.5 3.5 0 0 1-3.5 3.5H14l-6 5v-5.2A3.5 3.5 0 0 1 6 17.5z" fill="none" stroke="#0A0B10" stroke-width="2" stroke-linejoin="round"/><path d="M11 11.5h10M11 15.5h6" stroke="#0047FF" stroke-width="2" stroke-linecap="round"/></svg><span>Prefer to take it slow?</span> <button type="button" data-goatcounter-click="open-easy-call-home">Let's chat and see if there's chemistry.</button></p>
   </div>
 
@@ -447,7 +448,7 @@ const HEART='<svg viewBox="0 0 16 16"><path d="M8 14s-5.5-3.4-5.5-7.4A3 3 0 0 1 
 // The warehouses she looks at, one market at a time. Lehigh Valley's rows are Mel's (30 October).
 // His photos show what shippers ask about, posed for the app; in each market he dresses for the place.
 // Space, Time and Cost are Mel's Lehigh Valley lines, used for all three markets (Mel, 30 October: "just use the same cost range").
-const SPACE="100-500,000 square feet Modern Class A Distribution Center",TIME="1 month to 10 years",COST="$10-30 per square foot per year";
+const AVAIL="Empty since Friday. Confirmed Monday.",SPACE="100-500,000 square feet Modern Class A Distribution Center",TIME="1 month to 10 years",COST="$10-30 per square foot per year";
 const MARKETS=[
   {name:"Class A, Lehigh Valley",building:["assets/lehigh-dc.webp","A modern distribution center in the Lehigh Valley, drawn in ink"],
     his:[["assets/his/1-dock-doors.webp","The warehouse manager flexing in front of a long row of dock doors","Dock doors. Lots of them."],
@@ -459,7 +460,7 @@ const MARKETS=[
       ["assets/his/7-highway.webp","On the roof at sunset, pointing at the highway interchange","Close to the highway. Golden hour."],
       ["assets/his/8-security.webp","Kneeling at the security gate with the guard dog","Gated. Guarded. Good boy."]],
     turns:[[0,2,1],[3,5,7],[2,6,4]],
-    rows:[["Place","Lehigh Valley, PA"],["Space",SPACE],["Time",TIME],["Cost",COST]],
+    rows:[["Space",SPACE],["Time",TIME],["Availability",AVAIL],["Cost",COST]],
     prompts:[["My ideal first date","Admire a warehouse in person together."],["I'm looking for","Something serious. Or a fling. 1 month to 10 years."],
       ["Two truths and a lie",["I have space to grow.","I'm in the Lehigh Valley.","I'm never lonely."]],["My love language","Long-term commitments."],["Green flag","You know your pallet count."]],
     comment:"Thursday? I'll bring the hot sauce.",match:"He liked you back in <b>0.4 seconds</b>.",handoff:"He saw it in 0.4 seconds.",
@@ -469,7 +470,7 @@ const MARKETS=[
       ["assets/dallas/2-brisket.webp","Holding up a smoked brisket beside the dock doors","Brisket Fridays. Dock doors daily."],
       ["assets/dallas/3-rodeo.webp","Waving his hat from a forklift like a bull rider","Rides forklifts. Not bulls."]],
     turns:[[0,1,2]],
-    rows:[["Place","Greater Dallas, TX"],["Space",SPACE],["Time",TIME],["Cost",COST]],
+    rows:[["Space",SPACE],["Time",TIME],["Availability",AVAIL],["Cost",COST]],
     prompts:[["My ideal first date","Brisket, then a walkthrough."],["I'm looking for","A long-term partner off I-35."],
       ["Two truths and a lie",["Everything's bigger here.","I'm close to the highway.","I've never owned a cowboy hat."]],["Green flag","You say y'all."]],
     comment:"Save me a seat by the smoker.",match:"He liked you back <b>before you finished typing</b>.",handoff:"He saw it before she finished typing.",
@@ -479,7 +480,7 @@ const MARKETS=[
       ["assets/phoenix/2-golf.webp","Mid golf swing on a desert course in front of the building","Plays golf. Loads trucks."],
       ["assets/phoenix/3-shade.webp","Lounging with an iced drink in the shade of the dock canopy","Dry heat. Dry storage."]],
     turns:[[0,1,2]],
-    rows:[["Place","Phoenix, AZ"],["Space",SPACE],["Time",TIME],["Cost",COST]],
+    rows:[["Space",SPACE],["Time",TIME],["Availability",AVAIL],["Cost",COST]],
     prompts:[["My ideal first date","A sunrise walkthrough, before the heat."],["I'm looking for","Something that lasts longer than monsoon season."],
       ["Two truths and a lie",["It's a dry heat.","I see the sun most days.","I don't own a sun hat."]],["Green flag","You hydrate."]],
     comment:"Sunrise works. I'll bring the water.",match:"He liked you back. <b>He was already up for sunrise.</b>",handoff:"He was already up for sunrise.",
