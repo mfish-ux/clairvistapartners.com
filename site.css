@@ -794,6 +794,10 @@ main.lost h1{font-size:var(--fs-hero);line-height:var(--lh-hero)}
 }
 @media (max-width:1000px){
   .s-work{grid-template-columns:minmax(0,1fr)}
+  /* one column: the page's own ask comes first and the shared three steps follow, because phone visitors tapping
+     across I have stuff, I have space and How it works met the same first screen three times and backed out
+     (Clarity, 31 Oct to 2 Nov; Mel, 2 Nov: "Yes, build them") */
+  .s-work>.s-right{order:-1}
 }
 @media (max-width:760px){
   .tcard{grid-template-columns:24px minmax(0,1fr) 112px;column-gap:12px}

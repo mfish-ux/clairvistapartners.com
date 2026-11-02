@@ -322,6 +322,12 @@ button{font:inherit;color:inherit}
   .hero>.home-figs{order:2;justify-self:center;margin:0 0 -14px!important}
   .phonecol{order:3}
   .cast{order:4}
+  /* the chat card waits below the phone and their cards, so the phone reaches the first screen: 9 of 22 phone views
+     stopped before it (Clarity, 31 Oct to 2 Nov; Mel, 2 Nov: "Yes, build them") */
+  .words{display:contents}
+  .words>*{order:1;justify-self:start}
+  .words>.cap,.words>.ways{margin-top:calc(clamp(16px,2.6vh,26px) - 26px)}
+  .words>.slow{order:5;margin-top:0}
 }
 </style>
 <script src="capture.js"></script>
