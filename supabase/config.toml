@@ -1,0 +1,6 @@
+# The database webhook is not a signed-in user, so it has no JWT.
+# notify-submission checks the x-webhook-secret header instead.
+project_id = "clairvista"
+
+[functions.notify-submission]
+verify_jwt = false
