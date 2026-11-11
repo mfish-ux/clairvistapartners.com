@@ -64,6 +64,7 @@
   b.onclick = function(){ var off = false; try{ off = localStorage.getItem('cvp-consent') === 'no' }catch(e){} if(off){ window.cvpOptIn && cvpOptIn() } else { window.cvpOptOut && cvpOptOut() } show() };
   show() })();
 </script>
+<script src="contact.js"></script>
 <script src="foot.js"></script>
 <script src="slow.js"></script>
 </body>

@@ -1,9 +1,12 @@
 // The slow way in: "Let's start with an easy call" opens a small leaflet on the page.
 // Two choices: write to us here, or call us. Nothing opens until the visitor picks one.
 (function(){
-  // Mel is getting a number. Until then the call side says so plainly.
-  var PHONE = '';            // e.g. '+16175550100'
-  var PHONE_SHOWN = '';      // e.g. '(617) 555-0100'
+  // Phone and booking live in contact.js. A blank value keeps that control off the card.
+  var cfg = window.CVP_CONTACT || {};
+  var PHONE = cfg.phoneHref ? cfg.phoneHref() : '';
+  var PHONE_SHOWN = String(cfg.PHONE_SHOWN || '').trim() || PHONE;
+  var BOOKING = cfg.bookingHref ? cfg.bookingHref() : '';
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c] }) }
   // A form service (for example Formspree) receives the note on the site. Until it is set,
   // sending hands the written note to the visitor's own email, already filled in.
   var FORM_ENDPOINT = '';
@@ -34,8 +37,9 @@
       '<p class="lf-err" aria-live="polite"></p>'+
     '</form>'+
     (PHONE ? '<div class="lf-pane" data-p="call" hidden>'+
-      '<a class="lf-num" href="tel:'+PHONE+'" data-goatcounter-click="easy-call-dial-'+page+'">'+PHONE_SHOWN+'</a><p class="lf-small">Weekdays. If we miss you, we call back the same day.</p>'+
+      '<a class="lf-num" href="tel:'+esc(PHONE)+'" data-goatcounter-click="easy-call-dial-'+page+'">'+esc(PHONE_SHOWN)+'</a><p class="lf-small">Weekdays. If we miss you, we call back the same day.</p>'+
     '</div>' : '')+
+    (BOOKING ? '<a class="way lf-book" href="'+esc(BOOKING)+'" target="_blank" rel="noopener noreferrer" data-fast-ok data-goatcounter-click="book-20-'+page+'">Book 20 minutes</a>' : '')+
     '<div class="lf-done" hidden><p class="lf-k">Got it</p><h2>A real person reads it.</h2><p class="lf-sub">Talk soon. <a class="lf-copy" href="#" data-goatcounter-click="easy-call-copy-email">Also send from my email</a></p></div>';
 
   var open = null, side = '';
@@ -110,7 +114,9 @@
     var data = { name:f.name.value.trim(), reach:f.reach.value.trim(), note:f.note.value.trim(), side:side, page:page, from:from||'' };
     count('easy-call-sent-'+page);
     function done(){ form.hidden = true; var tabs = lf.querySelector('.lf-tabs'); if(tabs) tabs.hidden = true;
-      lf.querySelectorAll('.lf-pane').forEach(function(p){ p.hidden = true }); lf.querySelector('.lf-done').hidden = false }
+      lf.querySelectorAll('.lf-pane').forEach(function(p){ p.hidden = true });
+      var book = lf.querySelector('.lf-book'); if(book) book.hidden = true;
+      lf.querySelector('.lf-done').hidden = false }
     if (FORM_ENDPOINT) {
       fetch(FORM_ENDPOINT, {method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'}, body:JSON.stringify(data)})
         .then(function(r){ if(!r.ok) throw 0; done() })

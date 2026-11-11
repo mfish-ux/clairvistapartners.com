@@ -4,3 +4,11 @@ notes/
 *.py
 *.md
 .claude/
+
+# deploy notes ship with the function; secrets never do
+!supabase/README-notify.md
+supabase/functions/.env
+.env
+.env.*
+supabase/.temp/
+supabase/.branches/
