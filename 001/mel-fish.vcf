@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Fish;Mel;;;
+FN:Mel Fish
+ORG:Clairvista Partners
+TITLE:Founder
+TEL;TYPE=CELL,VOICE:+1 617-319-0906
+EMAIL;TYPE=INTERNET,WORK:mfish@clairvistapartners.com
+URL:https://clairvistapartners.com
+ADR;TYPE=WORK:;;;Boston;MA;;USA
+NOTE:Box No. 001
+END:VCARD
