@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light only">
+<title>Clairvista Partners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+  :root { --ink: #0b0b0c; --blue: #0047FF; --muted: #5b6270; --line: #dfe2e8; color-scheme: light; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  button { -webkit-appearance: none; appearance: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: #fff; color: var(--ink);
+    font: 17px/1.45 Outfit, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: "Space Mono", ui-monospace, Menlo, Consolas, monospace; }
+  header { display: flex; align-items: center; justify-content: space-between; max-width: 460px; margin: 0 auto;
+    padding: max(16px, env(safe-area-inset-top)) 20px 12px; border-bottom: 1px solid var(--line); }
+  header img { height: 34px; width: auto; display: block; }
+  header .no { font-weight: 700; font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+  main { max-width: 460px; margin: 0 auto; padding: 22px 20px max(32px, env(safe-area-inset-bottom)); }
+  .kick { font-weight: 700; font-size: 11.5px; line-height: 1.3; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--blue); margin: 0 0 10px; }
+  h1 { font-size: 30px; line-height: 1.12; font-weight: 800; letter-spacing: -.01em; margin: 0 0 18px; }
+  h1:focus { outline: none; }
+  h1, .line { text-wrap: balance; }
+  p { margin: 0 0 12px; }
+  .opts { display: grid; gap: 10px; }
+  .opt { display: block; width: 100%; text-align: left; font: inherit; color: inherit; background: #fff;
+    border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 16px; cursor: pointer; }
+  .opt b { font-weight: 700; margin-right: 6px; }
+  .opt.big { padding: 16px 18px; }
+  .opt.big span { display: block; font-size: 22px; font-weight: 800; }
+  .opt.big small { display: block; color: var(--muted); font-size: 16px; margin-top: 2px; }
+  .opt.picked { border-color: var(--ink); }
+  .opt.right { border-color: var(--blue); background: #eef3ff; }
+  .opt:disabled { cursor: default; color: inherit; }
+  .opt:disabled:not(.picked):not(.right) { opacity: .45; }
+  #reveal { margin-top: 18px; }
+  canvas { display: block; border-radius: 12px; margin: 0 0 14px; }
+  .verdict { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .grp { margin: 0 0 18px; }
+  .grp h2 { font-weight: 700; font-size: 11.5px; letter-spacing: .12em; color: var(--muted); margin: 0 0 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font: inherit; font-size: 15.5px; border: 1.5px solid var(--line); background: #fff; border-radius: 999px;
+    padding: 8px 14px; color: inherit; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .go { display: block; width: 100%; font: inherit; font-weight: 700; font-size: 18px; color: #fff; background: var(--ink);
+    border: 0; border-radius: 14px; padding: 15px; margin-top: 8px; cursor: pointer; }
+  .go:disabled { background: #c9ced8; cursor: default; }
+  .ghost { background: none; color: var(--muted); border: 1.5px solid var(--line); font-weight: 600; font-size: 15px; padding: 11px; }
+  .card { border-radius: 18px; background: var(--ink); color: #fff; padding: 18px 18px 14px; margin: 0 0 20px; }
+  .card .top { display: flex; justify-content: space-between; font-weight: 700; font-size: 11px; letter-spacing: .12em; color: #9aa4b5; }
+  .card .side { font-size: 24px; font-weight: 800; line-height: 1.15; margin: 10px 0 14px; }
+  .card .side em { font-style: normal; color: #85a6ff; }
+  .card dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; margin: 0; border-top: 1px solid #2a303c; padding-top: 12px; }
+  .card dt { font-weight: 700; font-size: 11px; letter-spacing: .12em; color: #9aa4b5; padding-top: 5px; }
+  .card dd { margin: 0; font-size: 18px; font-weight: 600; }
+  .card .foot { display: flex; justify-content: space-between; margin-top: 14px; font-size: 10.5px; letter-spacing: .1em; color: #9aa4b5; }
+  .line { font-size: 26px; line-height: 1.15; font-weight: 800; margin: 24px 0 4px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .by { color: var(--blue); font-weight: 700; font-size: 18px; margin-bottom: 14px; }
+  .small { color: var(--muted); font-size: 14.5px; }
+  .sign { color: var(--muted); font-size: 15.5px; line-height: 1.55; margin: 22px 0 18px; }
+  .sign a { color: var(--ink); text-underline-offset: 3px; }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<header>
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjMAAAClCAYAAACp8ny1AAAfY0lEQVR4nO3dCbQV1ZUG4P89QQMoiIg4K4qiKCYaZ0VFJU6REDWi0gomMTFzNDGx04muZac7c0xMYsckGlozB20ltorzPMUJNYo44gSIiIACgvB67fi/9lJW3VdV59T8f2vdlfh8t+713bqndp2zz94dKM4AACMBfBDAUACDAWwGYD0A7+NjJYDFABYBmAvgeT6e4OPJAt+/iEjTdQDYkWP5CACbcDwfBGBNAP0ALOPDxvFZAF4GMBPA4wAeBvB60f8RUo8TMS+dAPYFMJb/u4OH138VwO0ArgJwJb8sWdgPwPkOz38AwEmot+MAfNPh+ecCuBDFKvJzPhzA95Gf5fz+zOONwhwAjwK4C8CCjF7zWgAbOx7jKwCmId+brlsBrOFwjPsATKrRONOX4/hhAA4EMNDhWKsATAdwM4Cref51ORzvCADfQz1l/fkeV+UxvFcOr7E5gM/wD2WzLz6tD2AcH8s5yP0WwHWOX4igPgC2dHj+bNTfpx3/RqeWIJgp8nPu5/jaaWwbcXG5jxeWK3gH7cvdAE53PMaJOQczHwGwteMxflyTccYC0TMAjAfQ3+NN7s58nAbgRQC/A/AbBthpAq28v0d5yfrz/XSVx3A7kbIykiel3e19IYNAJsimNI8EcBmAxwB8EkDvjF9T3mHTy7s5/jG293AM8TMm7A7gbN4JTgWwt6c/7CUejmGzAesgP3bhdmHLK1NQbf0422HLQqd4DGTCbArgTAbRvwawVYavJTUaw7MIZrYD8GdOF47LOGCKYrk3PwHwCIBjCnj9ppno6Th1X4qrogO5PHQ5gC0cj2U5bvc4HmMtLiXkYUMu/biYmuHydx5GMaj9nONSW1J23Ties4TfAbB2jq/dRBOrPob7DDQsYfdbHKzyGmziRPmTOWVuOTriX28uIfpwDKfapXwOBnAvgAklmJ3xdb7FOR9d8/ps/KmqU5mLaEm9RVmTM/t2XdmrwPdRZ73rMIb7CmZ2AnAngK/nHL0nubuw9/e1nJOem+AI7lzwYR3O5kl5lxsuAPBTh+/5pQCWOr6P0cyXy5rrAG87L29DNdlY+cMSjedb8KbUZojEryPqMIZ3evrC3xSRTFgm9qU8i9Pl6xb9Zmokzi6NJLTUVH6fAPCrlM+1Ugt/8/BdtsTcLG0D4AOOx/iD540IeTmNY2XZ9GLuzs91U+rVpDqM4a7BzH8y69zWsaviIAA3KrHM2zKe/T19z6JZnQopN0uMPafGS02Wr+Giy9N/ZxE5Umk/1zwvvr9oEyxLA8fwTofnXQTgi6imoR62W8o722SzWLbT7Ew1nJ4yqLiZW3Bd7MWBOCvHOj7/VhaIqxJbIvhlRWY9rNhemCrOhBXpxLqM4Z0pn3Ohhy97UVbwrstq0Uh6HfwiZGFCRQZUeSevwnb9JNHFJRhXR2f0AezuoVbJxahmnoxrUcM8fIVBl7jpqNMY3pmyyt/HUN1Axu4kryn6jdTAASyImIWNuXtGym/dlMsSl5SgBkxWx13MLdlVMoBF06owG2hJ6OLugDqN4UmDmU8x+a/KgUye1UPrzHfSWFBWdwzi3/Epips9C+AOD7sofW88sOTioxyPMcXDjq28HcXquWVPTE6beC41H8OTtDPYB8APUN1AZjyLf4m79VhtOUtH8nVey/h16uLBmIOH1YMaxoqfH2WlblcdvKu30gxJ/J7jigtb7v42/BntoVp5FZeYfKUNvADgFgAzALwCYAkL3m3KCrG7s6hpUl/mZhPxY726jeG9EtSXuCjjmgMv8gvwFID5LANuA+9GHFxG8O6vI0UgY19U5cj4M57FrLIu5GSfm9bG47Hvy3Mxf3cGi6F9nw0Dz/NQt+XYFMHMZcy56VuiYMZ1iekJAH9HtViRsz0cj7GAuSx/jZGE+0EmiE7gGN8TBTL+ja/bGB43mDkroyqQN3FAsxmTl2L8/kBG9idwEO6p95ICmWpOT7aW2FYwk62p7J92o2NAM5izPNZCJK432MzSZRv0VmxSaDNTPi7qrnerVdyOvZvjhc1yhA5hT7w47ufDZvr/vYcczC/yRjquaZ5bH9zjWD3egsR/oHwm1W0Mj5MzM5JlrX36G79AR7LLdZxApjv6n8Y/0LYsnmQBSxjroq0ZGf92ybE1xEgPhcukZ894yoWzoKKIJRlficAfdrwQrgTwR1TPcA8BXNxAJjgbfzJzGRd6CGSkwWN4nGDmPzwuL81jotnx7MDqeqwzOWVpTS2DgYwNcFpaqm5E3001Z/Jxg4eEXFsKTuo2D/VYfPRQ8lGIz2aY56J6bCnfhTWidHElG3o+3fIzBTLZmYQajuE9BTP7siKkryJH+2aQhGt3lYcCOJ//rBmZ7PQtYFv+sRWrMF1l1jfJxZCUz/ud4+tuyLHFxSAPlVD/G9W0gePzfXw/LZAZw+VCayypGZls9K3rGN5TMOOrwu8DDDjiLielmd61gk8/4h/u+oxep+nGsUpoGqsc6phknXUv77Dkexf9Uz7vDyXYjTMu4e7OoFcrXPbBdUu26460brb7aX+mHkg2xtV1DG8XzFgFzMM8vMYcRoKLkL2zFchkyta303LZ1q+lpnwUVRtllofu0uNibAjIconpT23y98ruTcfnH8ccSB/SXjCl4WN4u2DmXzytQ59S0XVkeW8XYeuHk8ZDrBy91KH2R1aVKmX1Egwu3nJ4rmsi8ECHJfHNHM7tKu9i6rbIw3Xkrx7+hpKtbeo8hrcLZqwGgKvfcfu1VN9JjnetbzhMw3dwO76Ue1eLJeWndQXPkSJ2NbnmEDxU0u23SQrduVqfbWJ+7KFmkWTjpDqP4VHBzA4pqzS2WsL6NFJ9azgEt10s727+4vhFVPPJbLle1J90HC+s5pTr1uo0+R8udW7MZFTbTI/jxKe4U9UKGW7t6bjibo26j+FRwcyHPBz7YiZ0SfUd5rDj4VbmTYFRvRXYSmNzbt+UbBwOYFfHY7jOTlh7Axd9udEgaR0MK7PvsrTWPdBX1XTPx+vDqr3T2drgk1wGlOIcVvcxPCqY2dvDsdVHoz5c6hL8OTDwW02JtKxYovi3s4fvq7VTuNfxGHewASVyTOQ9zkMB0NdRbfO5VJYFqwP2E5bQ+Ctn/9LuppH0JtV9DI8KZlwr9j3K/i9SfRuy/kMay5kL0crlLnYst/mJH9YX50vcAZh2W3W3qz3sivGRSDsmwTnSwYJ7TU389VljqCe9OTvwWwasFjwfoKXjXGzYhDE8rK7CQA8VIdWduj4mOFSAnhZSpvwGdlG1bqppLr5HA7gw5fupsyEJtl1uxmq9+3u8S3ZdImqtOfMth4tcbw6YF8esj+LSc+4l9rSqAytSd4aHoDbu9/g4PqxY3gU8f8JaGoi7CU0Yw8OCGR/bp1ynm6U8JjpmwAe9zeaGaac97XkKZsIbLv4MxZjhsWDci9wBeaDjrqaLc+jp9PsYHaKrYmFL48c8bc3u7WdzvPgegJdzfg91N7EJY3jYMpPrLiakbDom5TOKF8k0FnOrZpi/OOZ35NUkTeI5zfNF3XXpZr8YrRV6s9Cei7osMXX7WcKu575rHH2CbW++47nzdZONasoYHhbMpJk6Cru7kmZH9FPbFFG73bGQohKBy2Oyh+q9QVc67JgAl6isoW07H3LcYeMjWbls7I77xJyqtbdbhvgCZ/ctp0bcTGzKGB4WzLgm5yxi0pBU2wDHO9ew6cnWkuUuNUXGO5auFz+mM8/Ct6UeElKPy7i2TFWbSsbpz/VxBjZF2pxB7TkxeghKuEaN4WEniUuzNRQc1Ys/x/AuKY25rC/RzhTHDsdWF0WKrRr7sQz7OV3iYUvw0Ih/t45j3zmrhHo56usafrauFZl9OJ2V5Ncs+o1U0DFNGsPDghlVWRXw7iytS2M0jLvHsYy6lpqKYxVeD8o4UfMex4rCaLPt2nY7reVw3MtYsbjOrmM/nTLkP45lQFPEDI1rsJ42mPDh400aw8NODtfpRSVuVZ9VRX2/pyJL7bgsJRzsoYSAJHcVa1bksePEdXZmfEa7mOqW+NsuaB3FrdNFO7yg9jiundCLmlEa2bQxPCyYed3DOp3rUpVUt028Vfq8P+bvWkVQl3PXRzNUiWcBEzOPzbHi7R9j3B22sx2AHQM/G+KYWGqzRXehOSwB9CusCl90yY2vMriSnp3ctDE8LJixYjgubJlqU8djSHHW4gUrrb8kTCB9sqAusBKPVfU9j1XBrXprnmaz5oyL4Ll8lONyRVNmZYIeZu0fW7r7e4Hv40cOBeCaYq0mjuGdGbWD39bDMaQYruWm405P+pim3IpVXMWvLq6Hf5WVgr/B/j1FiFP8LkkncJdeTKs4W9Rk1zCXZl9+NlFbd7Ni56NmZNsb28QxvDOjGjG7eDiGVK8h2UMponSXaUrX9yvhjROHMsH3lwUGMd2udFzWsiKge/D/b8NdTmldz9kieee7/lkAw7gMdWeO1ZA/pQ+grUlNHMPDgplXHYvhmEMdny/F2JL9erKoSxDlCTYmTesjSjr/pweZT+BSbM4cAmBjlMdbjltA0TLl7pr4W9faMq65VBewCOEwzuZlvQz1Acfk1jrbsqljeGeb9VEXu7ap8SDl5bJVrsvhouNSGruvh87HdbCMAc3XPOy+mMy/a1m45qkcxTwLlzyC17iTS6LN5WzeaO6msT5LczL6g7nUCaqziU0dw6OCGZsyLDKbWvLnmlneweqhb6R4WJVPF0oEXv3Cf62HnLdzUR73c5twWoNZfC1tj5ruwdp1m26TPMumlSO4jOB6gxy0p+fj1UFnk8fwqGDGdTAET2Dbpi3VMKZkywtJ7A5geNFvokQ+y+l/FxMcZzJ8sw7VLr7p+HwtMaWznHf7e/Oa4CvnyLbdy+rGNHkM72yz3cp1etAaVp7peAzJT9Ur6lb9/fs0h0mZrs4r0XKx7SJa6fB8l+28DxfYTbpOpvCidYOHY22iLdq1GwMnujy5Xb2FP8DPHaIStcpvcA16HdmWW9WfWH1ZxLreulib2297lyQfw3YTFUGzMv4s4Hf1Psfj2JJIP0/vqQ4GN30MbxfMWC8MV/bGLmJjNymv42tQtXkD7aJ7jy9xd6KLnZn7UAauNWfSWOFh62kV9ebsR1b9jj7n4ThF9j0qm+ObPoa3C2ZmArgR7obzLrEPsmeVh0/I4XXqpi61Wqo+zerbPAY0rj7PrbdFu8pDhfI0dW7yfs0yBDKWSH416/Rk4R/c0utCTZHfNQkNH8N7Kuv9U/gxilUCs5yhGclOr78C8IkMX6du9qxRxeZDGN3Lu67wNLNwAfsaFamIWZIiZoOKDmRsWe3D3P11I+u6ZOG1gjta18WeGsN7DmZu8LRN2+wH4OaQxm++Wp3f3HIXYUHYJzN4nTqqS0Tfvaypmbn3Ot1DIczBXDJ26WvkQ569kWZ7Slatil6sMWTl8LttxJvEcRm83tqONVGsb5hoDP+nzhy2NAaXnG4D8B0Agzwcb1/2CjmPzbVa/UQBTazB5KOolxOLfgMlTbr0kaOwPwOjIj3EJYoqdO2u2o3AZFZjDerDHMqfA+jv6fW2cryxfclxd1tdaAxPEMzc67m5mk1jfgHAYyzMZQmGSazPAjs3MJCxgCaKBTSnOL7fOjumhjsChrf04pF3XeOhVov5Vgn+vnnNzjRlF1MnA5lxMWZxH+ANg0u+Sh/O8nU4BrWiMfz/xc1+/gbLR7t04gzqx0DjFCYq3g1gBoBXeCe5jNnqA/i627Ga5IiEX4LuSqa/RnF2AnB7jq93IitwNjVh9iR2fZbVnQHgAMddKt138Hs5NoCEY1ffb2e8e+MuAE+jGYHMRQlmaDcE8F/swfRr5jDNTTi7913mOLrQ9/sdGsMp7mAwjzkorg3f2q3HH8lHFs5lAGTJwUXol2ESXZg4fXUsKNwN9XQ0L9xLin4jJbMIwGc81J+x3LTzC8xPsvFoGoAjapKbU2Qg85uUfXG2ZlDyXd6E3sbZklkAFrZ00LaZ+C04A3+Yx80GN3k6TpVpDG/RK+E09Y9LsGaelr13FBjQ1C2ifz7jLasj2PTQZR3Zx7JK3djulAs97Pgby8R7u6svwiUZBjOWWHoZ6h/I/MpTy4rtcm4vYMGTlpk0hq8m6TTtWcxJyPKOKOuApoPbTJusN6sturBEwSeRncmOnVRtqUnBTPSy8cG8Y3bxfU7355WQ22oaCwJaDp1vl7N5Xp0DmQs8jAFFsVnBptMYHpBmm+WknPM/fPsRgFPRbEc47iZ7KONABh7qiezDqXAJn3n4tIc/zPtYhyWPgphhNWesGGcW6l5b5nxWjK2iWQ1ZAuyJxnAPwYwVKjrKY/2ZIvyw4QGNa22ZPyF713HtvdC28jV2u6c73OGcoSlCFhc1S5y/A/X2KKrr3xjINp3G8IC0BbCWMKCpckGpsnQDzpu1fDjI4fldGSaCt1rOUvIuTihBkbcyO8vTjp2TOR7k7RF2tPap7rMyYL2Yr6N6/sQlwKbTGB7CZaB/g3UJrJZLlSzj4FvFL7MPrjUibgUwB/lwXUaw6qVjPL2XOlrG0girPF0gXXNwiq4F09WgPKtfMAncbhqq4BbuxBON4aE6PXz5rULwxzx0583D47y4NbELLhjEnOihxkdebvZwXqkicM9FMa2Ctqv+TNrOu3PvFI/LDrbT62U0x5/Zpdi11UXW7maOj5aXNIZH8jUFfzWrgrrWr8jKStaasaTQB9FcVjBtc4fnL2fjwjw/t8s9JMplseOlTs5hoO/K6hadjXzNZ9kIH5qwxBQWzO4N4FqU01UsA2A1kkRjeCSf+QRzmaMwrqCtmu3u7vdgGfaqTKmWNWlsmoek3KSmeNjC6KOWRp0t53KTj143pwE4EPnyEYQs8JCjVVVzmfP0eQaHZdlxdwa/uyp++S6N4RGySI68ni3JbXr/PhS7W2McW9lbkaWmW89DheU8djEF3cHuxS7qWvLbJ9tu/wNPx7Iy9xsgP9eyDYoLW3p+C802ma1Xzi2wzk4XZ3/3YNsEeZfG8DY6Mzwh/4dTYqMBXJrTrMgydncdzbVgC6zkHeMdKuqaxR6n85OeS67VWHcAsIun91Nn3/W0O2gIy+TnZaWHQLuJS0xhFnIWexsWV5yR40zMb/g9nQDguZxet0o0hreRx7bVv/POeCtmz/+RU7q+vMK7qmPZM+ZUvqb4nZ6cWuCdq4/iaKo507O3udzkI9HyQC45VaHmjC2Lqzz+e29eLDF8VzYVtWKj0z3tfOs2m9/tk3l9+HIOxTirTGN4Gy5bdF3Y627f0gV7GLd1DuauiKDXuW76KitAzmYreiv+pAheRCQf/Tl7sg37MQ3luD0QwDrsqh6cLZ/HYqszAbzEoOi+hu0cExERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERGRzHTgkK6u7A4vIiIikql/7cz2+CIiIiLZUjAjIiIilaZgRkRERCpNwYyIiIhUmoIZERERqTQFMyIiIlJpCmZERESk0hTMiIiISKUpmBEREZFKUzAjIiIilaZgRkRERCpNwYyIiIhUWi8AZxb9JkRERERSuiXtE0VERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERKR0OkJ+1g/A4JjPXwlgCYDFAJYjW0MA9Gn554UAFmTwOpsA6B3zd98C8Ab/+9Pqzdf0bSmAuQl+P/i5zwPwZsLXHARgncDP0n5OST6HduYAWJbg99Oc/4sArEA2+vBvsSHfm+kC8DqA+QCez/C1RUQqoVdE0LB/wuPY4PoKgH8AmAX/1gAwJnBxswvk5Rm81m4ABiZ8jl3QngbwaMILp1kbwGj49yKA6xL8fvBzt4vlVF6w49oWwHaBnz0C4D7k8zmEuR7ACwl+P835v5KBo33+L8EPOy92BbBlxE3HJi2vPRPAdAawIiKN0+npOB28CBwI4FAA74Nfw0Lu0gcmuIPOWl8AIwF8FMBmqId1AYwq+k1UhAXbGwP4EL8DYTcJSWwEYByAoRGBTPC1twdwNICtHV9XRKTRwUxwID7U0xJBt+EJf14UC+IOqlFAM5QXSolvCwAHxwhCogxgQJT0+2O/vx+AHVO+rohI7YOZFVyfDz6illQGeryrH8RH1MXW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" alt="Clairvista Partners" width="117" height="34">
+  <span class="no mono">No. 001</span>
+</header>
+<main>
+
+  <section id="s1">
+    <p class="kick mono" id="k1">Game Time Quiz &middot; 1 of 3</p>
+    <h1 id="q1">What makes a kernel pop?</h1>
+    <div class="opts">
+      <button class="opt" type="button" data-k="a"><b>A.</b>Magic</button>
+      <button class="opt" type="button" data-k="b"><b>B.</b>Steam inside with nowhere to go</button>
+      <button class="opt" type="button" data-k="c"><b>C.</b>Loud cheering</button>
+    </div>
+    <div id="reveal" hidden>
+      <canvas id="field" role="img" aria-label="A football field drawn as a warehouse floor, dock doors in the end zones and pallet racking on the sidelines. One kernel on the 40-yard line pops and fills the space."></canvas>
+      <p class="verdict" id="verdict"></p>
+      <p id="why">Water inside the kernel turns to steam with nowhere to go. When it pops, it needs about 40 times the space.</p>
+      <p>A company about to take off works the same way. It suddenly needs space it didn&rsquo;t plan for.</p>
+      <button class="go" type="button" id="next1">Next</button>
+    </div>
+  </section>
+
+  <section id="s2" hidden>
+    <p class="kick mono">What&rsquo;s your match? &middot; 2 of 3</p>
+    <h1>Are you the kernel or the warehouse?</h1>
+    <div class="opts">
+      <button class="opt big" type="button" data-side="kernel"><span>The kernel</span><small>I have stuff about to pop.</small></button>
+      <button class="opt big" type="button" data-side="space"><span>The warehouse</span><small>I have space.</small></button>
+    </div>
+  </section>
+
+  <section id="s3" hidden>
+    <p class="kick mono">3 of 3</p>
+    <h1 id="h3"></h1>
+    <div class="grp"><h2 class="mono">WHERE</h2><div class="chips" data-key="where"></div></div>
+    <div class="grp"><h2 class="mono">WHEN</h2><div class="chips" data-key="when"></div></div>
+    <div class="grp"><h2 class="mono">WHAT</h2><div class="chips" data-key="what"></div></div>
+    <button class="go" type="button" id="go" disabled>See my card</button>
+  </section>
+
+  <section id="s4" hidden>
+    <p class="kick mono">Your card</p>
+    <div class="card">
+      <div class="top mono"><span>No. 001</span><span id="cKind"></span></div>
+      <div class="side" id="cSide"></div>
+      <dl>
+        <dt class="mono">WHERE</dt><dd id="cWhere"></dd>
+        <dt class="mono">WHEN</dt><dd id="cWhen"></dd>
+        <dt class="mono">WHAT</dt><dd id="cWhat"></dd>
+      </dl>
+      <div class="foot mono"><span>PRISM BY CLAIRVISTA</span><span id="cDate"></span></div>
+    </div>
+    <p id="read"></p>
+    <p>At Manifest in February, 500 of these boxes ask the same three questions. Every answer is stuff about to pop or space about to open, and Prism puts the two together.</p>
+    <p class="line">Built to spot what&rsquo;s about to pop.</p>
+    <p class="by">Prism by Clairvista</p>
+    <p class="small">Your card stays on this phone. At Manifest, people choose to send theirs.</p>
+    <p class="sign">In 2008, Airbnb was a kernel. We saved you one.<br>Mel Fish, Clairvista Partners, Boston<br><a href="https://clairvistapartners.com">clairvistapartners.com</a></p>
+    <button class="go ghost" type="button" id="again">Play again</button>
+  </section>
+
+</main>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const screens = ['s1', 's2', 's3', 's4'].map(id => document.getElementById(id));
+  const state = { side: null, where: null, when: null, what: null };
+
+  // a quick second tap must not land on the next screen's buttons
+  let guard = 0;
+  document.addEventListener('click', e => {
+    if (e.isTrusted && performance.now() < guard) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
+
+  function show(i) {
+    guard = performance.now() + 350;
+    screens.forEach((s, k) => { s.hidden = k !== i; });
+    scrollTo(0, 0);
+    const h = screens[i].querySelector('h1');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }
+
+  // ---- the field: one kernel on the 40 pops and fills the space (drawn in portrait field units, shown landscape)
+  const field = (() => {
+    const VW = 200, VH = 360, YD = 2.6, FW = 53.33 * YD, FL = 120 * YD;
+    const X0 = (VW - FW) / 2, Y0 = (VH - FL) / 2, KX = VW / 2, KY = Y0 + 70 * YD;
+    const BLUE = { bg: '#1B3FBF', field: '#2450D8', line: '#FFFFFF', rack: '#9FB6FF', door: '#DDE5FF' };
+    const RED = { bg: '#8E1526', field: '#B3202F', line: '#FFFFFF', rack: '#F2A7B0', door: '#FFE2E6' };
+    let C = BLUE;
+    const POP = 1100, FILL = 2300;
+    const canvas = $('#field'), ctx = canvas.getContext('2d'), still = document.createElement('canvas');
+    let s = 1, start = 0, raf = 0, shown = false, running = false, lastW = 0;
+    function seeded(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+    const rnd = seeded(40), pieces = [];
+    for (let gy = 2; gy < VH - 2; gy += 8.2) for (let gx = 2; gx < VW - 2; gx += 8.2) {
+      const x = gx + (rnd() - .5) * 5, y = gy + (rnd() - .5) * 5, blobs = [];
+      const n = 4 + Math.floor(rnd() * 3), r = 2.4 + rnd() * 1.4;
+      for (let i = 0; i < n; i++) { const a = rnd() * Math.PI * 2, dd = rnd() * r * .9;
+        blobs.push([Math.cos(a) * dd, Math.sin(a) * dd, r * (.65 + rnd() * .5)]); }
+      pieces.push({ x, y, d: Math.hypot(x - KX, y - KY), blobs, hull: rnd() < .35, ha: rnd() * 6.28 });
+    }
+    const maxD = Math.max(...pieces.map(p => p.d));
+    pieces.forEach(p => { p.t = POP + Math.pow(p.d / maxD, .85) * FILL; });
+    const T = g => g.setTransform(0, -s, s, 0, 0, VW * s);
+
+    function drawField(g) {
+      g.fillStyle = C.bg; g.fillRect(0, 0, VW, VH);
+      g.lineWidth = .5; g.strokeStyle = C.rack;
+      for (const side of [-1, 1]) for (let col = 0; col < 2; col++) {
+        const rx = side < 0 ? X0 - 7.5 - col * 7.2 : X0 + FW + 1.5 + col * 7.2;
+        for (let y = Y0 + 2; y < Y0 + FL - 5; y += 7) g.strokeRect(rx, y, 6, 5.6);
+      }
+      g.fillStyle = C.field; g.fillRect(X0, Y0, FW, FL);
+      g.strokeStyle = C.line; g.lineWidth = .9; g.strokeRect(X0, Y0, FW, FL);
+      for (const ez of [Y0, Y0 + FL - 10 * YD]) {
+        g.fillStyle = C.bg; g.fillRect(X0, ez, FW, 10 * YD);
+        g.strokeStyle = C.line; g.lineWidth = .9; g.strokeRect(X0, ez, FW, 10 * YD);
+        for (let k = 0; k < 3; k++) {
+          const dw = FW / 4.2, dx = X0 + FW * (.12 + .3 * k), dy = ez + 2.4, dh = 10 * YD - 4.8;
+          g.fillStyle = C.door; g.fillRect(dx, dy, dw, dh);
+          g.strokeStyle = C.bg; g.lineWidth = .35;
+          for (let q = 1; q < 5; q++) { g.beginPath(); g.moveTo(dx, dy + dh * q / 5); g.lineTo(dx + dw, dy + dh * q / 5); g.stroke(); }
+        }
+      }
+      g.strokeStyle = C.line;
+      for (let yv = 15; yv <= 105; yv += 5) {
+        g.lineWidth = yv % 10 === 0 ? .7 : .35;
+        const y = Y0 + yv * YD; g.beginPath(); g.moveTo(X0, y); g.lineTo(X0 + FW, y); g.stroke();
+      }
+      g.fillStyle = C.line; g.font = '700 6px -apple-system, "Segoe UI", Arial, sans-serif';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      const labels = { 20: '10', 30: '20', 40: '30', 50: '40', 60: '50', 70: '40', 80: '30', 90: '20', 100: '10' };
+      for (const [yv, t] of Object.entries(labels)) {
+        const y = Y0 + yv * YD;
+        for (const [x, rot] of [[X0 + 7, Math.PI / 2], [X0 + FW - 7, -Math.PI / 2]]) {
+          g.save(); g.translate(x, y); g.rotate(rot); g.fillText(t, 0, 0); g.restore();
+        }
+      }
+    }
+    function drawKernel(g, t) {
+      const wob = t < POP ? Math.sin(t / 55) * Math.min(1, t / POP) * .6 : 0;
+      g.save(); g.translate(KX + wob, KY); g.rotate(-.35);
+      g.fillStyle = '#E3A21A'; g.beginPath(); g.ellipse(0, 0, 3.2, 4.4, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#F7C95A'; g.beginPath(); g.ellipse(-.9, -1.3, 1, 1.6, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#B9780C'; g.beginPath(); g.ellipse(0, 3.6, 1.3, .8, 0, 0, Math.PI * 2); g.fill();
+      g.restore();
+    }
+    function drawPiece(g, p, k) {
+      if (k <= 0) return;
+      const sc = k < 1 ? (1 - Math.pow(1 - k, 3)) * (1 + .18 * Math.sin(k * Math.PI)) : 1;
+      g.save(); g.translate(p.x, p.y); g.scale(sc, sc);
+      for (const [bx, by, br] of p.blobs) {
+        g.fillStyle = '#FFF6E2'; g.beginPath(); g.arc(bx, by, br, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = 'rgba(176,132,60,.35)'; g.lineWidth = .35; g.stroke();
+      }
+      const [hx, hy, hr] = p.blobs[0];
+      g.fillStyle = '#FFFDF6'; g.beginPath(); g.arc(hx - hr * .3, hy - hr * .3, hr * .4, 0, Math.PI * 2); g.fill();
+      if (p.hull) { g.fillStyle = '#D9921C'; g.beginPath(); g.ellipse(Math.cos(p.ha) * 1.5, Math.sin(p.ha) * 1.5, 1.1, .7, p.ha, 0, Math.PI * 2); g.fill(); }
+      g.restore();
+    }
+    function size() {
+      const dpr = Math.min(devicePixelRatio || 1, 3);
+      lastW = canvas.parentElement.clientWidth;
+      const w = Math.max(200, Math.min(lastW || 340, 420)), h = w * VW / VH;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      s = canvas.width / VH;
+      still.width = canvas.width; still.height = canvas.height;
+      const sg = still.getContext('2d'); T(sg); drawField(sg);
+    }
+    function paint(t) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(still, 0, 0); T(ctx);
+      if (t < POP + 120) drawKernel(ctx, t);
+      if (t >= POP && t < POP + 700) {
+        const k = (t - POP) / 700;
+        ctx.strokeStyle = `rgba(255,246,226,${1 - k})`; ctx.lineWidth = 1.6 * (1 - k);
+        ctx.beginPath(); ctx.arc(KX, KY, 4 + k * 60, 0, Math.PI * 2); ctx.stroke();
+      }
+      for (const p of pieces) drawPiece(ctx, p, (t - p.t) / 320);
+    }
+    function frame(now) { const t = now - start; paint(t);
+      if (t < POP + FILL + 500) raf = requestAnimationFrame(frame); else running = false; }
+    function play() {
+      shown = true; size(); cancelAnimationFrame(raf);
+      if (reduce) { running = false; paint(1e9); return; }
+      running = true; start = performance.now(); raf = requestAnimationFrame(frame);
+    }
+    // phones fire resize when the address bar slides away; only a real width change redraws, and never skips the pop
+    addEventListener('resize', () => {
+      if (!shown || canvas.parentElement.clientWidth === lastW) return;
+      size(); if (!running) paint(1e9);
+    });
+    return { play, colors: red => { C = red ? RED : BLUE; } };
+  })();
+
+  // ---- 1 of 3: each box's tag opens its own quiz, as printed on its back (Butter Half's link ends in /half)
+  const BOXES = {
+    hog: { kick: 'Game Time Quiz', q: 'What makes a kernel pop?',
+      opts: ['Magic', 'Steam inside with nowhere to go', 'Loud cheering'],
+      v: { a: 'Not magic. It’s B.', b: 'Right, it’s B.', c: 'Not the cheering. It’s B.' },
+      why: 'Water inside the kernel turns to steam with nowhere to go. When it pops, it needs about 40 times the space.' },
+    half: { kick: 'Date Night Quiz', q: 'What does a kernel need once it pops?',
+      opts: ['A hug', 'A place to go', 'More butter'],
+      v: { a: 'Not a hug. It’s B.', b: 'Right, it’s B.', c: 'Not more butter. It’s B.' },
+      why: 'Once it pops, a kernel needs about 40 times the space it started with.' }
+  };
+  let Q = BOXES.hog;
+  const q1 = [...document.querySelectorAll('#s1 .opt')];
+  function reset1() {
+    q1.forEach(b => { b.disabled = false; b.classList.remove('picked', 'right'); });
+    $('#reveal').hidden = true;
+  }
+  function useBox(key) {
+    Q = BOXES[key]; field.colors(key === 'half');
+    $('#k1').textContent = Q.kick + ' · 1 of 3'; $('#q1').textContent = Q.q; $('#why').textContent = Q.why;
+    q1.forEach((b, i) => { b.lastChild.textContent = Q.opts[i]; });
+    reset1();
+  }
+  window.useBox = useBox;
+  useBox(/half/i.test(location.pathname + location.search + location.hash) ? 'half' : 'hog');
+  q1.forEach(btn => btn.addEventListener('click', () => {
+    q1.forEach(b => { b.disabled = true; if (b.dataset.k === 'b') b.classList.add('right'); });
+    btn.classList.add('picked');
+    $('#verdict').textContent = Q.v[btn.dataset.k];
+    $('#reveal').hidden = false;
+    field.play();
+    $('#reveal').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }));
+  $('#next1').addEventListener('click', () => show(1));
+
+  // ---- 2 of 3
+  const WHERE = ['Boston', 'New York', 'Chicago', 'Dallas', 'Phoenix', 'Las Vegas', 'Los Angeles', 'Atlanta'];
+  const WHAT = ['A few pallets', 'A truckload', 'A season of stock'];
+  const WHEN = { kernel: ['Before February 14', 'This spring', 'Later this year'], space: ['Open now', 'This spring', 'Later this year'] };
+  const H3 = { kernel: 'Where will it pop, and when?', space: 'Where is your space, and when is it open?' };
+  document.querySelectorAll('#s2 .opt').forEach(btn => btn.addEventListener('click', () => {
+    state.side = btn.dataset.side; setup3(); show(2);
+  }));
+
+  // ---- 3 of 3
+  function chips(el, key, items) {
+    el.innerHTML = '';
+    items.forEach(t => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = t; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', () => {
+        el.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+        b.setAttribute('aria-pressed', 'true'); state[key] = t;
+        $('#go').disabled = !(state.where && state.when && state.what);
+      });
+      el.appendChild(b);
+    });
+  }
+  function setup3() {
+    state.where = state.when = state.what = null; $('#go').disabled = true;
+    $('#h3').textContent = H3[state.side];
+    const lists = { where: WHERE, when: WHEN[state.side], what: WHAT };
+    document.querySelectorAll('#s3 .chips').forEach(el => chips(el, el.dataset.key, lists[el.dataset.key]));
+  }
+  $('#go').addEventListener('click', () => { fill(); show(3); });
+
+  // ---- the card
+  function fill() {
+    const k = state.side === 'kernel';
+    $('#cKind').textContent = k ? 'HAS STUFF' : 'HAS SPACE';
+    $('#cSide').innerHTML = k ? 'The kernel. <em>About to pop.</em>' : 'The warehouse. <em>Space to fill.</em>';
+    $('#cWhere').textContent = state.where; $('#cWhen').textContent = state.when; $('#cWhat').textContent = state.what;
+    $('#cDate').textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+    $('#read').textContent = k
+      ? 'You just told us where a company is about to pop, and when, before the trucks show up.'
+      : 'You just told us where space is opening, and when, before anyone signs for it.';
+  }
+  $('#again').addEventListener('click', () => { reset1(); show(0); });
+
+  // ---- review screenshots only: #demo=1..4 jumps to a screen with sample answers
+  const demo = (location.hash.match(/demo=(\d)/) || [])[1];
+  if (demo) {
+    q1[1].click();
+    if (demo > 1) $('#next1').click();
+    if (demo > 2) document.querySelector('#s2 .opt[data-side="kernel"]').click();
+    if (demo > 3 || demo == 3) ['Phoenix', 'Before February 14', 'A truckload'].forEach(t =>
+      [...document.querySelectorAll('#s3 .chip')].find(c => c.textContent === t).click());
+    if (demo > 3) $('#go').click();
+  }
+})();
+</script>
+</body>
+</html>
