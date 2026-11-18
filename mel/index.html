@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light only">
+<title>Mel Fish, Clairvista Partners</title>
+<meta name="description" content="Mel Fish, founder of Clairvista Partners. Save my contact, or see what we're building.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Clairvista Partners">
+<meta property="og:title" content="Mel Fish, Clairvista Partners">
+<meta property="og:description" content="A dating app for warehouses. Save my contact, or see what we're building.">
+<meta property="og:url" content="https://clairvistapartners.com/mel/">
+<meta property="og:image" content="https://clairvistapartners.com/mel/mel.jpg">
+<meta property="og:image:alt" content="Mel Fish">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* /mel, 18 November 2026: the one QR on Mel's badge lands here. Unlisted, noindex, nothing collected.
+     Save the contact (a card file, so the page stays open) or see the deck (a new tab, so this page stays too). */
+  :root { --ink: #0A0B10; --blue: #0047FF; --muted: #5B5F66; --line: #E3E5EA; color-scheme: light; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  html, body { margin: 0; background: #fff; color: var(--ink); font: 17px/1.45 Outfit, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  main { max-width: 440px; margin: 0 auto; padding: max(22px, env(safe-area-inset-top)) 22px max(28px, env(safe-area-inset-bottom)); }
+  .logo { height: 30px; display: block; }
+  .hi { margin: 26px 0 0; font: 700 15px Outfit; color: var(--blue); }
+  .me { display: flex; align-items: center; gap: 16px; margin-top: 10px; }
+  .me img { width: 108px; height: 108px; border-radius: 50%; object-fit: cover; display: block; flex: none; }
+  .me h1 { margin: 0; font: 800 28px/1.1 Outfit; letter-spacing: -.01em; }
+  .me .t { display: block; margin-top: 6px; font: 700 11px "Space Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+  .line { margin: 22px 0 0; font: 800 22px/1.2 Outfit; }
+  .sub { margin: 8px 0 0; color: #2A2D35; font-size: 16px; }
+  .btn { display: block; width: 100%; margin-top: 14px; padding: 17px 18px; border-radius: 12px; text-align: center; text-decoration: none; font: 800 18px/1.2 Outfit; }
+  .btn.save { background: var(--blue); color: #fff; margin-top: 26px; }
+  .btn.see { background: var(--ink); color: #fff; }
+  .btn small { display: block; margin-top: 3px; font: 500 13px Outfit; opacity: .8; }
+  .both { margin: 12px 0 0; text-align: center; font-size: 13.5px; color: var(--muted); }
+  .quick { display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .quick a { flex: 1; text-align: center; padding: 11px 6px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; font: 700 15px Outfit; }
+  .trust { margin: 22px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+  footer { margin-top: 10px; text-align: center; font: 400 11px "Space Mono", monospace; color: #9BA0AA; }
+  a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <a href="/"><img class="logo" src="/assets/logo.png" alt="Clairvista Partners"></a>
+
+  <p class="hi" id="hi">Nice to meet you.</p>
+  <div class="me">
+    <img src="mel.jpg" alt="Mel Fish">
+    <div><h1>Mel Fish</h1><span class="t">Founder, Clairvista Partners</span></div>
+  </div>
+
+  <p class="line">A dating app for warehouses.</p>
+  <p class="sub">We spot companies about to need warehouse space and introduce them to the warehouse company that fits, before either side is looking.</p>
+
+  <a class="btn save" href="mel-fish.vcf">Save my contact<small>Phone, email, website and LinkedIn</small></a>
+  <a class="btn see" href="/meet/" target="_blank" rel="noopener">See what we&#x27;re building<small>Our story in seven pages</small></a>
+  <p class="both">Do both: this page stays open.</p>
+
+  <div class="quick">
+    <a href="tel:+16173190906">Call</a>
+    <a href="mailto:mfish@clairvistapartners.com">Email</a>
+    <a href="https://www.linkedin.com/in/mhfish" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+
+  <p class="trust">No sign-up. Nothing collected.</p>
+  <footer>clairvistapartners.com</footer>
+</main>
+<script>
+  // The QR carries ?from=<event>; the greeting meets them where the handshake happened. Nothing is stored or sent.
+  (function () {
+    var places = { globe: "Great meeting you at the Globe Summit.", manifest: "Great meeting you at Manifest.", shoptalk: "Great meeting you at Shoptalk." };
+    var m = /[?&]from=([a-z0-9-]+)/i.exec(location.search);
+    if (m && places[m[1].toLowerCase()]) document.getElementById("hi").textContent = places[m[1].toLowerCase()];
+  })();
+</script>
+</body>
+</html>
