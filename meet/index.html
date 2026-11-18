@@ -2,346 +2,162 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clairvista: a dating app for warehouses</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light only">
+<title>Clairvista: a dating app for warehouses</title>
 <meta name="description" content="Clairvista spots companies about to need warehouse space and introduces them to the warehouse company that fits, before either side is looking.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;0,800;1,500;1,600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<style>@media print{@page{size:1333px 750px;margin:0}html,body{background:#fff}#stage{padding:0!important;zoom:1!important}
-section.slide{margin:0!important;break-after:page}}
-.draft{display:none!important}
-
-/* V10, 12 November 2026: rebuilt from Mel's 11 November PDF "Dating App for Warehouses" (Clairvista deck V10).
-   This file is the source: edit it directly; the page on 8816 reloads itself on save. style.css is V9's, unchanged. */
-
-/* Page 1, the cover: the diner picture across the page, dark on the left under the words */
-.cv{position:absolute;inset:0;background:#0A0B10}
-.cv>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:100% 50%;display:block}
-.cvscrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,11,16,.94) 0,rgba(10,11,16,.87) 380px,rgba(10,11,16,.68) 420px,rgba(10,11,16,.38) 460px,rgba(10,11,16,0) 500px)}
-.cvlogo.cvtop{position:absolute;left:55px;top:52px;margin:0}
-.cvh1{position:absolute;left:55px;top:296px;width:440px;margin:0;font:800 68px/68px Outfit;color:#fff;letter-spacing:-.01em}
-.cvrule{position:absolute;left:55px;top:450px;width:60px;height:3px;background:var(--blue)}
-.cvhook{position:absolute;left:55px;top:468px;margin:0;font:700 28px/1.2 Outfit;color:#fff}
-.cvsep{position:absolute;left:55px;width:395px;height:1px;background:rgba(255,255,255,.16)}
-.cvsub{position:absolute;left:55px;top:507px;margin:0;font:500 22px/1.25 Outfit;color:#9BA0AA}
-.cvline{position:absolute;left:55px;top:590px;width:425px;margin:0;font:400 20px/27px Outfit;color:#9BA0AA}
-.cvsub .o,.cvline .o{color:#F5A04C}.cvline .g{color:#3DDC97}.cvline .b{color:#6E94FF}
-.cvfoot{position:absolute;right:55px;top:704px;height:26px;display:flex;align-items:center;gap:40px;font:400 11px "Space Mono",monospace;color:#9BA0AA}
-
-/* Pages 2 to 4: three panels, a numbered line over each picture */
-.p3{position:absolute;top:146px;width:400px;height:424px;border:2px solid #0A0B10;box-sizing:border-box;background:#0A0B10;overflow:hidden}
-.p3.a{left:55px}.p3.b{left:467px}.p3.c{left:878px}
-.p3 .hd{height:84px;background:#FBF7EE;border-bottom:2px solid #0A0B10;box-sizing:border-box;display:flex;align-items:center;gap:14px;padding:0 14px;font:700 25px/28px Outfit;color:#0A0B10}
-.p3 .n{flex:none;width:26px;height:26px;background:#0047FF;color:#fff;font:700 15px/26px "Space Mono",monospace;text-align:center}
-.p3 img{display:block;width:100%;height:336px;object-fit:cover}
-.h3{font-size:40px;margin-top:6px;max-width:1223px}
-.band.b24{top:586px;height:60px;font-size:24px;line-height:1.3}
-.bubble{position:absolute;left:1002px;top:244px;width:261px;box-sizing:border-box;background:#fff;border:2px solid #0A0B10;border-radius:16px;padding:9px 14px;font:700 17.5px/21.5px Outfit;color:#0A0B10;box-shadow:2px 2px 0 rgba(0,0,0,.35)}
-.bubble:before,.bubble:after{content:"";position:absolute;width:0;height:0;border-style:solid;border-color:transparent}
-.bubble:before{left:45px;bottom:-12px;border-width:12px 9px 0 7px;border-top-color:#0A0B10}
-.bubble:after{left:47px;bottom:-8px;border-width:9px 7px 0 5px;border-top-color:#fff}
-
-/* Page 8, cut down (12 November): Mel's approved drawing framed like the story panels, the road as four verbs in the
-   cover's colors (her side blue, the school gray, his side orange, Clairvista green), one closing line in the band */
-.mp{position:absolute;left:55px;top:172px;width:320px}
-.mp img{display:block;width:320px;height:330px;object-fit:cover;object-position:50% 18%;border-radius:4px}
-.mp .cap{margin-top:12px}
-.mp .cap b{display:block;font:800 26px/1.1 Outfit;color:#0A0B10;letter-spacing:-.01em}
-.mp .cap span{display:block;margin-top:6px;font:700 11px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
-.rmap{position:absolute;left:405px;top:176px;overflow:visible}
-.rm{position:absolute;width:230px}
-.rm.c{text-align:center}.rm.r{text-align:right;width:200px}
-.rm .y{font:700 11px "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
-.rm .v{font:800 21px/1.1 Outfit;color:#0A0B10;margin-top:4px;letter-spacing:-.01em}
-.rm .f{font:700 15px/1.2 "Playfair Display",Georgia,serif;color:#2A2D35;margin-top:4px}
-.wmadv{position:absolute;left:405px;top:516px;width:440px}
-.wmadv .lab{font:700 11px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#6B7080}
-.wmadv p{margin:8px 0 0;font:400 14px/1.35 Outfit;color:#2A2D35}
-.wmadv b{color:#0A0B10;font-weight:800;margin-right:6px}
-.wmcta{position:absolute;right:55px;top:514px;width:400px;height:142px;box-sizing:border-box;background:var(--blue);color:#fff;padding:7px 7px 7px 22px;font:400 15px/1.4 Outfit;display:flex;justify-content:space-between;align-items:center;gap:14px}
-.wmcta .sc{display:block;margin-top:5px;font:400 11.5px/1.2 Outfit;color:rgba(255,255,255,.8)}
-.wmcta .qr{flex:none;width:128px;height:128px;display:block;background:#fff;border-radius:3px}
-.wmcta b{font:800 25px/1.1 Outfit;display:block;margin-bottom:4px}
-/* Page 7 side by side (12 November): the plan as a road running down on the left, the money as bars on the right */
-.p7lab{position:absolute;top:176px;font:700 10.5px "Space Mono",monospace;letter-spacing:.12em;color:#6B7080}
-.p7div{position:absolute;left:666px;top:176px;width:1px;height:340px;background:#262A35}
-.p7rail{position:absolute;left:69px;top:222px;width:2px;height:256px;background:#3A3F4D}
-.p7row{position:absolute;left:55px;width:580px;padding-left:46px;box-sizing:border-box}
-.p7row svg{position:absolute;left:0;top:-6px;width:30px;height:30px;box-sizing:border-box;padding:4px;background:var(--obsidian)}
-.p7row .h{display:flex;align-items:baseline;gap:12px}
-.p7row .d{font:700 11px "Space Mono",monospace;letter-spacing:.08em;min-width:92px}
-.p7row .t{font:800 19px/1.15 Outfit;color:#fff}
-.p7row.big .t{font-size:22px}
-.p7row p{margin:5px 0 0;font:400 13.5px/1.4 Outfit;color:#B9BECA}
-.p7bud{position:absolute;left:712px;width:566px}
-.p7bud .a{display:inline-block;width:66px;font:800 19px/1 Outfit;color:#fff}
-.p7bud .l{font:400 13.5px/1 Outfit;color:#9BA0AA}
-.p7bud i{display:block;height:8px;border-radius:2px;margin:9px 0 0 66px}
-
-/* Unit economics (18 November): the base case as a receipt on the left, two sensitivity grids on the right */
-.ue-lab{position:absolute;font:700 11px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
-.fx{position:absolute;left:55px;top:170px;width:1223px;display:flex;align-items:flex-start;justify-content:space-between}
-.fx .t{display:flex;flex-direction:column}
-.fx .t b{font:800 32px/46px Outfit;color:#0A0B10;white-space:nowrap;letter-spacing:-.01em}
-.fx .t span{font:400 12.5px/1.3 Outfit;color:#5B5F66;margin-top:6px;max-width:150px}
-.fx .t.tot b{font-size:46px;color:var(--blue)}
-.fx .t.tot span{color:#0A0B10;font-weight:700}
-.fx .op{font:400 30px/46px Outfit;color:#9BA0AA}
-.sg{position:absolute;width:399px;border-collapse:separate;border-spacing:4px}
-.sg th{font:700 10px "Space Mono",monospace;letter-spacing:.08em;color:#6B7080;text-align:center;padding:0 0 2px;height:20px}
-.sg th.rh{width:92px}
-.sg td{height:46px;text-align:center;font:700 17px Outfit;color:#0A0B10;border-radius:3px}
-.sg td.rh{text-align:left;font:700 13.5px Outfit;color:#5B5F66;padding-left:4px;white-space:nowrap}
-.sg td.base{background:rgba(0,71,255,.10);color:#0A0B10;box-shadow:inset 0 0 0 2px var(--blue);font-weight:800}
-
-/* Unit economics, calmer (18 November): one "what moves it" chart; the full grids live in the appendix */
-.tzr{position:absolute;left:55px;width:250px}
-.tzr b{display:block;font:800 18px/1.1 Outfit;color:#0A0B10}
-.tzr span{display:block;margin-top:4px;font:400 13px/1.2 Outfit;color:#5B5F66}
-.tzbar{position:absolute;height:24px;border-radius:3px}
-.tzbar.up{background:rgba(0,71,255,.28)}
-.tzbar.dn{background:#DADDE3}
-.tzv{position:absolute;font:700 16px/26px Outfit;color:#0A0B10}
-.tzbase{position:absolute;top:330px;width:0;height:214px;border-left:2px dashed var(--blue)}
-.tzbl{position:absolute;top:318px;font:700 10px "Space Mono",monospace;letter-spacing:.1em;color:var(--blue)}
-
-/* Page 7, how we make money (18 November): the first match (now, solid) and the platform (next, dashed) */
-.mk{position:absolute;top:146px;width:584px;height:424px;box-sizing:border-box;padding:22px 26px}
-.mk.now{left:55px;border:2px solid #0A0B10;background:#fff}
-.mk.next{left:694px;border:2px dashed var(--blue);background:#F5F7FF}
-.mkh{display:flex;justify-content:space-between;align-items:center;font:700 11px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#0A0B10}
-.mkh em{font-style:normal;color:#fff;background:#0A0B10;padding:3px 8px;letter-spacing:.12em}
-.mk.next .mkh em{background:var(--blue)}
-.rc2{margin-top:12px}
-.rc2 .r{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:7px 0;border-bottom:1px solid #E3E5EA}
-.rc2 .r span{font:400 13.5px/1.3 Outfit;color:#5B5F66}
-.rc2 .r b{font:800 21px/1.1 Outfit;color:#0A0B10;white-space:nowrap}
-.rc2 .r.sum{border-bottom:2px solid #0A0B10}
-.rc2 .r.total{border:0;padding-top:12px}
-.rc2 .r.total span{color:#0A0B10;font-weight:700;font-size:14.5px}
-.rc2 .r.total b{font-size:44px;color:var(--blue)}
-.mkn{margin:6px 0 0;font:400 14px/1.35 Outfit;color:#2A2D35}
-.mkarrow{position:absolute;left:641px;top:332px;width:51px;text-align:center;font:400 34px/1 Outfit;color:var(--blue)}
-.mks{display:flex;gap:14px;align-items:flex-start;margin-top:18px}
-.mks svg{flex:none;margin-top:2px}
-.mks b{display:block;font:800 18px/1.15 Outfit;color:#0A0B10}
-.mks p{margin:4px 0 0;font:400 14.5px/1.4 Outfit;color:#2A2D35}
-.mkline{margin:20px 0 0;font:600 15px/1.4 Outfit;color:#0A0B10}
-.mkex{margin-top:16px;background:#fff;border-left:4px solid var(--blue);padding:12px 16px}
-.mkex .lab{font:700 10.5px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
-.mkex .eq{margin-top:6px;font:500 18px/1.2 Outfit;color:#0A0B10}
-.mkex .eq span{color:#9BA0AA;margin:0 4px}
-.mkex .eq b{font-weight:800;color:var(--blue)}
-.mkex .sub{margin-top:4px;font:400 13px/1.3 Outfit;color:#5B5F66}
-
-/* Card 1 inside: the base case in two lines, then the four levers */
-.fm{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin-top:14px;padding-bottom:10px;border-bottom:1px solid #E3E5EA}
-.fm span{font:400 13.5px/1.35 Outfit;color:#5B5F66;max-width:300px}
-.fm b{font:800 20px/1.1 Outfit;color:#0A0B10;white-space:nowrap}
-.fm.big{margin-top:8px;border-bottom:2px solid #0A0B10}
-.fm.big span{color:#0A0B10;font-weight:600}
-.fm.big b{font-size:40px;color:var(--blue)}
-
-/* Card 2: the four channels after the match */
-.ch{display:flex;gap:12px;align-items:flex-start;margin-top:14px}
-.ch svg{flex:none;margin-top:1px}
-.ch b{display:block;font:800 16px/1.15 Outfit;color:#0A0B10}
-.ch b i{font:700 9.5px "Space Mono",monospace;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-left:10px;vertical-align:1px}
-.ch p{margin:3px 0 0;font:400 13.5px/1.35 Outfit;color:#2A2D35}
-.mk.next .mkline{margin-top:16px;font-size:14px}
-.mk.next .mkex{margin-top:12px;padding:10px 16px}
-
-/* Card 1 summary sensitivity: deal size by term, the two biggest levers; fee and price grids in the appendix */
-.smlab{margin-top:11px;font:700 10.5px "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
-.smlab i{font-style:normal;color:#9BA0AA;margin-left:8px;letter-spacing:.08em}
-.sm{margin-top:2px;width:100%;border-collapse:separate;border-spacing:4px}
-.sm th{font:700 10px "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#6B7080;text-align:center;height:18px}
-.sm th.rh{text-align:left;padding-left:4px;width:118px}
-.sm td{height:31px;text-align:center;font:700 17px Outfit;color:#0A0B10;border-radius:3px}
-.sm td.rh{text-align:left;font:700 13.5px Outfit;color:#5B5F66;padding-left:4px;white-space:nowrap}
-.sm td.base{background:var(--blue);color:#fff;font-weight:800}
-.smptr{margin:6px 0 0 4px;font:400 12.5px/1.3 Outfit;color:#5B5F66}
-
-/* Card 2 why line (18 November) */
-.why{margin:12px 0 0;font:600 14.5px/1.4 Outfit;color:#0A0B10}
-.mk.next .ch{margin-top:11px}
-
-/* Page 7 leads with the signed 5% (18 November); the $50,000 is a labeled, conservative example; the example cell outlined */
-.fm.big{margin-top:8px}
-.fm.big span{max-width:390px}
-.fm.big b{font-size:50px;line-height:1}
-.fm.ex{margin-top:6px;border-bottom:2px solid #0A0B10}
-.fm.ex span{max-width:330px;color:#2A2D35}
-.fm.ex span i{display:block;font:700 10px "Space Mono",monospace;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:3px}
-.fm.ex b{font-size:20px;color:#0A0B10}
-.sm td.base{background:rgba(0,71,255,.10);color:#0A0B10;box-shadow:inset 0 0 0 2px var(--blue);font-weight:800}
-
-/* Page 8 (18 November): three phases across the top, the lanes say who, one outcome line per phase, money named as
-   in the budget. Classes are page-specific (p8...) so nothing collides with other pages. */
-.p8svg{position:absolute;left:0;top:0;pointer-events:none}
-.p8zn{position:absolute;top:180px}
-.p8zn .w,.p8ln .w,.p8gl .w{display:block;font:700 10px "Space Mono",monospace;letter-spacing:.12em}
-.p8zn b{display:block;margin-top:3px;font:800 17px/1.1 Outfit;color:#fff}
-.p8ln{position:absolute;left:55px;width:185px}
-.p8ln b{display:block;margin-top:2px;font:800 14.5px/1.15 Outfit;color:#fff}
-.p8ln .m{display:block;margin-top:2px;font:700 12.5px Outfit;color:#9DB4FF}
-.p8out{position:absolute;top:428px;font:400 16px/1.42 Outfit;color:#B9BECA;text-wrap:pretty}
-.p8gl{position:absolute;width:138px}
-.p8gl .w{color:#9DB4FF}
-.p8gl b{display:block;font:800 20px/1.1 Outfit;color:#fff;margin-top:3px}
-.p8gl .c{display:block;margin-top:4px;font:500 15px/1.35 Outfit;color:#B9BECA}
-
-/* Page 9 re-laid (18 November): the why-now line under the headline, no band, photo and road start together,
-   the advisors and the contact box share one baseline with room above and below */
-.p9sub{position:absolute;left:55px;top:122px;width:1000px;margin:0;font:400 17px/1.3 Outfit;color:#5B5F66}
-.p9sub b{color:#0A0B10;font-weight:700}
-</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-.turn{display:none}
-@media (max-width:600px) and (orientation:portrait){.turn{display:block;position:sticky;top:0;z-index:9;margin:0;padding:10px 14px;background:#0047FF;color:#fff;font:600 14px/1.3 Outfit,system-ui,sans-serif;text-align:center}}
+  /* /meet, 18 November 2026: the general-interest deck. First a name and email (Mel: "Ideally we have people provide
+     their name and email address to get it, which is what we record and keep"), saved to the site's submissions table;
+     then the seven pages the way a phone shows a PDF (Mel: "it should look as if they were opening a pdf on their phone").
+     The pages are images rendered from cvp-pitch-deck/deck/concept-v10-2026-11-12/html/meet.html by build_meet_pages.py. */
+  :root { --ink: #0A0B10; --blue: #0047FF; --muted: #5B5F66; --line: #E3E5EA; color-scheme: light; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  html, body { margin: 0; background: #fff; color: var(--ink); font: 17px/1.45 Outfit, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  body.reading { background: #DADDE3; }
+  [hidden] { display: none !important; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+  /* the ask */
+  .ask { max-width: 440px; margin: 0 auto; padding: max(22px, env(safe-area-inset-top)) 22px max(28px, env(safe-area-inset-bottom)); }
+  .logo { height: 30px; display: block; }
+  .cover { display: block; width: 100%; height: auto; aspect-ratio: 1333 / 750; margin-top: 22px; border-radius: 6px; box-shadow: 0 1px 3px rgba(10,11,16,.18), 0 6px 18px rgba(10,11,16,.1); background: #0A0B10; }
+  h1 { margin: 22px 0 0; font: 800 26px/1.15 Outfit; letter-spacing: -.01em; }
+  .sub { margin: 8px 0 0; color: #2A2D35; font-size: 16px; }
+  form { margin-top: 18px; }
+  label { display: block; margin-top: 12px; font: 700 10px "Space Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+  input { display: block; width: 100%; margin-top: 5px; padding: 14px; border: 1px solid #C9CDD6; border-radius: 10px; font: 500 17px Outfit, -apple-system, sans-serif; color: var(--ink); background: #fff; -webkit-appearance: none; appearance: none; }
+  input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(0,71,255,.15); }
+  .err { min-height: 20px; margin: 8px 0 0; font-size: 14px; color: #C2261B; }
+  .go { display: block; width: 100%; margin-top: 4px; padding: 17px 18px; border: 0; border-radius: 12px; background: var(--blue); color: #fff; font: 800 18px/1.2 Outfit; cursor: pointer; }
+  .go:disabled { opacity: .7; }
+  .fine { margin: 14px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+  .fine a { color: var(--muted); }
+
+  /* the pages, the way a phone shows a PDF: whole pages, full width, pinch to zoom */
+  .pdf { max-width: 1100px; margin: 0 auto; padding: max(8px, env(safe-area-inset-top)) 6px 4px; }
+  .pdf img { display: block; width: 100%; height: auto; aspect-ratio: 1333 / 750; margin: 0 0 8px; background: #fff; box-shadow: 0 1px 2px rgba(10,11,16,.2), 0 4px 12px rgba(10,11,16,.08); }
+  .count { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); padding: 6px 13px; border-radius: 99px; background: rgba(10,11,16,.74); color: #fff; font: 600 13px Outfit; opacity: 0; transition: opacity .35s; pointer-events: none; }
+  .count.on { opacity: 1; }
+
+  /* after the last page */
+  .after { max-width: 440px; margin: 0 auto; padding: 18px 16px max(34px, env(safe-area-inset-bottom)); }
+  .after h2 { margin: 0; font: 800 22px Outfit; }
+  .save { display: block; margin-top: 14px; padding: 16px 18px; border-radius: 12px; background: var(--blue); color: #fff; text-align: center; text-decoration: none; font: 800 18px/1.2 Outfit; }
+  .reach { margin-top: 14px; border-top: 1px solid #C3C7CF; }
+  .reach a { display: block; padding: 13px 2px; border-bottom: 1px solid #C3C7CF; color: var(--ink); text-decoration: none; font: 700 18px/1.25 Outfit; overflow-wrap: anywhere; }
+  .reach .k { display: block; margin-bottom: 2px; font: 700 10px "Space Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+  .after footer { margin-top: 20px; text-align: center; font: 400 11px "Space Mono", monospace; color: var(--muted); }
+  .after footer a { color: inherit; }
 </style>
 </head>
 <body>
-<p class="turn">Turn your phone sideways to read the pages.</p>
-<div id="stage">
-<section class="slide" data-title="1. Love before first site.">
-  <div class="cv">
-    <img src="assets/cover-ink-warehouse.jpg" alt="A diner late at night: the warehouse manager and the toy company's operations lead sit at the same counter, each on a phone; a prism between them spreads the light into orange, green and blue">
-    <div class="cvscrim"></div>
-  </div>
-  <div class="cvlogo cvtop"><img src="assets/logo-on-dark.png" alt="Clairvista Partners" style="width:150px;display:block"><div class="gloss"><i>clair·vis·ta</i><span>n. a clear view</span></div></div>
-  <h1 class="cvh1">Love before first site.</h1>
-  <div class="cvrule"></div>
-  <p class="cvhook">A dating app for warehouses.</p>
-  <p class="cvsub">Because <span class="o">warehouses</span> get lonely too.</p>
-  <div class="cvsep" style="top:568px"></div>
-  <p class="cvline"><span class="g">We spot</span> <span class="b">companies about to need warehouse space</span> and introduce them to <span class="o">the warehouse company that fits</span>, before either side is looking.</p>
-  <div class="cvfoot"><span>clairvistapartners.com</span><span>1</span></div>
-</section>
+<main class="ask" id="ask">
+  <a href="/"><img class="logo" src="/assets/logo.png" alt="Clairvista Partners"></a>
+  <img class="cover" src="pages/p1.webp" width="2666" height="1500" alt="The cover: Love before first site. A dating app for warehouses.">
+  <h1>See what we&#x27;re building.</h1>
+  <p class="sub">Seven pages on Clairvista, a dating app for warehouses. Leave your name and email and they open right here.</p>
+  <form id="f" novalidate>
+    <label for="nm">Your name</label>
+    <input id="nm" autocomplete="name" autocapitalize="words" maxlength="120" required>
+    <label for="em">Your email</label>
+    <input id="em" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="200" required>
+    <p class="err" id="err" role="alert"></p>
+    <button class="go" type="submit">Open the deck</button>
+  </form>
+  <p class="fine">We keep your name and email so we can follow up. <a href="/privacy.html">Privacy</a></p>
+</main>
 
-<section class="slide" data-title="2. A hit at Halloween. A crisis before Christmas.">
-  <div class="top" style="top:38px">
-    <div class="kicker">2 / A real problem</div>
-    <h1 class="h3">A hit at Halloween. A crisis before Christmas.</h1>
-    <div class="rule" style="margin-top:11px"></div>
-  </div>
-  <div class="p3 a"><div class="hd"><span class="n">1</span><span>She builds an AI pet for fun.</span></div><img src="assets/c2-p1.jpg" alt="" style="object-position:50% 60%"></div>
-  <div class="p3 b"><div class="hd"><span class="n">2</span><span>Halloween makes it a hit.</span></div><img src="assets/v2-halloween.jpg" alt="" style="object-position:50% 68%"></div>
-  <div class="p3 c"><div class="hd"><span class="n">3</span><span>The chains want more.<br>Her warehouse is full.</span></div><img src="assets/c2-p5b.jpg" alt="" style="object-position:50% 70%"></div>
-  <div class="bubble">"Great news! But we are completely out of distribution space."</div>
-  <div class="band b24"><span>Late or short? Big chains fine 3% to 5%.&nbsp;<b>On a $10M order, that's $500,000.</b></span></div>
-  <div class="fn1" style="top:666px">Story and order invented. Rates real: on-time, in-full fines of 3% to 5% of the cost of goods (Retail Dive, May 2016; Supply Chain Dive, July 2017).</div>
-  <div class="foot" style="top:704px;height:26px"><img src="assets/logo.png" alt="Clairvista Partners" style="width:96px"><span>clairvistapartners.com</span><span>2</span></div>
-</section>
-
-<section class="slide" data-title="3. Right space. Right customer. Wrong timing.">
-  <div class="top" style="top:38px">
-    <div class="kicker">3 / The other side</div>
-    <h1 class="h3">Right space. Right customer. Wrong timing.</h1>
-    <div class="rule" style="margin-top:11px"></div>
-  </div>
-  <div class="p3 a"><div class="hd"><span class="n">1</span><span>He has open space<br>where the chains want it.</span></div><img src="assets/c3-p1.jpg" alt="" style="object-position:50% 62%"></div>
-  <div class="p3 b"><div class="hd"><span class="n">2</span><span>His team chases deals<br>by phone and at shows.</span></div><img src="assets/v2-aisle.jpg" alt="" style="object-position:50% 72%"></div>
-  <div class="p3 c"><div class="hd"><span class="n">3</span><span>By the time he can<br>price it, it's gone.</span></div><img src="assets/c3-p5b.jpg" alt="" style="object-position:50% 66%"></div>
-  <div class="band b24"><span><b>1.2 billion square feet of warehouse space is empty.</b></span></div>
-  <div class="fn1" style="top:666px">Story invented. Vacancy real: 6.8% of 18.3 billion square feet of US warehouse space (Cushman &amp; Wakefield, Q3 2026).</div>
-  <div class="foot" style="top:704px;height:26px"><img src="assets/logo.png" alt="Clairvista Partners" style="width:96px"><span>clairvistapartners.com</span><span>3</span></div>
-</section>
-
-<section class="slide" data-title="4. She'd search. He'd chase. We match them first.">
-  <div class="top" style="top:38px">
-    <div class="kicker">4 / What we do</div>
-    <h1 class="h3">She'd search. He'd chase. We match them first.</h1>
-    <div class="rule" style="margin-top:11px"></div>
-  </div>
-  <div class="p3 a"><div class="hd"><span class="n">1</span><span>We connect the signs.</span></div><img src="assets/v5-mel-board.jpg" alt="" style="object-position:50% 40%"></div>
-  <div class="p3 b"><div class="hd"><span class="n">2</span><span>We find the right fit.</span></div><img src="assets/c4-p3.jpg" alt="" style="object-position:50% 50%"></div>
-  <div class="p3 c"><div class="hd"><span class="n">3</span><span>They meet on<br>Prism. One hello.</span></div><img src="assets/c4-phone-her.jpg" alt="" style="object-position:50% 19%"></div>
-  <div class="band b24"><span>Her toys make every shelf. His racks fill.&nbsp;<b>Nobody had to swipe.</b></span></div>
-  <div class="fn1" style="top:666px">The cartoon is invented. Prism is real, and strictly platonic. Ask us for a demo.</div>
-  <div class="foot" style="top:704px;height:26px"><img src="assets/logo.png" alt="Clairvista Partners" style="width:96px"><span>clairvistapartners.com</span><span>4</span></div>
-</section>
-
-<section class="slide" data-title="5. Others sell his space. We deliver his next customer.">
-  <div class="top" style="top:38px"><div class="kicker">5 / Where we fit</div><h1 style="font-size:40px;margin-top:6px;max-width:1223px">Others sell his space. <b>We deliver his next customer.</b></h1><div class="rule" style="margin-top:11px"></div></div>
-  <div class="pm" style="left:55px;top:134px;width:1223px;height:430px"><div class="pmPlot"><div class="pmQ"></div><div class="pmVx"></div><div class="pmHx"></div><div class="pmHero"><div class="pmBeam"><i></i><i></i><i></i></div><img src="assets/logo-on-dark.png" alt="Clairvista Partners"><span class="pmPill">Demand-first marketplace</span><p class="pmBig">We bring him the customer before she searches.</p><p class="pmSmall">Paid when she signs.</p></div><div class="pmDot pml" style="left:6%;top:18%"><i></i><div class="pmLab"><b>Consultants</b><span>Run her search and the shortlist, over weeks.</span></div></div><div class="pmDot pml" style="left:18%;top:46%"><i></i><div class="pmLab"><b>Aggregators</b><span>Take his space and resell it under their own name.</span></div></div><div class="pmDot pml" style="left:6%;top:64%"><i></i><div class="pmLab"><b>Marketplaces</b><span>List his space and wait for her to find it.</span></div></div><div class="pmDot pml" style="left:22%;top:82%"><i></i><div class="pmLab"><b>Agents</b><span>Represent the building.</span></div></div><div class="pmDot pmr" style="left:92%;top:66%"><i></i><div class="pmLab"><b>Listing sites</b><span>Advertise his space all year. She still has to come looking.</span></div></div></div><div class="pmXl"><span>&larr; During her search</span><span>Before her search &rarr;</span></div><div class="pmYl"><span>Sells his space</span><span>Delivers her business</span></div></div>
-  <div class="band" style="top:586px;height:60px;font-size:20px;line-height:1.3"><span>With them, she'd have searched, compared and waited.&nbsp;<b>With us, the right space found her first. And she's not the only one.</b></span></div>
-  <div class="foot" style="top:704px;height:26px"><img src="assets/logo.png" alt="Clairvista Partners" style="width:96px"><span>clairvistapartners.com</span><span>5</span></div>
-</section>
-
-<section class="slide" data-title="6. Meet us at Manifest.">
-  <div class="appbg"></div>
-  <div class="top" style="top:38px"><div class="kicker" style="color:var(--blue-on-dark)">6 / Manifest</div><h1 style="font-size:40px;margin-top:6px;color:#fff">Meet us at <b>Manifest.</b></h1><div class="rule" style="margin-top:11px"></div></div>
-  <p style="position:absolute;left:55px;width:1100px;top:120px;margin:0;font:400 17px/1.3 Outfit;color:#cfd3e0">We&#x27;re signing up our first 30 companies by June. Warehouse companies pay nothing until a customer we bring signs.</p>
-  <svg class="p8svg" width="1333" height="750" aria-hidden="true">
-    <rect x="401" y="168" width="250" height="384" fill="#11141D"/>
-    <path d="M 401 168 L 401 552 M 651 168 L 651 552" stroke="#262A35" stroke-width="1"/>
-    <path d="M 80 300 L 1080 300" stroke="#3DDC97" stroke-width="7" stroke-linecap="round"/>
-    <circle cx="401" cy="300" r="12" fill="#F5A04C" stroke="#0A0B10" stroke-width="3"/>
-    <circle cx="605" cy="300" r="9" fill="#4E7AFF" stroke="#0A0B10" stroke-width="3"/>
-    <text x="401" y="276" text-anchor="middle" font-family="Outfit" font-size="15" font-weight="800" fill="#F5A04C">Manifest</text>
-    <text x="605" y="334" text-anchor="middle" font-family="Outfit" font-size="15" font-weight="800" fill="#4E7AFF">Shoptalk</text>
-    <path d="M 1104 340 L 1104 266" stroke="#fff" stroke-width="2"/>
-    <path d="M 1105 266 L 1130 274 L 1105 282 Z" fill="#0047FF"/>
-    <circle cx="1104" cy="340" r="4" fill="#fff"/>
-  </svg>
-  <div class="p8zn" style="left:92px;width:297px"><span class="w" style="color:#3DDC97">DEC - FEB 7</span><b>Get ready</b></div>
-  <div class="p8zn" style="left:413px;width:226px"><span class="w" style="color:#F5A04C">FEB 8 - MAR 24</span><b>Sign both sides up</b></div>
-  <div class="p8zn" style="left:663px;width:405px"><span class="w" style="color:#3DDC97">APR - JUN</span><b>Make the matches</b></div>
-  <div class="p8out" style="left:92px;width:297px;top:380px">We&#x27;re getting Prism ready for real use and making our first matches by hand.</div>
-  <div class="p8out" style="left:413px;width:226px;top:380px">At Manifest, we&#x27;re planning an experiential marketing campaign designed to match companies that need space with warehouses that have it. When it works, we take it to Shoptalk.</div>
-  <div class="p8out" style="left:663px;width:405px;top:380px">We expect a lot of follow-up from Manifest. We chase every lead from both shows and introduce both sides on Prism.</div>
-  <div class="p8gl" style="left:1140px;top:258px"><span class="w">BY JUNE</span><b>Our first 30</b><span class="c">companies, half from each side</span></div>
-  <div class="dband" style="top:584px;font-size:26px">Manifest, logistics tech&#x27;s biggest conference, is our school dance.&nbsp;<b>Ask us how we&#x27;ll break the ice.</b></div>
-  <div class="fn1" style="top:664px;color:var(--muted-dark)">A sign-up is a company agreeing to use Prism. Manifest drew 7,000+ people in 2026 (SupplyChain Strategy, March 2026).</div>
-  <div class="foot" style="top:704px;height:26px;color:var(--muted-dark)"><img src="assets/logo-on-dark.png" alt="Clairvista Partners" style="width:96px"><span>clairvistapartners.com</span><span>6</span></div>
-</section>
-
-<section class="slide" data-title="7. Fifteen years on both sides. Now he makes the match.">
-  <div class="top" style="top:38px"><div class="kicker">7 / The close</div><h1 style="font-size:40px;margin-top:6px;max-width:1223px">Fifteen years on both sides. <b>Now he makes the match.</b></h1><div class="rule" style="margin-top:11px"></div></div>
-  <p class="p9sub">In 2026, warehouse companies started asking us for customers. <b>Here&#x27;s how we answer.</b></p>
-  <div class="mp"><img src="assets/mel-headshot.jpg" alt="Mel Fish"><div class="cap"><b>Mel Fish</b><span>Founder</span></div></div>
-  <!-- The road: 2012 at left, today at the dark dot, then the planned stretch to Manifest -->
-  <svg class="rmap" width="873" height="250" viewBox="0 0 873 250" style="top:192px" aria-hidden="true">
-    <g fill="none" stroke-linecap="round" stroke-width="12">
-      <path d="M 0 160 L 20 160 C 110 160, 140 88, 230 88" stroke="#4E7AFF"/>
-      <path d="M 230 88 C 320 88, 360 160, 450 160" stroke="#C8CCD3"/>
-      <path d="M 450 160 C 540 160, 570 88, 660 88" stroke="#F5A04C"/>
-      <path d="M 660 88 C 692.3 88, 716.7 98.4, 738.6 111.3" stroke="#3DDC97"/>
-    </g>
-    <path d="M 0 160 L 20 160 C 110 160, 140 88, 230 88 C 320 88, 360 160, 450 160 C 540 160, 570 88, 660 88 C 692.3 88, 716.7 98.4, 738.6 111.3" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="7 7"/>
-    <path d="M 738.6 111.3 C 774.3 132.3, 803.5 160, 850 160" fill="none" stroke="#0047FF" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
-    <g fill="#fff" stroke-width="4">
-      <circle cx="20" cy="160" r="10" stroke="#4E7AFF"/>
-      <circle cx="230" cy="88" r="10" stroke="#9BA0AA"/>
-      <circle cx="450" cy="160" r="10" stroke="#F5A04C"/>
-      <circle cx="660" cy="88" r="10" stroke="#3DDC97"/>
-    </g>
-    <circle cx="738.6" cy="111.3" r="6" fill="#0A0B10" stroke="#fff" stroke-width="2"/>
-    <text x="752" y="104" font-family="Space Mono, monospace" font-size="10" font-weight="700" letter-spacing="1.2" fill="#0A0B10">TODAY</text>
-    <path d="M 850 160 L 850 124" stroke="#0A0B10" stroke-width="2"/>
-    <path d="M 851 124 L 872 131 L 851 138 Z" fill="#0047FF"/>
-    <circle cx="850" cy="160" r="4" fill="#0A0B10"/>
-  </svg>
-  <div class="rm" style="left:405px;top:376px"><div class="y" style="color:#0047FF">2012 – 2017</div><div class="v">Moved the goods.</div><div class="f">Logistics</div></div>
-  <div class="rm c" style="left:520px;top:196px"><div class="y" style="color:#5B5F66">2017 – 2019</div><div class="v">Studied the buildings.</div><div class="f">Cornell University</div></div>
-  <div class="rm c" style="left:720px;top:376px;width:270px"><div class="y" style="color:#C8620F">2019 – 2025</div><div class="v">Monetized the buildings.</div><div class="f">Industrial Real Estate</div></div>
-  <div class="rm c" style="left:950px;top:196px"><div class="y" style="color:#00815E">2025 – today</div><div class="v">Introduces them.</div><div class="f">Clairvista Partners</div></div>
-  <div class="rm r" style="left:1078px;top:376px"><div class="y" style="color:#0047FF">Feb 2027</div><div class="v">Next stop: Manifest.</div><div class="f" style="color:#0047FF">Come find us there</div></div>
-  <div class="wmadv"><div class="lab">Formal advisors</div><p><b>Clint Grimes</b>ex-Chief Procurement Officer, Capital One.</p><p><b>Jamey Tesler</b>ex-Massachusetts Transportation Secretary.</p></div>
-  <div class="wmcta"><div class="tx"><b>Talk to Mel.</b>mfish@clairvistapartners.com<br>617-319-0906<span class="sc">Scan to save my contact, call or email.</span></div><img class="qr" src="assets/mel-contact-qr.svg" alt="QR code: Mel Fish, Founder, Clairvista Partners, 617-319-0906, mfish@clairvistapartners.com, clairvistapartners.com, linkedin.com/in/mhfish"></div>
-  <div class="foot" style="top:704px;height:26px"><img src="assets/logo.png" alt="Clairvista Partners" style="width:96px"><span>clairvistapartners.com</span><span>7</span></div>
-</section>
-
+<div class="pdf" id="pdf" hidden>
+  <img data-src="pages/p1.webp" width="2666" height="1500" alt="1. Love before first site. A dating app for warehouses. Because warehouses get lonely too.">
+  <img data-src="pages/p2.webp" width="2666" height="1500" alt="2. A hit at Halloween. A crisis before Christmas.">
+  <img data-src="pages/p3.webp" width="2666" height="1500" alt="3. Right space. Right customer. Wrong timing.">
+  <img data-src="pages/p4.webp" width="2666" height="1500" loading="lazy" alt="4. She&#x27;d search. He&#x27;d chase. We match them first.">
+  <img data-src="pages/p5.webp" width="2666" height="1500" loading="lazy" alt="5. Others sell his space. We deliver his next customer.">
+  <img data-src="pages/p6.webp" width="2666" height="1500" loading="lazy" alt="6. Meet us at Manifest.">
+  <img data-src="pages/p7.webp" width="2666" height="1500" loading="lazy" alt="7. Fifteen years on both sides. Now he makes the match.">
 </div>
+<section class="after" id="after" hidden>
+  <h2>Talk to Mel.</h2>
+  <a class="save" href="/mel/mel-fish.vcf">Save Mel&#x27;s contact</a>
+  <div class="reach">
+    <a href="tel:+16173190906"><span class="k">Call</span>617-319-0906</a>
+    <a href="mailto:mfish@clairvistapartners.com"><span class="k">Email</span>mfish@clairvistapartners.com</a>
+  </div>
+  <footer><a href="/">clairvistapartners.com</a></footer>
+</section>
+<div class="count" id="count" aria-hidden="true">1 / 7</div>
+
 <script>
-(function(){
-  var st=document.getElementById('stage');
-  function fit(){var w=Math.min(window.innerWidth,screen.width||window.innerWidth);st.style.zoom=/[?&]shot/.test(location.search)?1:Math.min(1,(w-16)/1333);}
-  fit(); window.addEventListener('resize',fit);
+(function () {
+  // the site's database; this public key can only add rows, never read them (cvp-site/admin/schema.sql)
+  var DB = "https://oilvzabkaoiliabefwrh.supabase.co", KEY = "sb_publishable_tFw1kzlY87RsUElfZPNZlA_UoRKk3nr";
+  var preview = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === "file:";
+  var $ = function (id) { return document.getElementById(id); };
+  var ask = $("ask"), pdf = $("pdf"), after = $("after"), count = $("count"), f = $("f"), nm = $("nm"), em = $("em"), err = $("err");
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function put(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  var team = get("cvp-team") === "1";                       // devices the dashboard marked as the team's own are not recorded
+
+  // where they came from: the /mel page, another tag, or a code straight to here
+  var from = (new URLSearchParams(location.search).get("from") || "").slice(0, 80), ref = "";
+  try { if (document.referrer) { var r = new URL(document.referrer); ref = r.host === location.host ? r.pathname : r.host.replace(/^www\./, ""); } } catch (e) {}
+  if (ref === location.pathname) ref = "";                  // a reload is not a source
+  if (!from && /^\/mel/.test(ref)) from = "mel";
+
+  function send(row) {
+    if (preview || team) { if (preview) console.log("[meet] would save", row); return Promise.resolve(true); }
+    try {
+      return fetch(DB + "/rest/v1/submissions", { method: "POST", keepalive: true,
+        headers: { apikey: KEY, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify(row) })
+        .then(function (r) { return r.ok; }, function () { return false; });
+    } catch (e) { return Promise.resolve(false); }
+  }
+  // a sign-up sent without signal stays on the phone and goes the next time the page opens
+  var pending = get("cvp-meet-pending");
+  if (pending) { try { send(JSON.parse(pending)).then(function (ok) { if (ok) del("cvp-meet-pending"); }); } catch (e) { del("cvp-meet-pending"); } }
+
+  var opened = false;
+  function open() {
+    if (opened) return; opened = true;
+    ask.hidden = true; pdf.hidden = false; after.hidden = false; document.body.classList.add("reading");
+    Array.prototype.forEach.call(pdf.querySelectorAll("img[data-src]"), function (im) { im.src = im.getAttribute("data-src"); im.removeAttribute("data-src"); });
+    window.scrollTo(0, 0);
+    // the page number, shown while scrolling, the way a phone's PDF viewer does
+    var imgs = pdf.querySelectorAll("img"), t = null;
+    window.addEventListener("scroll", function () {
+      var mid = window.innerHeight / 2, n = 1;
+      for (var i = 0; i < imgs.length; i++) { if (imgs[i].getBoundingClientRect().top < mid) n = i + 1; }
+      count.textContent = n + " / " + imgs.length; count.classList.add("on");
+      clearTimeout(t); t = setTimeout(function () { count.classList.remove("on"); }, 1100);
+    }, { passive: true });
+  }
+  if (get("cvp-meet-open") === "1") open();
+
+  var FREE = /^(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|mac|aol|proton|protonmail|msn|comcast|verizon|att)\./i;
+  f.addEventListener("submit", function (e) {
+    e.preventDefault(); err.textContent = "";
+    var name = nm.value.trim().replace(/\s+/g, " "), email = em.value.trim();
+    if (name.length < 2) { err.textContent = "Please add your name."; nm.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = "Please check your email address."; em.focus(); return; }
+    var dm = email.split("@")[1].toLowerCase(), co = FREE.test(dm) ? "" : dm.replace(/\.(com|co|net|org|io|us|biz)(\.[a-z]{2})?$/, "");
+    var row = { page: "meet", kind: "Deck", subject: "Deck: " + name.slice(0, 120),
+      body: "Name: " + name + "\nEmail: " + email + "\nOpened the deck at clairvistapartners.com/meet" + (from ? " (from " + from + ")" : ""),
+      name: name.slice(0, 120), email: email.slice(0, 200), company: co.slice(0, 160) || null, from_tag: from || null, referrer: ref.slice(0, 120) || null };
+    var b = f.querySelector("button"); b.disabled = true; b.textContent = "Opening…";
+    put("cvp-meet-pending", JSON.stringify(row));
+    var done = false;
+    function go() { if (done) return; done = true; put("cvp-meet-open", "1"); open(); }
+    send(row).then(function (ok) { if (ok) del("cvp-meet-pending"); go(); });
+    setTimeout(go, 3500);                                    // a slow signal never keeps them from the deck; the row stays queued
+  });
 })();
 </script>
 </body>

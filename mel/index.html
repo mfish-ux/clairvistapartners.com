@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* /mel, 18 November 2026: the one QR on Mel's badge lands here. Unlisted, noindex, nothing collected.
+  /* /mel, 18 November 2026: the one QR on Mel's badge lands here. Unlisted, noindex. The deck behind it asks for a name and email (saved with the site's other forms).
      Save the contact (a card file, so the page stays open) or see the deck (a new tab, so this page stays too). */
   :root { --ink: #0A0B10; --blue: #0047FF; --muted: #5B5F66; --line: #E3E5EA; color-scheme: light; }
   * { box-sizing: border-box; }
@@ -40,10 +40,12 @@
   .btn.see { background: var(--ink); color: #fff; }
   .btn small { display: block; margin-top: 3px; font: 500 13px Outfit; opacity: .8; }
   .both { margin: 12px 0 0; text-align: center; font-size: 13.5px; color: var(--muted); }
-  .quick { display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
-  .quick a { flex: 1; text-align: center; padding: 11px 6px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; font: 700 15px Outfit; }
-  .trust { margin: 22px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
-  footer { margin-top: 10px; text-align: center; font: 400 11px "Space Mono", monospace; color: #9BA0AA; }
+  /* his number and email, as text: one tap calls or opens a new email */
+  .reach { margin-top: 24px; border-top: 1px solid var(--line); }
+  .reach a { display: block; padding: 13px 2px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; font: 700 18px/1.25 Outfit; overflow-wrap: anywhere; }
+  .reach a:active { background: #F4F6FF; }
+  .reach .k { display: block; margin-bottom: 2px; font: 700 10px "Space Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+  footer { margin-top: 24px; text-align: center; font: 400 11px "Space Mono", monospace; color: #9BA0AA; }
   a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 </style>
 </head>
@@ -61,16 +63,14 @@
   <p class="sub">We spot companies about to need warehouse space and introduce them to the warehouse company that fits, before either side is looking.</p>
 
   <a class="btn save" href="mel-fish.vcf">Save my contact<small>Phone, email, website and LinkedIn</small></a>
-  <a class="btn see" href="/meet/" target="_blank" rel="noopener">See what we&#x27;re building<small>Our story in seven pages</small></a>
+  <a class="btn see" href="/meet/?from=mel" target="_blank" rel="noopener">See what we&#x27;re building<small>Seven pages. We&#x27;ll ask your name and email.</small></a>
   <p class="both">Do both: this page stays open.</p>
 
-  <div class="quick">
-    <a href="tel:+16173190906">Call</a>
-    <a href="mailto:mfish@clairvistapartners.com">Email</a>
-    <a href="https://www.linkedin.com/in/mhfish" target="_blank" rel="noopener">LinkedIn</a>
+  <div class="reach">
+    <a href="tel:+16173190906"><span class="k">Call</span>617-319-0906</a>
+    <a href="mailto:mfish@clairvistapartners.com"><span class="k">Email</span>mfish@clairvistapartners.com</a>
+    <a href="https://www.linkedin.com/in/mhfish" target="_blank" rel="noopener"><span class="k">LinkedIn</span>linkedin.com/in/mhfish</a>
   </div>
-
-  <p class="trust">No sign-up. Nothing collected.</p>
   <footer>clairvistapartners.com</footer>
 </main>
 <script>
