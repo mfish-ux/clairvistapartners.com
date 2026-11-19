@@ -5,6 +5,22 @@
   var cur = document.querySelector('.nav [aria-current="page"]'), nav = cur && cur.parentNode;
   if(nav && nav.scrollWidth > nav.clientWidth) nav.scrollLeft += cur.getBoundingClientRect().left - nav.getBoundingClientRect().left - 16;
   var page = (location.pathname.split('/').pop() || 'home').replace('.html','') || 'home';
+  var cfg = window.CVP_CONTACT || {};
+  var booking = cfg.bookingHref ? cfg.bookingHref() : '';
+  if(booking){
+    var cols = document.querySelectorAll('footer.foot .f-cols > div');
+    var talk = cols[cols.length - 1];
+    if(talk && !talk.querySelector('.f-book')){
+      var a = document.createElement('a');
+      a.className = 'f-book';
+      a.href = booking;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('data-goatcounter-click', 'book-20-footer');
+      a.textContent = 'Book 20 minutes';
+      talk.appendChild(a);
+    }
+  }
   var bar = document.createElement('div');
   bar.className = 'stick'; bar.id = 'stick'; bar.setAttribute('aria-hidden','true');
   bar.innerHTML = '<div class="stick-in"><p>Clairvista Partners is open.</p>' +

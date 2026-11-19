@@ -89,6 +89,7 @@ footer a{color:var(--obsidian);text-decoration:none}
 .f-cols a{font:500 var(--fs-sm)/1.3 Outfit;color:var(--obsidian);text-decoration:none}
 .f-chat{border:0;background:none;padding:0;font:700 var(--fs-sm)/1.3 Outfit;color:var(--obsidian);cursor:pointer}
 .f-chat i{font-style:normal;color:var(--blue)}
+.f-cols a.f-book{font-weight:700}
 .f-base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s1) var(--s3);margin-top:var(--s3);padding-top:var(--s2);border-top:1px solid var(--line);font:400 var(--fs-sm)/1.5 Outfit;color:var(--muted)}
 
 /* ===== the footer line on every page (foot.js): "Clairvista Partners is open." and Let's chat ===== */
@@ -171,6 +172,7 @@ form.lf-pane{display:grid;gap:10px}
 .leaflet input,.leaflet textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line2);border-radius:12px;font:400 16px/1.35 Outfit;color:var(--obsidian);background:#fff;resize:none}
 .leaflet input:focus,.leaflet textarea:focus{outline:none;border-color:var(--blue)}
 .lf-send{justify-content:center;width:100%;margin-top:2px}
+.lf-book{justify-content:center;width:100%;margin-top:14px;box-sizing:border-box}
 .lf-err{font:400 13px/1.3 Outfit;color:#C22626;min-height:0}
 .lf-err:empty{display:none}
 .lf-num{display:block;font:800 28px/1.1 Outfit;letter-spacing:-.02em;text-decoration:none}
